@@ -1,19 +1,28 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
+			GamePanel gamePanel = new GamePanel();
+			Scene scene = new Scene(gamePanel);
+			
+			KeyHandler keyHandler = gamePanel.getKeyHandler();
+	        scene.setOnKeyPressed(keyHandler::handleKeyPressed);
+	        scene.setOnKeyReleased(keyHandler::handleKeyReleased);
+			
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("2D Adventure");
+			primaryStage.setResizable(false);
 			primaryStage.show();
+			
+			gamePanel.startGameLoop();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
