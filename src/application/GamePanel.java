@@ -1,5 +1,6 @@
 package application;
 
+import entity.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,11 +16,11 @@ public class GamePanel extends AnchorPane {
 	private final int originalTileSize = 16; // 16 x 16 tile
 	private final int scale = 3; // Scale tiles
 	
-	private final int tileSize = originalTileSize * scale; // 16 x 3 = 48 tile
-	private final int maxScreenCol = 16;
-	private final int maxScreenRow = 12;
-	private final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-	private final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+	public final int tileSize = originalTileSize * scale; // 16 x 3 = 48 tile
+	public final int maxScreenCol = 16;
+	public final int maxScreenRow = 12;
+	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 	
 	private final int TARGET_FPS = 60;
 	private final double TARGET_TIME_BETWEEN_FRAMES = 1_000_000_000.0 / TARGET_FPS; // in nanoseconds
@@ -27,7 +28,8 @@ public class GamePanel extends AnchorPane {
 	private Canvas canvas;
     private GraphicsContext gc;
 	
-    KeyHandler keyHandler = new KeyHandler();
+    private KeyHandler keyHandler = new KeyHandler();
+    private Player player = new Player(this, keyHandler);
     
     // Default player location
     int playerX = 100;
@@ -75,19 +77,7 @@ public class GamePanel extends AnchorPane {
     }
 	
 	public void update() {
-		// Move player
-		if (keyHandler.isUpPressed()) {
-			playerY -= playerSpeed;
-		}
-		else if (keyHandler.isDownPressed()) {
-			playerY += playerSpeed;
-		}
-		else if (keyHandler.isLeftPressed()) {
-			playerX -= playerSpeed;
-		}
-		else if (keyHandler.isRightPressed()) {
-			playerX += playerSpeed;
-		}
+		player.update();
 	}
 	
 	public void draw() {
@@ -95,9 +85,7 @@ public class GamePanel extends AnchorPane {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, screenWidth, screenHeight);
 
-        // White square example
-        gc.setFill(Color.WHITE);
-        gc.fillRect(playerX, playerY, tileSize, tileSize);
+        player.draw(gc);
     }
 	
 	public KeyHandler getKeyHandler() {

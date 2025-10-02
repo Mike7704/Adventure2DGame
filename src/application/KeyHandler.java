@@ -13,16 +13,16 @@ public class KeyHandler {
     public void handleKeyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
         
-        if (code == KeyCode.W) {
+        if (code == KeyCode.W || code == KeyCode.UP) {
             upPressed = true;
         }
-        if (code == KeyCode.S) {
+        if (code == KeyCode.S || code == KeyCode.DOWN) {
             downPressed = true;
         }
-        if (code == KeyCode.A) {
+        if (code == KeyCode.A || code == KeyCode.LEFT) {
             leftPressed = true;
         }
-        if (code == KeyCode.D) {
+        if (code == KeyCode.D || code == KeyCode.RIGHT) {
             rightPressed = true;
         }
     }
@@ -30,16 +30,16 @@ public class KeyHandler {
     public void handleKeyReleased(KeyEvent e) {
         KeyCode code = e.getCode();
 
-        if (code == KeyCode.W) {
+        if (code == KeyCode.W || code == KeyCode.UP) {
             upPressed = false;
         }
-        if (code == KeyCode.S) {
+        if (code == KeyCode.S || code == KeyCode.DOWN) {
             downPressed = false;
         }
-        if (code == KeyCode.A) {
+        if (code == KeyCode.A || code == KeyCode.LEFT) {
             leftPressed = false;
         }
-        if (code == KeyCode.D) {
+        if (code == KeyCode.D || code == KeyCode.RIGHT) {
             rightPressed = false;
         }
     }
@@ -58,5 +58,9 @@ public class KeyHandler {
 	
 	public boolean isRightPressed() {
 		return rightPressed;
+	}
+	
+	public boolean isKeyPressed() {
+		return upPressed || downPressed || leftPressed || rightPressed;
 	}
 }
