@@ -23,6 +23,13 @@ public class GamePanel extends AnchorPane {
 	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
 	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 	
+	// WORLD SETTINGS
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
+	
+	// FPS
 	private final int TARGET_FPS = 60;
 	private final double TARGET_TIME_BETWEEN_FRAMES = 1_000_000_000.0 / TARGET_FPS; // in nanoseconds
 	
@@ -86,5 +93,9 @@ public class GamePanel extends AnchorPane {
 	
 	public KeyHandler getKeyHandler() {
 	    return keyHandler;
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 }

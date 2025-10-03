@@ -19,10 +19,10 @@ public class TileManager {
 		this.gamePanel = gamePanel;
 		
 		tile = new Tile[10];
-		mapTileNum = new int[gamePanel.maxScreenCol][gamePanel.maxScreenRow];
+		mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 		
 		getTileImage();
-		loadMap("/Maps/map01.txt");
+		loadMap("/Maps/world01.txt");
 	}
 	
 	// Tile texture images
@@ -35,6 +35,15 @@ public class TileManager {
 		
 		tile[2] = new Tile();
 		tile[2].image = new Image(getClass().getResourceAsStream("/Tiles/water00.png"));
+		
+		tile[3] = new Tile();
+		tile[3].image = new Image(getClass().getResourceAsStream("/Tiles/earth.png"));
+		
+		tile[4] = new Tile();
+		tile[4].image = new Image(getClass().getResourceAsStream("/Tiles/tree.png"));
+		
+		tile[5] = new Tile();
+		tile[5].image = new Image(getClass().getResourceAsStream("/Tiles/road00.png"));
 	}
 	
 	// Read map data from text file
@@ -46,11 +55,11 @@ public class TileManager {
 			int col = 0;
 			int row = 0;
 
-			while (col < gamePanel.maxScreenCol && row < gamePanel.maxScreenRow) {
+			while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
 				String line = bufferedReader.readLine();
 
 				// Store image number for each value on row
-				while(col < gamePanel.maxScreenCol) {
+				while(col < gamePanel.maxWorldCol) {
 					String numbers[] = line.split(" ");
 					int num = Integer.parseInt(numbers[col]);
 					
@@ -58,7 +67,7 @@ public class TileManager {
 					col++;
 				}
 				// Next row
-				if (col == gamePanel.maxScreenCol) {
+				if (col == gamePanel.maxWorldCol) {
 					col = 0;
 					row++;
 				}
@@ -72,24 +81,32 @@ public class TileManager {
 	
 	// Draw each tile on screen
 	public void draw(GraphicsContext gc) {
-		int col = 0;
-		int row = 0;
-		int x = 0;
-		int y = 0;
+		int worldCol = 0;
+		int worldRow = 0;
 	
-		while(col < gamePanel.maxScreenCol && row < gamePanel.maxScreenRow) {
-			int tileNum = mapTileNum[col][row]; // Get tile number/texture from map data
+		while(worldCol < gamePanel.maxWorldCol && worldRow < gamePanel.maxWorldRow) {
+			int tileNum = mapTileNum[worldCol][worldRow]; // Get tile number/texture from map data
 			
-			gc.drawImage(tile[tileNum].image, x, y, gamePanel.tileSize, gamePanel.tileSize);
-			col++;
-			x += gamePanel.tileSize;
+			// Set tile screen position relative to the player position
+			int worldX = worldCol * gamePanel.tileSize;
+			int worldY = worldRow * gamePanel.tileSize;
+			int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
+			int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
+			
+			// Draw tiles only visible on screen around the player
+			if (worldX + gamePanel.tileSize > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
+				worldX - gamePanel.tileSize < gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX &&
+				worldY + gamePanel.tileSize > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
+				worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY)
+			{
+				gc.drawImage(tile[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize);
+			}
+			worldCol++;
 			
 			// Next row
-			if (col == gamePanel.maxScreenCol) {
-				col = 0;
-				x = 0;
-				row++;
-				y += gamePanel.tileSize;
+			if (worldCol == gamePanel.maxWorldCol) {
+				worldCol = 0;
+				worldRow++;
 			}
 		}
 	}
