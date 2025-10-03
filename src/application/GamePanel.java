@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import tile.TileManager;
 
 public class GamePanel extends AnchorPane {
 
@@ -28,21 +29,19 @@ public class GamePanel extends AnchorPane {
 	private Canvas canvas;
     private GraphicsContext gc;
 	
+    private TileManager tileManager = new TileManager(this);
+    
     private KeyHandler keyHandler = new KeyHandler();
     private Player player = new Player(this, keyHandler);
-    
-    // Default player location
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
-    
+        
 	public GamePanel() {
 		this.setPrefSize(screenWidth, screenHeight);
 
         // Create canvas for drawing
         canvas = new Canvas(screenWidth, screenHeight);
         gc = canvas.getGraphicsContext2D();
-
+        gc.setImageSmoothing(false);
+        
         this.getChildren().add(canvas);
 		this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 	}
@@ -81,10 +80,7 @@ public class GamePanel extends AnchorPane {
 	}
 	
 	public void draw() {
-        // Clear screen
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, screenWidth, screenHeight);
-
+        tileManager.draw(gc);
         player.draw(gc);
     }
 	

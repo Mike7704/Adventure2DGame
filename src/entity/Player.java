@@ -18,6 +18,7 @@ public class Player extends Entity {
 		getPlayerImage();
 	}
 	
+	// Initial player start
 	public void setDefaultValues() {
 		x = 100;
 		y = 100;
@@ -25,6 +26,7 @@ public class Player extends Entity {
 		direction = "down";
 	}
 	
+	// Player sprite images
 	public void getPlayerImage() {
 		up1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_up_1.png"));
 		up2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_up_2.png"));
@@ -70,6 +72,7 @@ public class Player extends Entity {
 		}
 	}
 	
+	// Draw player at updated position and image
 	public void draw(GraphicsContext gc) {
 		Image image = null;
 		
