@@ -4,7 +4,6 @@ import entity.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -39,6 +38,7 @@ public class GamePanel extends AnchorPane {
     private TileManager tileManager = new TileManager(this);
     
     private KeyHandler keyHandler = new KeyHandler();
+    private CollisionChecker collisionChecker = new CollisionChecker(this);
     private Player player = new Player(this, keyHandler);
         
 	public GamePanel() {
@@ -93,6 +93,14 @@ public class GamePanel extends AnchorPane {
 	
 	public KeyHandler getKeyHandler() {
 	    return keyHandler;
+	}
+	
+	public TileManager getTileManager() {
+	    return tileManager;
+	}
+	
+	public CollisionChecker getCollisionChecker() {
+		return collisionChecker;
 	}
 	
 	public Player getPlayer() {

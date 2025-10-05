@@ -12,8 +12,8 @@ import javafx.scene.image.Image;
 public class TileManager {
 
 	private GamePanel gamePanel;
-	private Tile[] tile;
-	private int mapTileNum[][];
+	public Tile[] tile;
+	public int[][] mapTileNum;
 	
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -32,15 +32,18 @@ public class TileManager {
 		
 		tile[1] = new Tile();
 		tile[1].image = new Image(getClass().getResourceAsStream("/Tiles/wall.png"));
+		tile[1].collision = true;
 		
 		tile[2] = new Tile();
 		tile[2].image = new Image(getClass().getResourceAsStream("/Tiles/water00.png"));
+		tile[2].collision = true;
 		
 		tile[3] = new Tile();
 		tile[3].image = new Image(getClass().getResourceAsStream("/Tiles/earth.png"));
 		
 		tile[4] = new Tile();
 		tile[4].image = new Image(getClass().getResourceAsStream("/Tiles/tree.png"));
+		tile[4].collision = true;
 		
 		tile[5] = new Tile();
 		tile[5].image = new Image(getClass().getResourceAsStream("/Tiles/road00.png"));
@@ -60,7 +63,7 @@ public class TileManager {
 
 				// Store image number for each value on row
 				while(col < gamePanel.maxWorldCol) {
-					String numbers[] = line.split(" ");
+					String[] numbers = line.split(" ");
 					int num = Integer.parseInt(numbers[col]);
 					
 					mapTileNum[col][row] = num;

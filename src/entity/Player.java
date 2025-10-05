@@ -4,6 +4,7 @@ import application.GamePanel;
 import application.KeyHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 public class Player extends Entity {
 
@@ -20,6 +21,9 @@ public class Player extends Entity {
 		// Player position is fixed to the centre of the screen
 		screenX = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
 		screenY = gamePanel.screenHeight/2 - (gamePanel.tileSize/2);
+		
+		// Player collision
+		solidArea = new Rectangle(8, 16, 32, 32);
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -50,19 +54,28 @@ public class Player extends Entity {
 		if (keyHandler.isKeyPressed()) {
 			if (keyHandler.isUpPressed()) {
 				direction = "up";
-				worldY -= speed;
 			}
 			else if (keyHandler.isDownPressed()) {
 				direction = "down";
-				worldY += speed;
 			}
 			else if (keyHandler.isLeftPressed()) {
 				direction = "left";
-				worldX -= speed;
 			}
 			else if (keyHandler.isRightPressed()) {
 				direction = "right";
-				worldX += speed;
+			}
+			
+			// Check tile collision
+			collisionOn = false;
+			gamePanel.getCollisionChecker().checkTile(this);
+			// Player can move if no collision
+			if (!collisionOn) {
+				switch(direction) {
+					case "up": 		worldY -= speed; break;
+					case "down": 	worldY += speed; break;
+					case "left": 	worldX -= speed; break;
+					case "right": 	worldX += speed; break;
+				}
 			}
 			
 			// Walk animation

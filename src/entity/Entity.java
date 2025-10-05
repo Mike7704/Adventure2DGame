@@ -1,6 +1,7 @@
 package entity;
 
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 public class Entity {
 	
@@ -11,5 +12,8 @@ public class Entity {
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
+	
+	public Rectangle solidArea;
+	public boolean collisionOn = false;
 	
 }
