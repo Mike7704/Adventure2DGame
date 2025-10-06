@@ -8,6 +8,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import object.OBJ_Key;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends AnchorPane {
@@ -39,8 +41,10 @@ public class GamePanel extends AnchorPane {
     
     private KeyHandler keyHandler = new KeyHandler();
     private CollisionChecker collisionChecker = new CollisionChecker(this);
+    private AssetSetter assetSetter = new AssetSetter(this);
     private Player player = new Player(this, keyHandler);
-        
+    private SuperObject[] obj = new SuperObject[10];
+    
 	public GamePanel() {
 		this.setPrefSize(screenWidth, screenHeight);
 
@@ -51,6 +55,10 @@ public class GamePanel extends AnchorPane {
         
         this.getChildren().add(canvas);
 		this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+	}
+	
+	public void setupGame() {
+		assetSetter.setObject();
 	}
 	
 	public void startGameLoop() {
@@ -87,7 +95,17 @@ public class GamePanel extends AnchorPane {
 	}
 	
 	public void draw() {
+		// TILE
         tileManager.draw(gc);
+        
+        // OBJECT
+        for (int i = 0; i < obj.length; i++) {
+			if (obj[i] != null) {
+				obj[i].draw(gc, this);
+			}
+		}
+        
+        // PLAYER
         player.draw(gc);
     }
 	
@@ -105,5 +123,9 @@ public class GamePanel extends AnchorPane {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public SuperObject[] getObject() {
+		return obj;
 	}
 }
