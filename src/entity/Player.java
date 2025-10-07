@@ -1,7 +1,7 @@
 package entity;
 
-import application.GamePanel;
-import application.KeyHandler;
+import main.GamePanel;
+import main.KeyHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;

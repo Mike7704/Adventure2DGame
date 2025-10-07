@@ -1,4 +1,4 @@
-package application;
+package main;
 
 import entity.Player;
 import javafx.animation.AnimationTimer;
@@ -8,7 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import object.OBJ_Key;
 import object.SuperObject;
 import tile.TileManager;
 
