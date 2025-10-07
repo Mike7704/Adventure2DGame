@@ -64,4 +64,79 @@ public class CollisionChecker {
 		}
 	}
 	
+	// Check object collision and return index of the object collided with
+	public int checkObject(Entity entity, boolean player) {
+		int index = 999;
+
+		for (int i = 0; i < gamePanel.getObject().length; i++) {
+			if (gamePanel.getObject()[i] != null) {
+				// Get entity's solid area position
+				entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
+				entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
+				
+				// Get object's solid area position
+				gamePanel.getObject()[i].solidArea.setX(gamePanel.getObject()[i].worldX + gamePanel.getObject()[i].solidArea.getX());
+				gamePanel.getObject()[i].solidArea.setY(gamePanel.getObject()[i].worldY + gamePanel.getObject()[i].solidArea.getY());
+				
+				// Predict entity position
+				switch (entity.direction) {
+					case "up":
+						entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
+							if (gamePanel.getObject()[i].collision) {
+								entity.collisionOn = true;
+							}
+							if (player) {
+								// Only player can pick up items
+								index = i;
+							}
+						}
+						break;
+					case "down":
+						entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
+							if (gamePanel.getObject()[i].collision) {
+								entity.collisionOn = true;
+							}
+							if (player) {
+								// Only player can pick up items
+								index = i;
+							}						
+						}
+						break;
+					case "left":
+						entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
+							if (gamePanel.getObject()[i].collision) {
+								entity.collisionOn = true;
+							}
+							if (player) {
+								// Only player can pick up items
+								index = i;
+							}						
+						}
+						break;
+					case "right":
+						entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
+							if (gamePanel.getObject()[i].collision) {
+								entity.collisionOn = true;
+							}
+							if (player) {
+								// Only player can pick up items
+								index = i;
+							}							
+						}
+						break;
+				}
+				// Reset solid area position
+				entity.solidArea.setX(entity.solidAreaDefaultX);
+				entity.solidArea.setY(entity.solidAreaDefaultY);
+				gamePanel.getObject()[i].solidArea.setX(gamePanel.getObject()[i].solidAreaDefaultX);
+				gamePanel.getObject()[i].solidArea.setY(gamePanel.getObject()[i].solidAreaDefaultY);
+			}
+		}
+		return index;
+	}
+	
 }
