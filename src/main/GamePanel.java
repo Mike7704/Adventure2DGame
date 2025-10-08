@@ -36,7 +36,8 @@ public class GamePanel extends AnchorPane {
 	
     private TileManager tileManager = new TileManager(this);
     private KeyHandler keyHandler = new KeyHandler();
-    private Sound sound = new Sound();
+    private Sound music = new Sound();
+    private Sound soundEffect = new Sound();
     private CollisionChecker collisionChecker = new CollisionChecker(this);
     private AssetSetter assetSetter = new AssetSetter(this);
     
@@ -111,18 +112,18 @@ public class GamePanel extends AnchorPane {
     }
 	
 	public void playMusic(int i) {
-		sound.setFile(i);
-		sound.loop();
-		sound.play();
+		music.setFile(i);
+		music.loop();
+		music.play();
 	}
 	
 	public void stopMusic() {
-		sound.stop();
+		music.stop();
 	}
 	
 	public void playSoundEffect(int i) {
-		sound.setFile(i);
-		sound.play();
+		soundEffect.setFile(i);
+		soundEffect.play();
 	}
 	
 	public KeyHandler getKeyHandler() {
