@@ -26,8 +26,6 @@ public class GamePanel extends AnchorPane {
 	// WORLD SETTINGS
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
-	public final int worldWidth = tileSize * maxWorldCol;
-	public final int worldHeight = tileSize * maxWorldRow;
 	
 	// FPS
 	private final int TARGET_FPS = 60;
@@ -37,10 +35,12 @@ public class GamePanel extends AnchorPane {
     private GraphicsContext gc;
 	
     private TileManager tileManager = new TileManager(this);
-    
     private KeyHandler keyHandler = new KeyHandler();
+    private Sound sound = new Sound();
     private CollisionChecker collisionChecker = new CollisionChecker(this);
     private AssetSetter assetSetter = new AssetSetter(this);
+    
+    // Entity and Object
     private Player player = new Player(this, keyHandler);
     private SuperObject[] obj = new SuperObject[10];
     
@@ -58,6 +58,8 @@ public class GamePanel extends AnchorPane {
 	
 	public void setupGame() {
 		assetSetter.setObject();
+		
+		playMusic(0);
 	}
 	
 	public void startGameLoop() {
@@ -107,6 +109,21 @@ public class GamePanel extends AnchorPane {
         // PLAYER
         player.draw(gc);
     }
+	
+	public void playMusic(int i) {
+		sound.setFile(i);
+		sound.loop();
+		sound.play();
+	}
+	
+	public void stopMusic() {
+		sound.stop();
+	}
+	
+	public void playSoundEffect(int i) {
+		sound.setFile(i);
+		sound.play();
+	}
 	
 	public KeyHandler getKeyHandler() {
 	    return keyHandler;

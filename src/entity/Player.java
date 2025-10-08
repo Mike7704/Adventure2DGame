@@ -108,19 +108,24 @@ public class Player extends Entity {
 			
 			switch(objectName) {
 			case "Key":
+				System.out.println("You got a key! Keys: " + hasKey);
 				hasKey++;
 				gamePanel.getObject()[index] = null;
-				System.out.println("You got a key! Keys: " + hasKey);
+				gamePanel.playSoundEffect(1);
 				break;
 			case "Door":
 				if (hasKey > 0) {
 					System.out.println("You opened the door!");
 					hasKey--;
 					gamePanel.getObject()[index] = null;
+					gamePanel.playSoundEffect(3);
 				}
-				else {
-					System.out.println("You need a key to open this door.");
-				}
+				break;
+			case "Boots":
+				System.out.println("You picked up boots!");
+				speed += 1;
+				gamePanel.getObject()[index] = null;
+				gamePanel.playSoundEffect(2);
 				break;
 			}
 		}
