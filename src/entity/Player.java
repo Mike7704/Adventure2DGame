@@ -14,7 +14,9 @@ public class Player extends Entity {
 	public final int screenX;
 	public final int screenY;
 	
-	private int hasKey = 0;
+	private int standCounter = 0;
+	
+	public int hasKey = 0;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		this.gamePanel = gamePanel;
@@ -99,6 +101,13 @@ public class Player extends Entity {
 				spriteCounter = 0;
 			}
 		}
+		else {
+			standCounter++;
+			if (standCounter == 20) {
+				spriteNum = 1;
+				standCounter = 0;
+			}
+		}
 	}
 	
 	public void pickUpObject(int index) {
@@ -108,24 +117,33 @@ public class Player extends Entity {
 			
 			switch(objectName) {
 			case "Key":
-				System.out.println("You got a key! Keys: " + hasKey);
+				gamePanel.getUI().showMessage("You got a key!");
 				hasKey++;
 				gamePanel.getObject()[index] = null;
 				gamePanel.playSoundEffect(1);
 				break;
 			case "Door":
 				if (hasKey > 0) {
-					System.out.println("You opened the door!");
+					gamePanel.getUI().showMessage("You opened the door!");
 					hasKey--;
 					gamePanel.getObject()[index] = null;
 					gamePanel.playSoundEffect(3);
 				}
+				else {
+					gamePanel.getUI().showMessage("You need a key!");
+				}
 				break;
 			case "Boots":
-				System.out.println("You picked up boots!");
+				gamePanel.getUI().showMessage("Your speed increased!");
 				speed += 1;
 				gamePanel.getObject()[index] = null;
 				gamePanel.playSoundEffect(2);
+				break;
+			case "Chest":
+				gamePanel.getUI().gameFinished = true;
+				gamePanel.getObject()[index] = null;
+				gamePanel.stopMusic();
+				gamePanel.playSoundEffect(4);
 				break;
 			}
 		}

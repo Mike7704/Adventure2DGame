@@ -28,18 +28,20 @@ public class GamePanel extends AnchorPane {
 	public final int maxWorldRow = 50;
 	
 	// FPS
-	private final int TARGET_FPS = 60;
+	public final int TARGET_FPS = 60;
 	private final double TARGET_TIME_BETWEEN_FRAMES = 1_000_000_000.0 / TARGET_FPS; // in nanoseconds
 	
 	private Canvas canvas;
     private GraphicsContext gc;
 	
+    private AnimationTimer gameLoop;
     private TileManager tileManager = new TileManager(this);
     private KeyHandler keyHandler = new KeyHandler();
     private Sound music = new Sound();
     private Sound soundEffect = new Sound();
     private CollisionChecker collisionChecker = new CollisionChecker(this);
     private AssetSetter assetSetter = new AssetSetter(this);
+    private UI ui = new UI(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -64,7 +66,7 @@ public class GamePanel extends AnchorPane {
 	}
 	
 	public void startGameLoop() {
-        AnimationTimer timer = new AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             private long lastTime = 0;
             private double accumulatedTime = 0;
 
@@ -88,8 +90,11 @@ public class GamePanel extends AnchorPane {
                 }
             }
         };
-
-        timer.start();
+        gameLoop.start();
+    }
+	
+	public void stopGameLoop() {
+		gameLoop.stop();
     }
 	
 	public void update() {
@@ -109,6 +114,9 @@ public class GamePanel extends AnchorPane {
         
         // PLAYER
         player.draw(gc);
+        
+       // UI
+        ui.draw(gc);
     }
 	
 	public void playMusic(int i) {
@@ -144,5 +152,9 @@ public class GamePanel extends AnchorPane {
 	
 	public SuperObject[] getObject() {
 		return obj;
+	}
+	
+	public UI getUI() {
+		return ui;
 	}
 }
