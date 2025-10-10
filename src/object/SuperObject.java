@@ -25,7 +25,7 @@ public class SuperObject {
 			worldY + gamePanel.tileSize > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
 			worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY)
 		{
-			gc.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize);
+			gc.drawImage(image, screenX, screenY);
 		}
 	}
 	

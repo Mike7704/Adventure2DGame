@@ -30,7 +30,7 @@ public class UI {
 		arial_40 = new Font("Arial", 40);
 		arial_30 = new Font("Arial", 30);
 		
-		OBJ_Key key = new OBJ_Key();
+		OBJ_Key key = new OBJ_Key(gamePanel);
 		keyImage = key.image;
 	}
 	

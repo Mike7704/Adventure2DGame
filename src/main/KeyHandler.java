@@ -9,6 +9,8 @@ public class KeyHandler {
     private boolean downPressed = false;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    
+    public boolean checkDrawTime = false; // DEBUG
 
     public void handleKeyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
@@ -25,6 +27,10 @@ public class KeyHandler {
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             rightPressed = true;
         }
+        
+        if (code == KeyCode.T) { // DEBUG
+			checkDrawTime = !checkDrawTime;
+		}
     }
 
     public void handleKeyReleased(KeyEvent e) {

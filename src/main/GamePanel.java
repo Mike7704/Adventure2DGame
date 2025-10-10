@@ -102,6 +102,12 @@ public class GamePanel extends AnchorPane {
 	}
 	
 	public void draw() {
+		// DEBUG
+		long drawStart = 0;
+		if (keyHandler.checkDrawTime) {
+			drawStart = System.nanoTime();
+		}
+		
 		// TILE
         tileManager.draw(gc);
         
@@ -117,6 +123,13 @@ public class GamePanel extends AnchorPane {
         
        // UI
         ui.draw(gc);
+        
+        // DEBUG
+        if (keyHandler.checkDrawTime) {
+	        long drawEnd = System.nanoTime();
+	        long passed = drawEnd - drawStart;
+	        System.out.println("Draw Time: " + passed);
+        }
     }
 	
 	public void playMusic(int i) {

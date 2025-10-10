@@ -45,14 +45,14 @@ public class Player extends Entity {
 	
 	// Player sprite images
 	public void getPlayerImage() {
-		up1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_up_1.png"));
-		up2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_up_2.png"));
-		down1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_down_1.png"));
-		down2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_down_2.png"));
-		left1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_left_1.png"));
-		left2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_left_2.png"));
-		right1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_right_1.png"));
-		right2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_right_2.png"));
+		up1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_up_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		up2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_up_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		down1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		down2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		left1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_left_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		left2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_left_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		right1 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_right_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		right2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_right_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
 	
 	public void update() {
@@ -160,7 +160,7 @@ public class Player extends Entity {
 			case "right": 	image = (spriteNum == 1 ? right1 : right2); break;
 			default: 		break;
 		}
-		gc.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize);
+		gc.drawImage(image, screenX, screenY);
 		
 	}
 }

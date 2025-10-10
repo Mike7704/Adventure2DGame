@@ -18,35 +18,52 @@ public class TileManager {
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		
-		tile = new Tile[10];
+		tile = new Tile[50];
 		mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 		
 		getTileImage();
-		loadMap("/Maps/world01.txt");
+		loadMap("/Maps/worldV2.txt");
 	}
 	
 	// Tile texture images
 	public void getTileImage() {
-		tile[0] = new Tile();
-		tile[0].image = new Image(getClass().getResourceAsStream("/Tiles/grass00.png"));
-		
-		tile[1] = new Tile();
-		tile[1].image = new Image(getClass().getResourceAsStream("/Tiles/wall.png"));
-		tile[1].collision = true;
-		
-		tile[2] = new Tile();
-		tile[2].image = new Image(getClass().getResourceAsStream("/Tiles/water00.png"));
-		tile[2].collision = true;
-		
-		tile[3] = new Tile();
-		tile[3].image = new Image(getClass().getResourceAsStream("/Tiles/earth.png"));
-		
-		tile[4] = new Tile();
-		tile[4].image = new Image(getClass().getResourceAsStream("/Tiles/tree.png"));
-		tile[4].collision = true;
-		
-		tile[5] = new Tile();
-		tile[5].image = new Image(getClass().getResourceAsStream("/Tiles/road00.png"));
+		// PLACEHOLDER (To make world map file neater)
+        int indexes[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for(int i = 0; i < indexes.length; i++){
+            setup(indexes[i], "grass00", false);
+        }
+        
+        // TILES
+        setup(11, "grass01", false);
+
+        // WATER loop
+        indexes = new int[]{12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        for(int i = 0; i < indexes.length; i++){
+            String waterIndex = "water" + String.format("%02d", i);
+            setup(indexes[i], waterIndex, true);
+        }
+
+        // ROAD loop
+        indexes = new int[]{26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38};
+        for(int i = 0; i < indexes.length; i++){
+            String roadIndex = "road" + String.format("%02d", i);
+            setup(indexes[i], roadIndex, false);
+        }
+
+        setup(39, "earth", false);
+        setup(40, "wall", true);
+        setup(41,"tree", true);
+	}
+	
+	public void setup(int index, String imageName, boolean collision) {
+		try {
+			tile[index] = new Tile();
+			tile[index].image = new Image(getClass().getResourceAsStream("/Tiles/" + imageName + ".png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+			tile[index].collision = collision;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	// Read map data from text file
@@ -102,7 +119,7 @@ public class TileManager {
 				worldY + gamePanel.tileSize > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
 				worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY)
 			{
-				gc.drawImage(tile[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize);
+				gc.drawImage(tile[tileNum].image, screenX, screenY);
 			}
 			worldCol++;
 			
