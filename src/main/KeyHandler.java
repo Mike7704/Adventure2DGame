@@ -5,6 +5,8 @@ import javafx.scene.input.KeyEvent;
 
 public class KeyHandler {
 
+	private GamePanel gamePanel;
+	
     private boolean upPressed = false;
     private boolean downPressed = false;
     private boolean leftPressed = false;
@@ -12,6 +14,10 @@ public class KeyHandler {
     
     public boolean checkDrawTime = false; // DEBUG
 
+    public KeyHandler(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
+	}
+    
     public void handleKeyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
         
@@ -26,6 +32,9 @@ public class KeyHandler {
         }
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             rightPressed = true;
+        }
+        if (code == KeyCode.P) {
+        	gamePanel.gameState = (gamePanel.gameState == gamePanel.playState ? gamePanel.pauseState : gamePanel.playState);
         }
         
         if (code == KeyCode.T) { // DEBUG

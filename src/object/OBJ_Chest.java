@@ -5,7 +5,7 @@ import main.GamePanel;
 
 public class OBJ_Chest extends SuperObject {
 
-private GamePanel gamePanel;
+	private GamePanel gamePanel;
 	
 	public OBJ_Chest(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;

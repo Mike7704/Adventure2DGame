@@ -36,7 +36,7 @@ public class GamePanel extends AnchorPane {
 	
     private AnimationTimer gameLoop;
     private TileManager tileManager = new TileManager(this);
-    private KeyHandler keyHandler = new KeyHandler();
+    private KeyHandler keyHandler = new KeyHandler(this);
     private Sound music = new Sound();
     private Sound soundEffect = new Sound();
     private CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -46,6 +46,11 @@ public class GamePanel extends AnchorPane {
     // Entity and Object
     private Player player = new Player(this, keyHandler);
     private SuperObject[] obj = new SuperObject[10];
+    
+    // GAME STATE
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
     
 	public GamePanel() {
 		this.setPrefSize(screenWidth, screenHeight);
@@ -63,6 +68,8 @@ public class GamePanel extends AnchorPane {
 		assetSetter.setObject();
 		
 		playMusic(0);
+		
+		gameState = playState;
 	}
 	
 	public void startGameLoop() {
@@ -98,7 +105,12 @@ public class GamePanel extends AnchorPane {
     }
 	
 	public void update() {
-		player.update();
+		if (gameState == playState) {
+			player.update();
+		}
+		else if (gameState == pauseState) {
+			// nothing yet
+		}		
 	}
 	
 	public void draw() {
