@@ -8,7 +8,6 @@ import javafx.scene.shape.Rectangle;
 
 public class Player extends Entity {
 
-	private GamePanel gamePanel;
 	private KeyHandler keyHandler;
 	
 	public final int screenX;
@@ -17,7 +16,8 @@ public class Player extends Entity {
 	private int standCounter = 0;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-		this.gamePanel = gamePanel;
+		
+		super(gamePanel);
 		this.keyHandler = keyHandler;
 		
 		// Player position is fixed to the centre of the screen
@@ -77,6 +77,10 @@ public class Player extends Entity {
 			int objectIndex = gamePanel.getCollisionChecker().checkObject(this, true);
 			pickUpObject(objectIndex);
 			
+			// Check NPC collision
+			int npcIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
+			interactNPC(npcIndex);
+			
 			// Player can move if no collision
 			if (!collisionOn) {
 				switch(direction) {
@@ -111,6 +115,12 @@ public class Player extends Entity {
 	public void pickUpObject(int index) {
 		if (index != 999) {
 			
+		}
+	}
+	
+	public void interactNPC(int index) {
+		if (index != 999) {
+			System.out.println("Interacting with NPC");
 		}
 	}
 	

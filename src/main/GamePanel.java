@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import entity.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
@@ -46,6 +47,7 @@ public class GamePanel extends AnchorPane {
     // Entity and Object
     private Player player = new Player(this, keyHandler);
     private SuperObject[] obj = new SuperObject[10];
+    private Entity[] npc = new Entity[10];
     
     // GAME STATE
     public int gameState;
@@ -66,6 +68,7 @@ public class GamePanel extends AnchorPane {
 	
 	public void setupGame() {
 		assetSetter.setObject();
+		assetSetter.setNPC();
 		
 		playMusic(0);
 		
@@ -106,7 +109,16 @@ public class GamePanel extends AnchorPane {
 	
 	public void update() {
 		if (gameState == playState) {
+			// PLAYER
 			player.update();
+			
+			// NPC
+			for (int i = 0; i < npc.length; i++) {
+				if (npc[i] != null) {
+					npc[i].update();
+				}
+			}
+			
 		}
 		else if (gameState == pauseState) {
 			// nothing yet
@@ -129,6 +141,13 @@ public class GamePanel extends AnchorPane {
 				obj[i].draw(gc, this);
 			}
 		}
+        
+        // NPC
+        for (int i = 0; i < npc.length; i++) {
+        	if (npc[i] != null) {
+        		npc[i].draw(gc);
+        	}
+        }
         
         // PLAYER
         player.draw(gc);
@@ -177,6 +196,10 @@ public class GamePanel extends AnchorPane {
 	
 	public SuperObject[] getObject() {
 		return obj;
+	}
+	
+	public Entity[] getNPC() {
+		return npc;
 	}
 	
 	public UI getUI() {

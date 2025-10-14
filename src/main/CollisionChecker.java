@@ -139,4 +139,101 @@ public class CollisionChecker {
 		return index;
 	}
 	
+	public int checkEntity(Entity entity, Entity[] target) {
+		int index = 999;
+
+		for (int i = 0; i < target.length; i++) {
+			if (target[i] != null) {
+				// Get entity's solid area position
+				entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
+				entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
+				
+				// Get object's solid area position
+				target[i].solidArea.setX(target[i].worldX + target[i].solidArea.getX());
+				target[i].solidArea.setY(target[i].worldY + target[i].solidArea.getY());
+				
+				// Predict entity position
+				switch (entity.direction) {
+					case "up":
+						entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
+							entity.collisionOn = true;
+							index = i;
+						}
+						break;
+					case "down":
+						entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
+							entity.collisionOn = true;
+							index = i;				
+						}
+						break;
+					case "left":
+						entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
+							entity.collisionOn = true;
+							index = i;				
+						}
+						break;
+					case "right":
+						entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
+						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
+							entity.collisionOn = true;
+							index = i;					
+						}
+						break;
+				}
+				// Reset solid area position
+				entity.solidArea.setX(entity.solidAreaDefaultX);
+				entity.solidArea.setY(entity.solidAreaDefaultY);
+				target[i].solidArea.setX(target[i].solidAreaDefaultX);
+				target[i].solidArea.setY(target[i].solidAreaDefaultY);
+			}
+		}
+		return index;
+	}
+	
+	public void checkPlayer(Entity entity) {
+		// Get entity's solid area position
+		// Get entity's solid area position
+		entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
+		entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
+		
+		// Get object's solid area position
+		gamePanel.getPlayer().solidArea.setX(gamePanel.getPlayer().worldX + gamePanel.getPlayer().solidArea.getX());
+		gamePanel.getPlayer().solidArea.setY(gamePanel.getPlayer().worldY + gamePanel.getPlayer().solidArea.getY());
+		
+		// Predict entity position
+		switch (entity.direction) {
+			case "up":
+				entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
+				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
+					entity.collisionOn = true;
+				}
+				break;
+			case "down":
+				entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
+				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
+					entity.collisionOn = true;
+				}
+				break;
+			case "left":
+				entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
+				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
+					entity.collisionOn = true;	
+				}
+				break;
+			case "right":
+				entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
+				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
+					entity.collisionOn = true;	
+				}
+				break;
+		}
+		// Reset solid area position
+		entity.solidArea.setX(entity.solidAreaDefaultX);
+		entity.solidArea.setY(entity.solidAreaDefaultY);
+		gamePanel.getPlayer().solidArea.setX(gamePanel.getPlayer().solidAreaDefaultX);
+		gamePanel.getPlayer().solidArea.setY(gamePanel.getPlayer().solidAreaDefaultY);
+	}	
 }
