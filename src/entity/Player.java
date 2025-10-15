@@ -55,7 +55,7 @@ public class Player extends Entity {
 	
 	public void update() {
 		// Move player
-		if (keyHandler.isKeyPressed()) {
+		if (keyHandler.isKeyPressed() || keyHandler.enterPressed) {
 			if (keyHandler.isUpPressed()) {
 				direction = "up";
 			}
@@ -80,9 +80,9 @@ public class Player extends Entity {
 			// Check NPC collision
 			int npcIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
 			interactNPC(npcIndex);
-			
+						
 			// Player can move if no collision
-			if (!collisionOn) {
+			if (!collisionOn && !keyHandler.enterPressed) {
 				switch(direction) {
 					case "up": 		worldY -= speed; break;
 					case "down": 	worldY += speed; break;
@@ -90,6 +90,8 @@ public class Player extends Entity {
 					case "right": 	worldX += speed; break;
 				}
 			}
+			
+			keyHandler.enterPressed = false; // Prevents multiple dialogues from opening
 			
 			// Walk animation
 			spriteCounter++;
@@ -120,8 +122,12 @@ public class Player extends Entity {
 	
 	public void interactNPC(int index) {
 		if (index != 999) {
-			System.out.println("Interacting with NPC");
+			if (gamePanel.getKeyHandler().enterPressed) {
+				gamePanel.gameState = gamePanel.dialogueState;
+				gamePanel.getNPC()[index].speak();
+			}	
 		}
+		gamePanel.getKeyHandler().enterPressed = false; // Prevents multiple dialogues from opening
 	}
 	
 	// Draw player at updated position and image

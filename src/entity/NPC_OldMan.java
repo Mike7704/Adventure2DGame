@@ -14,6 +14,7 @@ public class NPC_OldMan extends Entity {
 		speed = 1;
 		
 		getNPCImage();
+		setDialogue();
 	}
 	
 	// NPC sprite images
@@ -28,6 +29,18 @@ public class NPC_OldMan extends Entity {
 		right2 = new Image(getClass().getResourceAsStream("/NPC/oldman_right_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
 
+	public void setDialogue() {
+		dialogues[0] = "Hello, young adventurer!";
+		dialogues[1] = "So you've come to this island to find the treasure?";
+		dialogues[2] = "I used to be a great adventurer like you.";
+		dialogues[3] = "But I made a mistake that cost me everything.";
+		dialogues[4] = "I was too greedy and trusted the wrong people.";
+		dialogues[5] = "Now I live here, alone and regretful.";
+		dialogues[6] = "Take this map. It will help you on your journey.";
+		dialogues[7] = "Remember, not all treasure is silver and gold.";
+		dialogues[8] = "Good luck!";
+	}
+	
 	// NPC behavior
 	public void setAction() {
 		
@@ -53,5 +66,9 @@ public class NPC_OldMan extends Entity {
 		else if (i > 75 && i <= 100) {
 			direction = "right";
 		}
+	}
+	
+	public void speak() {
+		super.speak();
 	}
 }

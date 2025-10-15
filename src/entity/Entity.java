@@ -21,6 +21,8 @@ public class Entity {
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
+	protected String dialogues[] = new String[20];
+	protected int dialogueIndex = 0;
 	
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -28,6 +30,21 @@ public class Entity {
 	
 	public void setAction() {
 		
+	}
+	
+	public void speak() {
+		if (dialogues[dialogueIndex] == null) {
+			dialogueIndex = 0;
+		}
+		gamePanel.getUI().currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+		
+		switch(gamePanel.getPlayer().direction) {
+			case "up": 		direction = "down"; break;
+			case "down": 	direction = "up"; break;
+			case "left": 	direction = "right"; break;
+			case "right": 	direction = "left"; break;
+		}
 	}
 	
 	public void update() {
@@ -40,7 +57,7 @@ public class Entity {
 		gamePanel.getCollisionChecker().checkPlayer(this);
 		
 		// If no collision, NPC can move
-		if (collisionOn == false) {
+		if (!collisionOn) {
 			switch(direction) {
 				case "up": 		worldY -= speed; break;
 				case "down": 	worldY += speed; break;

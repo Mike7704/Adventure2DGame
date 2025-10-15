@@ -11,6 +11,7 @@ public class KeyHandler {
     private boolean downPressed = false;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    public boolean enterPressed = false;
     
     public boolean checkDrawTime = false; // DEBUG
 
@@ -21,23 +22,47 @@ public class KeyHandler {
     public void handleKeyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
         
-        if (code == KeyCode.W || code == KeyCode.UP) {
-            upPressed = true;
+        // PLAY STATE
+        if (gamePanel.gameState == gamePanel.playState) {
+        	if (code == KeyCode.W || code == KeyCode.UP) {
+        		upPressed = true;
+        	}
+	        if (code == KeyCode.S || code == KeyCode.DOWN) {
+	            downPressed = true;
+	        }
+	        if (code == KeyCode.A || code == KeyCode.LEFT) {
+	            leftPressed = true;
+	        }
+	        if (code == KeyCode.D || code == KeyCode.RIGHT) {
+	            rightPressed = true;
+	        }
+	        if (code == KeyCode.P) {
+	        	gamePanel.gameState = gamePanel.pauseState;
+	        }
+	        if (code == KeyCode.ENTER) {
+	        	enterPressed = true;
+	        }
         }
-        if (code == KeyCode.S || code == KeyCode.DOWN) {
-            downPressed = true;
-        }
-        if (code == KeyCode.A || code == KeyCode.LEFT) {
-            leftPressed = true;
-        }
-        if (code == KeyCode.D || code == KeyCode.RIGHT) {
-            rightPressed = true;
-        }
-        if (code == KeyCode.P) {
-        	gamePanel.gameState = (gamePanel.gameState == gamePanel.playState ? gamePanel.pauseState : gamePanel.playState);
-        }
+        // PAUSE STATE
+		else if (gamePanel.gameState == gamePanel.pauseState) {
+			if (code == KeyCode.P) {
+	        	gamePanel.gameState = gamePanel.playState;
+	        }
+		}
+        // DIALOGUE STATE
+		else if (gamePanel.gameState == gamePanel.dialogueState) {
+			if (code == KeyCode.ENTER) {
+				if (gamePanel.getUI().currentDialogue.indexOf("\n") != -1) {
+					gamePanel.getUI().currentDialogue = gamePanel.getUI().currentDialogue.substring(gamePanel.getUI().currentDialogue.indexOf("\n") + 1);
+				} else {
+					gamePanel.getUI().currentDialogue = "";
+					gamePanel.gameState = gamePanel.playState;
+				}
+			}
+		}
         
-        if (code == KeyCode.T) { // DEBUG
+        // DEBUG
+        if (code == KeyCode.T) { 
 			checkDrawTime = !checkDrawTime;
 		}
     }
