@@ -51,6 +51,7 @@ public class GamePanel extends AnchorPane {
     
     // GAME STATE
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
@@ -71,9 +72,9 @@ public class GamePanel extends AnchorPane {
 		assetSetter.setObject();
 		assetSetter.setNPC();
 		
-		playMusic(0);
+		//playMusic(0);
 		
-		gameState = playState;
+		gameState = titleState;
 	}
 	
 	public void startGameLoop() {
@@ -131,6 +132,12 @@ public class GamePanel extends AnchorPane {
 		long drawStart = 0;
 		if (keyHandler.checkDrawTime) {
 			drawStart = System.nanoTime();
+		}
+		
+		// TITLE SCREEN
+		if (gameState == titleState) {
+			ui.draw(gc);
+			return;
 		}
 		
 		// TILE

@@ -23,6 +23,7 @@ public class UI {
 	private String message = "";
 	private int messageCounter = 0;
 	public String currentDialogue = "";
+	public int commandNum = 0;
 	
 	public UI(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -56,8 +57,12 @@ public class UI {
 		gc.setFont(font_large);
 		gc.setFill(Color.WHITE);
 		
+		// TITLE STATE
+		if (gamePanel.gameState == gamePanel.titleState) {
+			drawTitleScreen();
+		}
 		// PLAY STATE
-		if (gamePanel.gameState == gamePanel.playState) {
+		else if (gamePanel.gameState == gamePanel.playState) {
 			// play
 		}
 		// PAUSE STATE
@@ -70,14 +75,52 @@ public class UI {
 		}
 	}
 	
-	public void drawPauseScreen() {
+	private void drawTitleScreen() {
+	    // Constants for positions
+	    final double screenWidth = gamePanel.screenWidth;
+	    final double screenHeight = gamePanel.screenHeight;
+	    final double tileSize = gamePanel.tileSize;
+
+	    // Background fill
+	    gc.setFill(new Color(0.35, 0.6, 0.4, 1));
+	    gc.fillRect(0, 0, screenWidth, screenHeight);
+
+	    // Title Text
+	    gc.setFont(font_large);
+	    gc.setTextAlign(TextAlignment.CENTER);
+	    drawTextWithShadow("2D ADVENTURE", screenWidth / 2, screenHeight / 5);
+
+	    // Image
+	    int x = (int) ((screenWidth / 2) - (tileSize * 2) / 2);
+	    int y = (int) ((screenHeight / 2.5) - tileSize);
+	    gc.drawImage(gamePanel.getPlayer().down1, x, y, tileSize * 2, tileSize * 2);
+
+	    // Menu Text
+	    gc.setFont(font_large);
+	    gc.setTextAlign(TextAlignment.CENTER);
+	    drawTextWithShadow("NEW GAME", screenWidth / 2, screenHeight / 1.5);
+	    if (commandNum == 0) {
+	    	drawTextWithShadow(">", screenWidth / 2 - 130, screenHeight / 1.5);
+	    }
+
+	    drawTextWithShadow("LOAD GAME", screenWidth / 2, (screenHeight / 1.5) + 42);
+	    if (commandNum == 1) {
+	    	drawTextWithShadow(">", screenWidth / 2 - 130, (screenHeight / 1.5) + 42);
+	    }
+
+	    drawTextWithShadow("QUIT", screenWidth / 2, (screenHeight / 1.5) + 84);
+	    if (commandNum == 2) {
+	    	drawTextWithShadow(">", screenWidth / 2 - 130, (screenHeight / 1.5) + 84);
+	    }
+	}
+		
+	private void drawPauseScreen() {
 		gc.setFont(font_large);
-		gc.setFill(Color.WHITE);
 		gc.setTextAlign(TextAlignment.CENTER);
-		gc.fillText("PAUSED", gamePanel.screenWidth / 2, gamePanel.screenHeight / 2);
+		drawTextWithShadow("PAUSED", gamePanel.screenWidth / 2, gamePanel.screenHeight / 4);
 	}	
 	
-	public void drawDialogueScreen() {
+	private void drawDialogueScreen() {
 		// WINDOW
 		int x = gamePanel.tileSize;
 		int y = gamePanel.tileSize / 2;
@@ -94,12 +137,12 @@ public class UI {
 		
 		// Split dialogue into multiple lines if necessary
 		for (String line : currentDialogue.split("\n")) {
-			gc.fillText(line, x, y);
+			drawTextWithShadow(line, x, y);
 			y += 40;
 		}
 	}
 	
-	public void drawSubWindow(int x, int y, int width, int height) {
+	private void drawSubWindow(int x, int y, int width, int height) {
 		Color colour = Color.rgb(0, 0, 0, 0.7);
 		gc.setFill(colour);
 		gc.fillRoundRect(x, y, width, height, 35, 35);
@@ -110,4 +153,14 @@ public class UI {
 		gc.strokeRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
 	}
 	
+	private void drawTextWithShadow(String text, double x, double y) {
+		int shadowOffset = 2;
+        // Shadow
+        gc.setFill(Color.BLACK);
+        gc.fillText(text, x + shadowOffset, y + shadowOffset);
+
+        // Text
+        gc.setFill(Color.WHITE);
+        gc.fillText(text, x, y);
+    }
 }

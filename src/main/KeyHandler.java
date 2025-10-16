@@ -22,8 +22,35 @@ public class KeyHandler {
     public void handleKeyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
         
+        // TITLE STATE
+        if (gamePanel.gameState == gamePanel.titleState) {
+        	if (code == KeyCode.W || code == KeyCode.UP) {
+        		gamePanel.getUI().commandNum--;
+        		if (gamePanel.getUI().commandNum < 0) {
+					gamePanel.getUI().commandNum = 2;
+				}
+        	}
+	        if (code == KeyCode.S || code == KeyCode.DOWN) {
+	        	gamePanel.getUI().commandNum++;
+	        	if (gamePanel.getUI().commandNum > 2) {
+					gamePanel.getUI().commandNum = 0;
+				}
+	        }
+	        if (code == KeyCode.ENTER) {
+	        	switch (gamePanel.getUI().commandNum) {
+	        	case 0: // NEW GAME
+	        		gamePanel.gameState = gamePanel.playState;
+	        		break;
+	        	case 1: // LOAD GAME
+	        		break;
+	        	case 2: // QUIT GAME
+	        		System.exit(0);
+	        		break;
+	        	}
+	        }
+        }
         // PLAY STATE
-        if (gamePanel.gameState == gamePanel.playState) {
+        else if (gamePanel.gameState == gamePanel.playState) {
         	if (code == KeyCode.W || code == KeyCode.UP) {
         		upPressed = true;
         	}
