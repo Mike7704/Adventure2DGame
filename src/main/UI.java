@@ -2,14 +2,14 @@ package main;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DecimalFormat;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import object.OBJ_Key;
+import object.OBJ_Heart;
+import object.SuperObject;
 
 public class UI {
 
@@ -17,6 +17,8 @@ public class UI {
 	private GraphicsContext gc;
 	
 	private Font font_small, font_large;
+	
+	private Image heart_full, heart_half, heart_blank;
 	
 	public boolean gameFinished = false;
 	private boolean messageOn = false;
@@ -29,6 +31,7 @@ public class UI {
 		this.gamePanel = gamePanel;
 		
 		setFont();
+		setHud();
 	}
 	
 	private void setFont() {
@@ -44,6 +47,13 @@ public class UI {
 			font_large = Font.loadFont("Arial", 35);
 			e.printStackTrace();
 		}
+	}
+	
+	private void setHud() {
+		SuperObject heart = new OBJ_Heart(gamePanel);
+		heart_full = heart.image;
+		heart_half = heart.image2;
+		heart_blank = heart.image3;
 	}
 	
 	public void showMessage(String text) {
@@ -63,14 +73,16 @@ public class UI {
 		}
 		// PLAY STATE
 		else if (gamePanel.gameState == gamePanel.playState) {
-			// play
+			drawPlayerLife();
 		}
 		// PAUSE STATE
 		else if (gamePanel.gameState == gamePanel.pauseState) {
+			drawPlayerLife();
 			drawPauseScreen();
 		}
 		// DIAGLOUE STATE
 		else if (gamePanel.gameState == gamePanel.dialogueState) {
+			drawPlayerLife();
 			drawDialogueScreen();
 		}
 	}
@@ -151,6 +163,31 @@ public class UI {
 		gc.setStroke(colour);
 		gc.setLineWidth(5);
 		gc.strokeRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+	}
+	
+	private void drawPlayerLife() {
+		int x = gamePanel.tileSize / 2;
+		int y = gamePanel.tileSize / 2;
+		
+		// Draw max life
+		for (int i = 0; i < gamePanel.getPlayer().maxLife / 2; i++) {
+			gc.drawImage(heart_blank, x, y, gamePanel.tileSize, gamePanel.tileSize);
+			x += gamePanel.tileSize;
+		}
+		
+		// Reset
+		x = gamePanel.tileSize / 2;
+		y = gamePanel.tileSize / 2;
+		
+		// Draw current life
+		for (int i = 0; i < gamePanel.getPlayer().life; i += 2) {
+			if (i + 1 < gamePanel.getPlayer().life) {
+				gc.drawImage(heart_full, x, y, gamePanel.tileSize, gamePanel.tileSize);
+			} else {
+				gc.drawImage(heart_half, x, y, gamePanel.tileSize, gamePanel.tileSize);
+			}
+			x += gamePanel.tileSize;
+		}
 	}
 	
 	private void drawTextWithShadow(String text, double x, double y) {

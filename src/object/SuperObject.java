@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 
 public class SuperObject {
 
-	public Image image;
+	public Image image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;

@@ -39,6 +39,10 @@ public class Player extends Entity {
 		worldY = gamePanel.tileSize * 21;
 		speed= 4;
 		direction = "down";
+		
+		// PLAYER STATUS
+		maxLife = 6;
+		life = maxLife;
 	}
 	
 	// Player sprite images
