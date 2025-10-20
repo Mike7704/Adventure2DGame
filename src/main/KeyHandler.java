@@ -79,12 +79,7 @@ public class KeyHandler {
         // DIALOGUE STATE
 		else if (gamePanel.gameState == gamePanel.dialogueState) {
 			if (code == KeyCode.ENTER) {
-				if (gamePanel.getUI().currentDialogue.indexOf("\n") != -1) {
-					gamePanel.getUI().currentDialogue = gamePanel.getUI().currentDialogue.substring(gamePanel.getUI().currentDialogue.indexOf("\n") + 1);
-				} else {
-					gamePanel.getUI().currentDialogue = "";
-					gamePanel.gameState = gamePanel.playState;
-				}
+				gamePanel.gameState = gamePanel.playState;
 			}
 		}
         

@@ -43,6 +43,7 @@ public class GamePanel extends AnchorPane {
     private CollisionChecker collisionChecker = new CollisionChecker(this);
     private AssetSetter assetSetter = new AssetSetter(this);
     private UI ui = new UI(this);
+    private EventHandler eventHandler = new EventHandler(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -212,5 +213,9 @@ public class GamePanel extends AnchorPane {
 	
 	public UI getUI() {
 		return ui;
+	}
+	
+	public EventHandler getEventHandler() {
+		return eventHandler;
 	}
 }

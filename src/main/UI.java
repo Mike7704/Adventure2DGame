@@ -147,11 +147,7 @@ public class UI {
 		x += gamePanel.tileSize;
 		y += gamePanel.tileSize;
 		
-		// Split dialogue into multiple lines if necessary
-		for (String line : currentDialogue.split("\n")) {
-			drawTextWithShadow(line, x, y);
-			y += 40;
-		}
+		drawTextWithShadow(currentDialogue, x, y);
 	}
 	
 	private void drawSubWindow(int x, int y, int width, int height) {

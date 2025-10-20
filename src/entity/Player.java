@@ -85,6 +85,9 @@ public class Player extends Entity {
 			int npcIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
 			interactNPC(npcIndex);
 						
+			// Check event collision
+			gamePanel.getEventHandler().checkEvent();
+			
 			// Player can move if no collision
 			if (!collisionOn && !keyHandler.enterPressed) {
 				switch(direction) {
@@ -131,7 +134,6 @@ public class Player extends Entity {
 				gamePanel.getNPC()[index].speak();
 			}	
 		}
-		gamePanel.getKeyHandler().enterPressed = false; // Prevents multiple dialogues from opening
 	}
 	
 	// Draw player at updated position and image
