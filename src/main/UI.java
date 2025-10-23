@@ -3,13 +3,13 @@ package main;
 import java.io.IOException;
 import java.io.InputStream;
 
+import entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import object.OBJ_Heart;
-import object.SuperObject;
 
 public class UI {
 
@@ -50,7 +50,7 @@ public class UI {
 	}
 	
 	private void setHud() {
-		SuperObject heart = new OBJ_Heart(gamePanel);
+		Entity heart = new OBJ_Heart(gamePanel);
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;

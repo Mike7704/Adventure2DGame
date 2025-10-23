@@ -1,22 +1,15 @@
 package object;
 
+import entity.Entity;
 import javafx.scene.image.Image;
 import main.GamePanel;
 
-public class OBJ_Key extends SuperObject {
+public class OBJ_Key extends Entity {
 
-	private GamePanel gamePanel;
-	
 	public OBJ_Key(GamePanel gamePanel) {
-		this.gamePanel = gamePanel;
+		super(gamePanel);
 		
 		name = "Key";
-		try {
-			image = new Image(getClass().getResourceAsStream("/Object/key.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		down1 = new Image(getClass().getResourceAsStream("/Object/key.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
-
 }

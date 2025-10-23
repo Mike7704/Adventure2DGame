@@ -1,22 +1,15 @@
 package object;
 
+import entity.Entity;
 import javafx.scene.image.Image;
 import main.GamePanel;
 
-public class OBJ_Chest extends SuperObject {
-
-	private GamePanel gamePanel;
+public class OBJ_Chest extends Entity {
 	
 	public OBJ_Chest(GamePanel gamePanel) {
-		this.gamePanel = gamePanel;
+		super(gamePanel);
 		
 		name = "Chest";
-		try {
-			image = new Image(getClass().getResourceAsStream("/Object/chest.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		down1 = new Image(getClass().getResourceAsStream("/Object/chest.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
-
 }

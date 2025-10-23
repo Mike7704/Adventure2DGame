@@ -1,5 +1,8 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import entity.Entity;
 import entity.Player;
 import javafx.animation.AnimationTimer;
@@ -9,7 +12,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends AnchorPane {
@@ -47,8 +49,9 @@ public class GamePanel extends AnchorPane {
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
-    private SuperObject[] obj = new SuperObject[10];
+    private Entity[] obj = new Entity[10];
     private Entity[] npc = new Entity[10];
+    private ArrayList<Entity> entityList = new ArrayList<>();
     
     // GAME STATE
     public int gameState;
@@ -144,23 +147,34 @@ public class GamePanel extends AnchorPane {
 		// TILE
         tileManager.draw(gc);
         
-        // OBJECT
-        for (int i = 0; i < obj.length; i++) {
-			if (obj[i] != null) {
-				obj[i].draw(gc, this);
+        // PLAYER ENTITY
+        entityList.add(player);
+        
+        // NPC ENTITY
+        for (int i = 0; i < npc.length; i++) {
+			if (npc[i] != null) {
+				entityList.add(npc[i]);
 			}
 		}
         
-        // NPC
-        for (int i = 0; i < npc.length; i++) {
-        	if (npc[i] != null) {
-        		npc[i].draw(gc);
-        	}
-        }
+        // OBJECT ENTITY
+        for (int i = 0; i < obj.length; i++) {
+			if (obj[i] != null) {
+				entityList.add(obj[i]);
+			}
+		}
         
-        // PLAYER
-        player.draw(gc);
+        // SORT ENTITIES BY WORLD Y POSITION
+        Collections.sort(entityList, (e1, e2) -> {
+			return Integer.compare(e1.worldY, e2.worldY);
+		});
         
+        // DRAW ENTITIES
+		for (Entity entity : entityList) {
+			entity.draw(gc);
+		}
+		entityList.clear();
+                
        // UI
         ui.draw(gc);
         
@@ -203,7 +217,7 @@ public class GamePanel extends AnchorPane {
 		return player;
 	}
 	
-	public SuperObject[] getObject() {
+	public Entity[] getObject() {
 		return obj;
 	}
 	
