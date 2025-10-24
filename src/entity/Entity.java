@@ -26,11 +26,14 @@ public class Entity {
 	
 	public Image image, image2, image3;
 	public String name;
+	public int type; // 0 = player, 1 = NPC, 2 = monster
 	public boolean collision = false;
 	
 	// CHARACTER STATUS
 	public int maxLife;
 	public int life;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
 	
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -62,7 +65,19 @@ public class Entity {
 		collisionOn = false;
 		gamePanel.getCollisionChecker().checkTile(this);
 		gamePanel.getCollisionChecker().checkObject(this, false);
-		gamePanel.getCollisionChecker().checkPlayer(this);
+		gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
+		gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
+		boolean contactPlayer = gamePanel.getCollisionChecker().checkPlayer(this);
+		
+		if (this.type == 2 && contactPlayer) {
+			// Contact with player
+			if (!gamePanel.getPlayer().invincible) {
+				// Damage the player
+				gamePanel.getPlayer().life -= 1;
+				gamePanel.getPlayer().invincible = true;
+			}
+			
+		}
 		
 		// If no collision, NPC can move
 		if (!collisionOn) {

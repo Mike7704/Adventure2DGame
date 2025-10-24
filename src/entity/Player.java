@@ -84,7 +84,11 @@ public class Player extends Entity {
 			// Check NPC collision
 			int npcIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
 			interactNPC(npcIndex);
-						
+			
+			// Check monster collision
+			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
+			contactMonster(monsterIndex);
+			
 			// Check event collision
 			gamePanel.getEventHandler().checkEvent();
 			
@@ -119,6 +123,15 @@ public class Player extends Entity {
 				standCounter = 0;
 			}
 		}
+		
+		// Invincibility countdown
+		if (invincible) {
+			invincibleCounter++;
+			if (invincibleCounter > 60) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 	
 	public void pickUpObject(int index) {
@@ -136,6 +149,16 @@ public class Player extends Entity {
 		}
 	}
 	
+	public void contactMonster(int index) {
+		if (index != 999) {
+			// Damage player
+			if (!invincible) {
+				life--;
+				invincible = true;
+			}
+		}
+	}
+	
 	// Draw player at updated position and image
 	public void draw(GraphicsContext gc) {
 		Image image = null;
@@ -147,7 +170,14 @@ public class Player extends Entity {
 			case "right": 	image = (spriteNum == 1 ? right1 : right2); break;
 			default: 		break;
 		}
+		
+		// Invincibility effect
+		if (invincible) {
+			gc.setGlobalAlpha(0.4);
+		}
+		
 		gc.drawImage(image, screenX, screenY);
 		
+		gc.setGlobalAlpha(1.0);	
 	}
 }

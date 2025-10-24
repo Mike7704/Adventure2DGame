@@ -82,53 +82,28 @@ public class CollisionChecker {
 				switch (entity.direction) {
 					case "up":
 						entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
-							if (gamePanel.getObject()[i].collision) {
-								entity.collisionOn = true;
-							}
-							if (player) {
-								// Only player can pick up items
-								index = i;
-							}
-						}
 						break;
 					case "down":
 						entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
-							if (gamePanel.getObject()[i].collision) {
-								entity.collisionOn = true;
-							}
-							if (player) {
-								// Only player can pick up items
-								index = i;
-							}						
-						}
 						break;
 					case "left":
 						entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
-							if (gamePanel.getObject()[i].collision) {
-								entity.collisionOn = true;
-							}
-							if (player) {
-								// Only player can pick up items
-								index = i;
-							}						
-						}
 						break;
 					case "right":
 						entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
-							if (gamePanel.getObject()[i].collision) {
-								entity.collisionOn = true;
-							}
-							if (player) {
-								// Only player can pick up items
-								index = i;
-							}							
-						}
 						break;
 				}
+				
+				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getObject()[i].solidArea.getBoundsInParent())) {
+					if (gamePanel.getObject()[i].collision) {
+						entity.collisionOn = true;
+					}
+					if (player) {
+						// Only player can pick up items
+						index = i;
+					}						
+				}
+				
 				// Reset solid area position
 				entity.solidArea.setX(entity.solidAreaDefaultX);
 				entity.solidArea.setY(entity.solidAreaDefaultY);
@@ -156,33 +131,23 @@ public class CollisionChecker {
 				switch (entity.direction) {
 					case "up":
 						entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
-							entity.collisionOn = true;
-							index = i;
-						}
 						break;
 					case "down":
 						entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
-							entity.collisionOn = true;
-							index = i;				
-						}
 						break;
 					case "left":
 						entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
-							entity.collisionOn = true;
-							index = i;				
-						}
 						break;
 					case "right":
 						entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
-						if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent())) {
-							entity.collisionOn = true;
-							index = i;					
-						}
 						break;
 				}
+				
+				if (entity.solidArea.getBoundsInParent().intersects(target[i].solidArea.getBoundsInParent()) && target[i] != entity) {
+					entity.collisionOn = true;
+					index = i;
+				}
+				
 				// Reset solid area position
 				entity.solidArea.setX(entity.solidAreaDefaultX);
 				entity.solidArea.setY(entity.solidAreaDefaultY);
@@ -193,7 +158,10 @@ public class CollisionChecker {
 		return index;
 	}
 	
-	public void checkPlayer(Entity entity) {
+	public boolean checkPlayer(Entity entity) {
+		
+		boolean contactPlayer = false;
+		
 		// Get entity's solid area position
 		// Get entity's solid area position
 		entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
@@ -207,33 +175,29 @@ public class CollisionChecker {
 		switch (entity.direction) {
 			case "up":
 				entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
-				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
-					entity.collisionOn = true;
-				}
 				break;
 			case "down":
 				entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
-				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
-					entity.collisionOn = true;
-				}
 				break;
 			case "left":
 				entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
-				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
-					entity.collisionOn = true;	
-				}
 				break;
 			case "right":
 				entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
-				if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
-					entity.collisionOn = true;	
-				}
 				break;
 		}
+		
+		if (entity.solidArea.getBoundsInParent().intersects(gamePanel.getPlayer().solidArea.getBoundsInParent())) {
+			entity.collisionOn = true;
+			contactPlayer = true;
+		}
+		
 		// Reset solid area position
 		entity.solidArea.setX(entity.solidAreaDefaultX);
 		entity.solidArea.setY(entity.solidAreaDefaultY);
 		gamePanel.getPlayer().solidArea.setX(gamePanel.getPlayer().solidAreaDefaultX);
 		gamePanel.getPlayer().solidArea.setY(gamePanel.getPlayer().solidAreaDefaultY);
+		
+		return contactPlayer;
 	}	
 }

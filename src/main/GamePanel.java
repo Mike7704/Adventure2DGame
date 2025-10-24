@@ -51,6 +51,7 @@ public class GamePanel extends AnchorPane {
     private Player player = new Player(this, keyHandler);
     private Entity[] obj = new Entity[10];
     private Entity[] npc = new Entity[10];
+    private Entity[] monster = new Entity[20];
     private ArrayList<Entity> entityList = new ArrayList<>();
     
     // GAME STATE
@@ -75,6 +76,7 @@ public class GamePanel extends AnchorPane {
 	public void setupGame() {
 		assetSetter.setObject();
 		assetSetter.setNPC();
+		assetSetter.setMonster();
 		
 		//playMusic(0);
 		
@@ -125,6 +127,13 @@ public class GamePanel extends AnchorPane {
 				}
 			}
 			
+			// MONSTER
+			for (int i = 0; i < monster.length; i++) {
+				if (monster[i] != null) {
+					monster[i].update();
+				}
+			}
+
 		}
 		else if (gameState == pauseState) {
 			// nothing yet
@@ -161,6 +170,13 @@ public class GamePanel extends AnchorPane {
         for (int i = 0; i < obj.length; i++) {
 			if (obj[i] != null) {
 				entityList.add(obj[i]);
+			}
+		}
+        
+        // MONSTER ENTITY
+        for (int i = 0; i < monster.length; i++) {
+			if (monster[i] != null) {
+				entityList.add(monster[i]);
 			}
 		}
         
@@ -223,6 +239,10 @@ public class GamePanel extends AnchorPane {
 	
 	public Entity[] getNPC() {
 		return npc;
+	}
+	
+	public Entity[] getMonster() {
+		return monster;
 	}
 	
 	public UI getUI() {
