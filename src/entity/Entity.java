@@ -9,27 +9,30 @@ public class Entity {
 	
 	protected GamePanel gamePanel;
 	
-	public int worldX, worldY, speed;
-	
+		
 	public Image up1, up2, down1, down2, left1, left2, right1, right2;
-	public String direction = "down";
-	
-	public int spriteCounter = 0;
-	public int spriteNum = 1;
-	
+	public Image attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+	public Image image, image2, image3;
+	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;
-	public boolean collisionOn = false;
+	public boolean collision = false;
 	public int actionLockCounter = 0;
 	protected String dialogues[] = new String[20];
-	protected int dialogueIndex = 0;
 	
-	public Image image, image2, image3;
-	public String name;
-	public int type; // 0 = player, 1 = NPC, 2 = monster
-	public boolean collision = false;
+	// STATE
+	public int worldX, worldY;
+	public String direction = "down";
+	public int spriteCounter = 0;
+	public int spriteNum = 1;
+	protected int dialogueIndex = 0;
+	public boolean collisionOn = false;
+	public boolean attacking = false;
 	
 	// CHARACTER STATUS
+	public String name;
+	public int type; // 0 = player, 1 = NPC, 2 = monster
+	public int speed;
 	public int maxLife;
 	public int life;
 	public boolean invincible = false;
@@ -100,6 +103,15 @@ public class Entity {
 			}
 			spriteCounter = 0;
 		}
+		
+		// Invincibility countdown
+		if (invincible) {
+			invincibleCounter++;
+			if (invincibleCounter > 40) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -118,9 +130,17 @@ public class Entity {
 				case "down": 	image = (spriteNum == 1 ? down1 : down2); 	break;
 				case "left": 	image = (spriteNum == 1 ? left1 : left2); 	break;
 				case "right": 	image = (spriteNum == 1 ? right1 : right2); break;
-			default: 		break;
-		}
+				default: 		break;
+			}
+			
+			// Invincibility effect
+			if (invincible) {
+				gc.setGlobalAlpha(0.4);
+			}
+			
 			gc.drawImage(image, screenX, screenY);
+			
+			gc.setGlobalAlpha(1.0);	// Reset alpha
 		}
 	}
 	
