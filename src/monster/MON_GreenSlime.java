@@ -62,5 +62,10 @@ public class MON_GreenSlime extends Entity {
 			direction = "right";
 		}
 	}
+	
+	public void damageReaction() {
+		actionLockCounter = 0;
+		direction = gamePanel.getPlayer().direction;
+	}
 
 }

@@ -211,7 +211,8 @@ public class Player extends Entity {
 				gamePanel.getNPC()[index].speak();
 			}
 			else {
-				// No NPC in contact, so no dialogue
+				// No NPC in contact, so no dialogue opened
+				gamePanel.playSoundEffect(7); // Swing weapon sound
 				attacking = true;
 			}
 		}
@@ -222,6 +223,7 @@ public class Player extends Entity {
 		if (index != 999) {
 			// Damage player
 			if (!invincible) {
+				gamePanel.playSoundEffect(6); // Hurt sound
 				life--;
 				invincible = true;
 			}
@@ -233,12 +235,14 @@ public class Player extends Entity {
 			Entity monster = gamePanel.getMonster()[index];
 			if (!monster.invincible) {
 				// Damage monster
+				gamePanel.playSoundEffect(5); // Damage monster sound
 				monster.life--;
 				monster.invincible = true;
+				monster.damageReaction();
 				
 				// Check if monster is dead
 				if (monster.life <= 0) {
-					gamePanel.getMonster()[index] = null;
+					monster.dying = true;
 				}
 			}
 		}

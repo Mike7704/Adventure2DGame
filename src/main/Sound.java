@@ -13,6 +13,9 @@ public class Sound {
 		soundPath[2] = getClass().getResource("/Sound/powerup.wav").toString();
 		soundPath[3] = getClass().getResource("/Sound/unlock.wav").toString();
 		soundPath[4] = getClass().getResource("/Sound/fanfare.wav").toString();
+		soundPath[5] = getClass().getResource("/Sound/hitmonster.wav").toString();
+		soundPath[6] = getClass().getResource("/Sound/receivedamage.wav").toString();
+		soundPath[7] = getClass().getResource("/Sound/swingweapon.wav").toString();
 	}
 	
 	public void setFile(int i) {

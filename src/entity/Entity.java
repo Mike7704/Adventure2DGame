@@ -2,6 +2,7 @@ package entity;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
 
@@ -28,6 +29,11 @@ public class Entity {
 	protected int dialogueIndex = 0;
 	public boolean collisionOn = false;
 	public boolean attacking = false;
+	public boolean alive = true;
+	public boolean dying = false;
+	public int dyingCounter = 0;
+	public boolean hpBarOn = false;
+	public int hpBarCounter = 0;
 	
 	// CHARACTER STATUS
 	public String name;
@@ -43,7 +49,11 @@ public class Entity {
 	}
 	
 	public void setAction() {
-		
+		// Overridden in subclasses
+	}
+	
+	public void damageReaction() {
+		// Overridden in subclasses
 	}
 	
 	public void speak() {
@@ -76,6 +86,7 @@ public class Entity {
 			// Contact with player
 			if (!gamePanel.getPlayer().invincible) {
 				// Damage the player
+				gamePanel.playSoundEffect(6); // Hurt sound
 				gamePanel.getPlayer().life -= 1;
 				gamePanel.getPlayer().invincible = true;
 			}
@@ -133,9 +144,33 @@ public class Entity {
 				default: 		break;
 			}
 			
+			// Monster health bar displays when attacked
+			if (type == 2 && hpBarOn) {
+				double oneScale = (double)gamePanel.tileSize / maxLife;
+				double hpBarValue = oneScale * life;
+				
+				gc.setFill(Color.DIMGRAY);
+				gc.fillRect(screenX - 1, screenY - 16, gamePanel.tileSize + 2, 12);
+				
+				gc.setFill(Color.RED);
+				gc.fillRect(screenX, screenY - 15, hpBarValue, 10);
+				
+				hpBarCounter++;
+				if (hpBarCounter > 600) {
+					hpBarCounter = 0;
+					hpBarOn = false;
+				}
+			}
+			
 			// Invincibility effect
 			if (invincible) {
+				hpBarOn = true;
+				hpBarCounter = 0;
 				gc.setGlobalAlpha(0.4);
+			}
+			
+			if (dying) {
+				dyingAnimation(gc);
 			}
 			
 			gc.drawImage(image, screenX, screenY);
@@ -144,5 +179,20 @@ public class Entity {
 		}
 	}
 	
+	private void dyingAnimation(GraphicsContext gc) {
+		dyingCounter++;
+		if (dyingCounter <= 40) {
+			if (dyingCounter % 5 != 0) {
+				gc.setGlobalAlpha(0);
+			}
+			else {
+				gc.setGlobalAlpha(1);
+			}
+		}
+		else {
+			dying = false;
+			alive = false;
+		}
+	}
 	
 }
