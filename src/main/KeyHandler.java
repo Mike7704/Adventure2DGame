@@ -24,64 +24,24 @@ public class KeyHandler {
         
         // TITLE STATE
         if (gamePanel.gameState == gamePanel.titleState) {
-        	if (code == KeyCode.W || code == KeyCode.UP) {
-        		gamePanel.getUI().commandNum--;
-        		if (gamePanel.getUI().commandNum < 0) {
-					gamePanel.getUI().commandNum = 2;
-				}
-        	}
-	        if (code == KeyCode.S || code == KeyCode.DOWN) {
-	        	gamePanel.getUI().commandNum++;
-	        	if (gamePanel.getUI().commandNum > 2) {
-					gamePanel.getUI().commandNum = 0;
-				}
-	        }
-	        if (code == KeyCode.ENTER) {
-	        	switch (gamePanel.getUI().commandNum) {
-	        	case 0: // NEW GAME
-	        		gamePanel.gameState = gamePanel.playState;
-	        		break;
-	        	case 1: // LOAD GAME
-	        		break;
-	        	case 2: // QUIT GAME
-	        		System.exit(0);
-	        		break;
-	        	}
-	        }
+        	titleState(code);
         }
         // PLAY STATE
         else if (gamePanel.gameState == gamePanel.playState) {
-        	if (code == KeyCode.W || code == KeyCode.UP) {
-        		upPressed = true;
-        	}
-	        if (code == KeyCode.S || code == KeyCode.DOWN) {
-	            downPressed = true;
-	        }
-	        if (code == KeyCode.A || code == KeyCode.LEFT) {
-	            leftPressed = true;
-	        }
-	        if (code == KeyCode.D || code == KeyCode.RIGHT) {
-	            rightPressed = true;
-	        }
-	        if (code == KeyCode.P) {
-	        	gamePanel.gameState = gamePanel.pauseState;
-	        }
-	        if (code == KeyCode.ENTER) {
-	        	enterPressed = true;
-	        }
+        	playState(code);
         }
         // PAUSE STATE
 		else if (gamePanel.gameState == gamePanel.pauseState) {
-			if (code == KeyCode.P) {
-	        	gamePanel.gameState = gamePanel.playState;
-	        }
+			pauseState(code);
 		}
         // DIALOGUE STATE
 		else if (gamePanel.gameState == gamePanel.dialogueState) {
-			if (code == KeyCode.ENTER) {
-				gamePanel.gameState = gamePanel.playState;
-			}
+			dialogueState(code);
 		}
+        // CHARACTER STATE
+ 		else if (gamePanel.gameState == gamePanel.characterState) {
+ 			characterState(code);
+ 		}
         
         // DEBUG
         if (code == KeyCode.T) { 
@@ -89,6 +49,75 @@ public class KeyHandler {
 		}
     }
 
+    private void titleState(KeyCode code) {
+    	if (code == KeyCode.W || code == KeyCode.UP) {
+    		gamePanel.getUI().commandNum--;
+    		if (gamePanel.getUI().commandNum < 0) {
+				gamePanel.getUI().commandNum = 2;
+			}
+    	}
+        if (code == KeyCode.S || code == KeyCode.DOWN) {
+        	gamePanel.getUI().commandNum++;
+        	if (gamePanel.getUI().commandNum > 2) {
+				gamePanel.getUI().commandNum = 0;
+			}
+        }
+        if (code == KeyCode.ENTER) {
+        	switch (gamePanel.getUI().commandNum) {
+        	case 0: // NEW GAME
+        		gamePanel.gameState = gamePanel.playState;
+        		break;
+        	case 1: // LOAD GAME
+        		break;
+        	case 2: // QUIT GAME
+        		System.exit(0);
+        		break;
+        	}
+        }
+    }
+    
+	private void playState(KeyCode code) {
+		if (code == KeyCode.W || code == KeyCode.UP) {
+    		upPressed = true;
+    	}
+        if (code == KeyCode.S || code == KeyCode.DOWN) {
+            downPressed = true;
+        }
+        if (code == KeyCode.A || code == KeyCode.LEFT) {
+            leftPressed = true;
+        }
+        if (code == KeyCode.D || code == KeyCode.RIGHT) {
+            rightPressed = true;
+        }
+        if (code == KeyCode.P) {
+        	gamePanel.gameState = gamePanel.pauseState;
+        }
+        if (code == KeyCode.C) {
+        	gamePanel.gameState = gamePanel.characterState;
+        }
+        if (code == KeyCode.ENTER) {
+        	enterPressed = true;
+        }
+	}
+	
+	private void pauseState(KeyCode code) {
+		if (code == KeyCode.P) {
+        	gamePanel.gameState = gamePanel.playState;
+        }
+	}
+	
+	private void dialogueState(KeyCode code) {
+		if (code == KeyCode.ENTER) {
+			gamePanel.gameState = gamePanel.playState;
+		}
+	}
+	
+	private void characterState(KeyCode code) {
+		if (code == KeyCode.C) {
+			gamePanel.gameState = gamePanel.playState;
+		}
+	}
+    
     public void handleKeyReleased(KeyEvent e) {
         KeyCode code = e.getCode();
 

@@ -34,6 +34,8 @@ public class Entity {
 	public int dyingCounter = 0;
 	public boolean hpBarOn = false;
 	public int hpBarCounter = 0;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
 	
 	// CHARACTER STATUS
 	public String name;
@@ -41,8 +43,21 @@ public class Entity {
 	public int speed;
 	public int maxLife;
 	public int life;
-	public boolean invincible = false;
-	public int invincibleCounter = 0;
+	public int level;
+	public int strength;
+	public int dexterity;
+	public int attack;
+	public int defense;
+	public int exp;
+	public int nextLevelExp;
+	public int coin;
+	public Entity currentWeapon;
+	public Entity currentShield;
+	
+	// ITEM ATTRIBUTES
+	public int attackValue;
+	public int defenseValue;
+	
 	
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;

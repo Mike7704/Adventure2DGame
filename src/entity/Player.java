@@ -2,6 +2,8 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -14,6 +16,8 @@ public class Player extends Entity {
 	public final int screenY;
 	
 	private int standCounter = 0;
+	
+	public boolean attackCanceled = false;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		
@@ -44,8 +48,27 @@ public class Player extends Entity {
 		direction = "down";
 		
 		// PLAYER STATUS
+		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		strength = 1; // Damage
+		dexterity = 1; // Defense
+		exp = 0;
+		nextLevelExp = 5;
+		coin = 0;
+		currentWeapon = new OBJ_Sword_Normal(gamePanel);
+		currentShield = new OBJ_Shield_Wood(gamePanel);
+		attack = getAttack(); // Calculate attack value based on weapon and strength
+		defense = getDefense(); // Calculate defense value based on shield and dexterity
+	}
+	
+	
+	public int getAttack() {
+		return strength * currentWeapon.attackValue;
+	}
+	
+	public int getDefense() {
+		return dexterity * currentShield.defenseValue;
 	}
 	
 	// Player sprite images
@@ -121,6 +144,14 @@ public class Player extends Entity {
 				}
 			}
 			
+			// Player attack
+			if (keyHandler.enterPressed && !attackCanceled) {
+				gamePanel.playSoundEffect(7); // Sword sound
+				attacking = true;
+				spriteCounter = 0;
+			}
+			
+			attackCanceled = false;
 			keyHandler.enterPressed = false; // Prevents multiple dialogues from opening
 			
 			// Walk animation
@@ -207,13 +238,9 @@ public class Player extends Entity {
 		
 		if (gamePanel.getKeyHandler().enterPressed) {
 			if (index != 999) {
+				attackCanceled = true;
 				gamePanel.gameState = gamePanel.dialogueState;
 				gamePanel.getNPC()[index].speak();
-			}
-			else {
-				// No NPC in contact, so no dialogue opened
-				gamePanel.playSoundEffect(7); // Swing weapon sound
-				attacking = true;
 			}
 		}
 	}

@@ -85,6 +85,10 @@ public class UI {
 			drawPlayerLife();
 			drawDialogueScreen();
 		}
+		// CHARACTER STATE
+		else if (gamePanel.gameState == gamePanel.characterState) {
+			drawCharacterScreen();
+		}
 	}
 	
 	private void drawTitleScreen() {
@@ -133,14 +137,14 @@ public class UI {
 	}	
 	
 	private void drawDialogueScreen() {
-		// WINDOW
+		// Window
 		int x = gamePanel.tileSize;
 		int y = gamePanel.tileSize / 2;
 		int width = gamePanel.screenWidth - (gamePanel.tileSize * 2);
 		int height = gamePanel.tileSize * 4;
-		
 		drawSubWindow(x, y, width, height);
 		
+		// Text
 		gc.setFont(font_small);
 		gc.setFill(Color.WHITE);
 		gc.setTextAlign(TextAlignment.LEFT);
@@ -148,6 +152,83 @@ public class UI {
 		y += gamePanel.tileSize;
 		
 		drawTextWithShadow(currentDialogue, x, y);
+	}
+	
+	private void drawCharacterScreen() {
+		// Window
+		int frameX = gamePanel.tileSize;
+		int frameY = gamePanel.tileSize;
+		int frameWidth = gamePanel.tileSize * 5;
+		int frameHeight = gamePanel.tileSize * 10;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		
+		// Text
+		gc.setFont(font_small);
+		gc.setFill(Color.WHITE);
+		gc.setTextAlign(TextAlignment.LEFT);
+		int textX = frameX + 20;
+		int textY = frameY + gamePanel.tileSize;
+		final int lineHeight = 35;
+		
+		// Labels
+		drawTextWithShadow("Level", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Life", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Strength", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Dexterity", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Attack", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Defense", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Exp", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Next Level", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Coin", textX, textY);
+		textY += lineHeight + 20;
+		drawTextWithShadow("Weapon", textX, textY);
+		textY += lineHeight;
+		drawTextWithShadow("Shield", textX, textY);
+		
+		// Values
+		gc.setTextAlign(TextAlignment.RIGHT);
+		textX = (frameX + frameWidth) - 20;
+		textY = frameY + gamePanel.tileSize;
+		String value;
+		
+		value = String.valueOf(gamePanel.getPlayer().level);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().life + "/" + gamePanel.getPlayer().maxLife);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().strength);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().dexterity);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().attack);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().defense);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().exp);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().nextLevelExp);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().coin);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight - 5;
+		gc.drawImage(gamePanel.getPlayer().currentWeapon.down1, textX - 32, textY, 32, 32);
+		textY += lineHeight;
+		gc.drawImage(gamePanel.getPlayer().currentShield.down1, textX - 32, textY, 32, 32);
 	}
 	
 	private void drawSubWindow(int x, int y, int width, int height) {

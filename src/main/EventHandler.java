@@ -117,6 +117,7 @@ public class EventHandler {
 			gamePanel.gameState = gameState;
 			gamePanel.getUI().currentDialogue = "You drink the water.\nYour life is fully restored!";
 			gamePanel.getPlayer().life = gamePanel.getPlayer().maxLife;
+			gamePanel.getPlayer().attackCanceled = true;
 		}
 	}
 	
