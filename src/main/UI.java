@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,8 +23,8 @@ public class UI {
 	
 	public boolean gameFinished = false;
 	private boolean messageOn = false;
-	private String message = "";
-	private int messageCounter = 0;
+	private ArrayList<String> message = new ArrayList<>();
+	private ArrayList<Integer> messageCounter = new ArrayList<>();
 	public String currentDialogue = "";
 	public int commandNum = 0;
 	
@@ -56,9 +57,9 @@ public class UI {
 		heart_blank = heart.image3;
 	}
 	
-	public void showMessage(String text) {
-		message = text;
-		messageOn = true;
+	public void addMessage(String text) {
+		message.add(text);
+		messageCounter.add(0);
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -74,6 +75,7 @@ public class UI {
 		// PLAY STATE
 		else if (gamePanel.gameState == gamePanel.playState) {
 			drawPlayerLife();
+			drawMessage();
 		}
 		// PAUSE STATE
 		else if (gamePanel.gameState == gamePanel.pauseState) {
@@ -264,6 +266,28 @@ public class UI {
 				gc.drawImage(heart_half, x, y, gamePanel.tileSize, gamePanel.tileSize);
 			}
 			x += gamePanel.tileSize;
+		}
+	}
+	
+	private void drawMessage() {
+		int messageX = gamePanel.tileSize;
+		int messageY = gamePanel.tileSize * 4;
+		gc.setFont(font_small);
+		gc.setFill(Color.WHITE);
+		gc.setTextAlign(TextAlignment.LEFT);
+		
+		for (int i = 0; i < message.size(); i++) {
+			if (message.get(i) != null) {
+				drawTextWithShadow(message.get(i), messageX, messageY);
+				
+				messageCounter.set(i, messageCounter.get(i) + 1);
+				messageY += 50;
+				
+				if (messageCounter.get(i) > 180) {
+					message.remove(i);
+					messageCounter.remove(i);
+				}				
+			}
 		}
 	}
 	

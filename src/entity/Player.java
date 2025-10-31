@@ -251,7 +251,8 @@ public class Player extends Entity {
 			// Damage player
 			if (!invincible) {
 				gamePanel.playSoundEffect(6); // Hurt sound
-				life--;
+				int damage = gamePanel.getMonster()[index].attack - defense;
+				life -= damage;
 				invincible = true;
 			}
 		}
@@ -263,15 +264,41 @@ public class Player extends Entity {
 			if (!monster.invincible) {
 				// Damage monster
 				gamePanel.playSoundEffect(5); // Damage monster sound
-				monster.life--;
+				int damage = attack - monster.defense;
+				if (damage < 0) {
+					damage = 0;
+				}
+				monster.life -= damage;
 				monster.invincible = true;
 				monster.damageReaction();
+				gamePanel.getUI().addMessage(damage + " damage!");
 				
 				// Check if monster is dead
 				if (monster.life <= 0) {
 					monster.dying = true;
+					gamePanel.getUI().addMessage("Killed the " + monster.name + "!");
+					gamePanel.getUI().addMessage("+" + monster.exp + " Exp");
+					exp += monster.exp;
+					checkLevelUp();
 				}
 			}
+		}
+	}
+	
+	private void checkLevelUp() {
+		if (exp >= nextLevelExp) {
+			level++;
+			nextLevelExp = nextLevelExp * 2;
+			maxLife += 2;
+			strength++;
+			dexterity++;
+			attack = getAttack();
+			defense = getDefense();
+			life = maxLife;
+			
+			gamePanel.playSoundEffect(8); // Level up sound
+			gamePanel.gameState = gamePanel.dialogueState;
+			gamePanel.getUI().currentDialogue = "Leveled up to " + level + "!";
 		}
 	}
 	

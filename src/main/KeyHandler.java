@@ -13,7 +13,7 @@ public class KeyHandler {
     private boolean rightPressed = false;
     public boolean enterPressed = false;
     
-    public boolean checkDrawTime = false; // DEBUG
+    public boolean showDebugText = false;
 
     public KeyHandler(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -45,7 +45,7 @@ public class KeyHandler {
         
         // DEBUG
         if (code == KeyCode.T) { 
-			checkDrawTime = !checkDrawTime;
+			showDebugText = !showDebugText;
 		}
     }
 

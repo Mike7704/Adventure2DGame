@@ -102,10 +102,13 @@ public class Entity {
 			if (!gamePanel.getPlayer().invincible) {
 				// Damage the player
 				gamePanel.playSoundEffect(6); // Hurt sound
-				gamePanel.getPlayer().life -= 1;
+				int damage = attack - gamePanel.getPlayer().defense;
+				if (damage < 0) {
+					damage = 0;
+				}
+				gamePanel.getPlayer().life -= damage;
 				gamePanel.getPlayer().invincible = true;
 			}
-			
 		}
 		
 		// If no collision, NPC can move

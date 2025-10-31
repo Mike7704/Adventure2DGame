@@ -149,7 +149,7 @@ public class GamePanel extends AnchorPane {
 	public void draw() {
 		// DEBUG
 		long drawStart = 0;
-		if (keyHandler.checkDrawTime) {
+		if (keyHandler.showDebugText) {
 			drawStart = System.nanoTime();
 		}
 		
@@ -201,10 +201,12 @@ public class GamePanel extends AnchorPane {
         ui.draw(gc);
         
         // DEBUG
-        if (keyHandler.checkDrawTime) {
+        if (keyHandler.showDebugText) {
 	        long drawEnd = System.nanoTime();
 	        long passed = drawEnd - drawStart;
 	        System.out.println("Draw Time: " + passed);
+	        System.out.println("WorldX: " + (int)player.worldX + ", WorldY: " + (int)player.worldY);
+	        System.out.println("Column: " + ((int)(player.worldX + player.solidArea.getX()) / tileSize) + ", Row: " + ((int)(player.worldY + player.solidArea.getY()) / tileSize));
         }
     }
 	
@@ -233,6 +235,10 @@ public class GamePanel extends AnchorPane {
 	
 	public CollisionChecker getCollisionChecker() {
 		return collisionChecker;
+	}
+	
+	public AssetSetter getAssetSetter() {
+		return assetSetter;
 	}
 	
 	public Player getPlayer() {
