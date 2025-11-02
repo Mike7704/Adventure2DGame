@@ -12,5 +12,6 @@ public class OBJ_Shield_Wood extends Entity {
 		name = "Wood Shield";
 		down1 = new Image(getClass().getResourceAsStream("/Object/shield_wood.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		defenseValue = 1;
+		description = "[" + name + "]\nA wooden shield.\n+" + defenseValue + " Defense";
 	}
 }

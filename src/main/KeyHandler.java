@@ -116,6 +116,30 @@ public class KeyHandler {
 		if (code == KeyCode.C) {
 			gamePanel.gameState = gamePanel.playState;
 		}
+		if (code == KeyCode.W || code == KeyCode.UP) {
+			if (gamePanel.getUI().slotRow > 0) {
+				gamePanel.getUI().slotRow--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.S || code == KeyCode.DOWN) {
+			if (gamePanel.getUI().slotRow < 3) {
+				gamePanel.getUI().slotRow++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.A || code == KeyCode.LEFT) {
+			if (gamePanel.getUI().slotCol > 0) {
+				gamePanel.getUI().slotCol--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.D || code == KeyCode.RIGHT) {
+			if (gamePanel.getUI().slotCol < 3) {
+				gamePanel.getUI().slotCol++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
 	}
     
     public void handleKeyReleased(KeyEvent e) {

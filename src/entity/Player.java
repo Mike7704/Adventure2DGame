@@ -2,8 +2,12 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
+
+import java.util.ArrayList;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +22,9 @@ public class Player extends Entity {
 	private int standCounter = 0;
 	
 	public boolean attackCanceled = false;
+	
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int maxInventorySize = 16;
 	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		
@@ -38,10 +45,11 @@ public class Player extends Entity {
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
+		setItems();
 	}
 	
 	// Initial player start position
-	public void setDefaultValues() {
+	private void setDefaultValues() {
 		worldX = gamePanel.tileSize * 23;
 		worldY = gamePanel.tileSize * 21;
 		speed= 4;
@@ -60,6 +68,11 @@ public class Player extends Entity {
 		currentShield = new OBJ_Shield_Wood(gamePanel);
 		attack = getAttack(); // Calculate attack value based on weapon and strength
 		defense = getDefense(); // Calculate defense value based on shield and dexterity
+	}
+	
+	private void setItems() {
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
 	}
 	
 	

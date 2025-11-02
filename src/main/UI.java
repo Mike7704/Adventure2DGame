@@ -17,7 +17,7 @@ public class UI {
 	private GamePanel gamePanel;
 	private GraphicsContext gc;
 	
-	private Font font_small, font_large;
+	private Font font_very_small, font_small, font_large;
 	
 	private Image heart_full, heart_half, heart_blank;
 	
@@ -27,6 +27,8 @@ public class UI {
 	private ArrayList<Integer> messageCounter = new ArrayList<>();
 	public String currentDialogue = "";
 	public int commandNum = 0;
+	public int slotCol = 0;
+	public int slotRow = 0;
 	
 	public UI(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -43,6 +45,9 @@ public class UI {
 			InputStream inputStream2 = getClass().getResourceAsStream("/Font/PixelPurl.ttf");
 			font_large = Font.loadFont(inputStream2, 50);
 			inputStream2.close();
+			InputStream inputStream3 = getClass().getResourceAsStream("/Font/PixelPurl.ttf");
+			font_very_small = Font.loadFont(inputStream3, 25);
+			inputStream3.close();
 		} catch (IOException e) {
 			font_small = Font.loadFont("Arial", 25);
 			font_large = Font.loadFont("Arial", 35);
@@ -90,6 +95,8 @@ public class UI {
 		// CHARACTER STATE
 		else if (gamePanel.gameState == gamePanel.characterState) {
 			drawCharacterScreen();
+			drawInventoryScreen();
+			drawDescriptionScreen();
 		}
 	}
 	
@@ -231,6 +238,76 @@ public class UI {
 		gc.drawImage(gamePanel.getPlayer().currentWeapon.down1, textX - 32, textY, 32, 32);
 		textY += lineHeight;
 		gc.drawImage(gamePanel.getPlayer().currentShield.down1, textX - 32, textY, 32, 32);
+	}
+	
+	private void drawInventoryScreen() {
+		// Window
+		int frameX = gamePanel.screenWidth - (gamePanel.tileSize * 6);
+		int frameY = gamePanel.tileSize;
+		int frameWidth = gamePanel.tileSize * 5;
+		int frameHeight = gamePanel.tileSize * 5;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		
+		// Slots
+		final int slotXstart = frameX + 20;
+		final int slotYstart = frameY + 20;
+		int slotX = slotXstart;
+		int slotY = slotYstart;
+		int slotSize = gamePanel.tileSize + 3;
+		
+		// Draw items
+		for (int i = 0; i < gamePanel.getPlayer().inventory.size(); i++) {
+			// Background
+			gc.setFill(Color.DIMGRAY);
+			gc.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
+			
+			// Item image
+			gc.drawImage(gamePanel.getPlayer().inventory.get(i).down1, slotX, slotY, gamePanel.tileSize, gamePanel.tileSize);
+			
+			// Next slot position
+			slotX += slotSize;
+			if ((i + 1) % 4 == 0) {
+				slotX = slotXstart;
+				slotY += slotSize;
+			}
+		}
+		
+		// Cursor
+		int cursorX = slotXstart + (slotCol * slotSize);
+		int cursorY = slotYstart + (slotRow * slotSize);
+		int cursorWidth = gamePanel.tileSize;
+		int cursorHeight = gamePanel.tileSize;
+		
+		// Draw cursor
+		gc.setFill(Color.WHITE);
+		gc.setLineWidth(3);
+		gc.strokeRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);		
+	}
+	
+	private void drawDescriptionScreen() {
+		// Window
+		int frameX = gamePanel.screenWidth - (gamePanel.tileSize * 6);
+		int frameY = gamePanel.tileSize * 6;
+		int frameWidth = gamePanel.tileSize * 5;
+		int frameHeight = gamePanel.tileSize * 2;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		
+		// Description text
+		int textX = frameX + (frameWidth / 2);
+		int textY = frameY + 30;	
+		gc.setFont(font_very_small);
+		gc.setFill(Color.WHITE);
+		gc.setTextAlign(TextAlignment.CENTER);
+		
+		int itemIndex = getItemIndexOnSlot();
+		if (itemIndex < gamePanel.getPlayer().inventory.size()) {
+			drawTextWithShadow(gamePanel.getPlayer().inventory.get(itemIndex).description, textX, textY);
+		}
+	}
+	
+	private int getItemIndexOnSlot() {
+		int itemIndex = slotCol + (slotRow * 4);
+		return itemIndex;
 	}
 	
 	private void drawSubWindow(int x, int y, int width, int height) {

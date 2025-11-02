@@ -12,5 +12,6 @@ public class OBJ_Sword_Normal extends Entity {
 		name = "Normal Sword";
 		down1 = new Image(getClass().getResourceAsStream("/Object/sword_normal.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		attackValue = 1;
+		description = "[" + name + "]\nAn old sword.\n+" + attackValue + " Attack";
 	}
 }
