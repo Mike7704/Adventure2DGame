@@ -10,6 +10,7 @@ public class OBJ_Chest extends Entity {
 		super(gamePanel);
 		
 		name = "Chest";
+		type = type_consumable;
 		down1 = new Image(getClass().getResourceAsStream("/Object/chest.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
 }

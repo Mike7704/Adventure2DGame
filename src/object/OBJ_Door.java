@@ -11,6 +11,7 @@ public class OBJ_Door extends Entity {
 		super(gamePanel);
 		
 		name = "Door";
+		type = type_consumable;
 		down1 = new Image(getClass().getResourceAsStream("/Object/door.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		collision = true;
 				

@@ -40,8 +40,6 @@ public class Player extends Entity {
 		solidAreaDefaultX = (int) solidArea.getX();
 		solidAreaDefaultY = (int) solidArea.getY();
 		
-		attackArea = new Rectangle(0, 0, 36, 36);
-		
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
@@ -50,6 +48,8 @@ public class Player extends Entity {
 	
 	// Initial player start position
 	private void setDefaultValues() {
+		name = "Player";
+		type = type_player;
 		worldX = gamePanel.tileSize * 23;
 		worldY = gamePanel.tileSize * 21;
 		speed= 4;
@@ -77,6 +77,8 @@ public class Player extends Entity {
 	
 	
 	public int getAttack() {
+		attackArea = currentWeapon.attackArea;
+		
 		return strength * currentWeapon.attackValue;
 	}
 	
@@ -97,14 +99,26 @@ public class Player extends Entity {
 	}
 	
 	public void getPlayerAttackImage() {
-		attackUp1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_up_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
-		attackUp2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_up_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
-		attackDown1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_down_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
-		attackDown2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_down_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
-		attackLeft1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_left_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
-		attackLeft2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_left_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
-		attackRight1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_right_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
-		attackRight2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_right_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+		if (currentWeapon.type == type_sword) {
+			attackUp1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_up_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackUp2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_up_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackDown1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_down_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackDown2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_down_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackLeft1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_left_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackLeft2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_left_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackRight1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_right_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackRight2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_right_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+		}
+		else if (currentWeapon.type == type_axe) {
+			attackUp1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_up_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackUp2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_up_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackDown1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_down_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackDown2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_down_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackLeft1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_left_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackLeft2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_left_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackRight1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_right_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackRight2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_right_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+		}
 	}
 	
 	public void update() {
@@ -243,7 +257,19 @@ public class Player extends Entity {
 	
 	public void pickUpObject(int index) {
 		if (index != 999) {
+			Entity object = gamePanel.getObject()[index];
 			
+			if (inventory.size() != maxInventorySize) {
+				// Pick up item
+				inventory.add(object);
+				gamePanel.playSoundEffect(1); // Item pickup sound
+				gamePanel.getUI().addMessage("Picked up " + object.name + "!");
+				gamePanel.getObject()[index] = null;
+			}
+			else {
+				// Inventory full
+				gamePanel.getUI().addMessage("Cannot pick up " + object.name + ". Inventory full!");
+			}
 		}
 	}
 	
@@ -312,6 +338,30 @@ public class Player extends Entity {
 			gamePanel.playSoundEffect(8); // Level up sound
 			gamePanel.gameState = gamePanel.dialogueState;
 			gamePanel.getUI().currentDialogue = "Leveled up to " + level + "!";
+		}
+	}
+	
+	public void selectItem() {
+		// Get the selected item index from the UI
+		int itemIndex = gamePanel.getUI().getItemIndexOnSlot();
+		
+		if (itemIndex < inventory.size()) {
+			// Equip or use the selected item
+			Entity selectedItem = inventory.get(itemIndex);
+			
+			if (selectedItem.type == type_sword || selectedItem.type == type_axe) {
+				currentWeapon = selectedItem;
+				attack = getAttack();
+				getPlayerAttackImage();
+			}
+			else if (selectedItem.type == type_sheild) {
+				currentShield = selectedItem;
+				defense = getDefense();
+			}
+			else if (selectedItem.type == type_consumable) {
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
+			}			
 		}
 	}
 	

@@ -140,6 +140,9 @@ public class KeyHandler {
 				gamePanel.playSoundEffect(9); // cursor sound
 			}
 		}
+		if (code == KeyCode.ENTER) {
+			gamePanel.getPlayer().selectItem();
+		}
 	}
     
     public void handleKeyReleased(KeyEvent e) {

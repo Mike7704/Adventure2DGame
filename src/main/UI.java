@@ -261,6 +261,13 @@ public class UI {
 			gc.setFill(Color.DIMGRAY);
 			gc.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
 			
+			// Equipped item highlight
+			if (gamePanel.getPlayer().inventory.get(i) == gamePanel.getPlayer().currentWeapon ||
+					gamePanel.getPlayer().inventory.get(i) == gamePanel.getPlayer().currentShield) {
+				gc.setFill(Color.GOLD);
+				gc.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
+			}
+			
 			// Item image
 			gc.drawImage(gamePanel.getPlayer().inventory.get(i).down1, slotX, slotY, gamePanel.tileSize, gamePanel.tileSize);
 			
@@ -290,8 +297,7 @@ public class UI {
 		int frameY = gamePanel.tileSize * 6;
 		int frameWidth = gamePanel.tileSize * 5;
 		int frameHeight = gamePanel.tileSize * 2;
-		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
-		
+				
 		// Description text
 		int textX = frameX + (frameWidth / 2);
 		int textY = frameY + 30;	
@@ -301,11 +307,13 @@ public class UI {
 		
 		int itemIndex = getItemIndexOnSlot();
 		if (itemIndex < gamePanel.getPlayer().inventory.size()) {
+			drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+			
 			drawTextWithShadow(gamePanel.getPlayer().inventory.get(itemIndex).description, textX, textY);
 		}
 	}
 	
-	private int getItemIndexOnSlot() {
+	public int getItemIndexOnSlot() {
 		int itemIndex = slotCol + (slotRow * 4);
 		return itemIndex;
 	}

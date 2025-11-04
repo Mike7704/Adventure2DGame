@@ -10,6 +10,7 @@ public class OBJ_Heart extends Entity {
 		super(gamePanel);
 		
 		name = "Heart";
+		type = type_consumable;
 		image = new Image(getClass().getResourceAsStream("/Object/heart_full.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		image2 = new Image(getClass().getResourceAsStream("/Object/heart_half.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		image3 = new Image(getClass().getResourceAsStream("/Object/heart_blank.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);

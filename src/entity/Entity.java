@@ -39,7 +39,6 @@ public class Entity {
 	
 	// CHARACTER STATUS
 	public String name;
-	public int type; // 0 = player, 1 = NPC, 2 = monster
 	public int speed;
 	public int maxLife;
 	public int life;
@@ -58,6 +57,16 @@ public class Entity {
 	public int attackValue;
 	public int defenseValue;
 	public String description = "";
+	
+	// TYPE
+	public int type;
+	public final int type_player = 0;
+	public final int type_npc = 1;
+	public final int type_monster = 2;
+	public final int type_sword = 3;
+	public final int type_axe = 4;
+	public final int type_sheild = 5;
+	public final int type_consumable = 6;
 	
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -86,6 +95,10 @@ public class Entity {
 		}
 	}
 	
+	public void use(Entity entity) {
+		// Overridden in subclasses
+	}
+	
 	public void update() {
 		setAction();
 		
@@ -97,7 +110,7 @@ public class Entity {
 		gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
 		boolean contactPlayer = gamePanel.getCollisionChecker().checkPlayer(this);
 		
-		if (this.type == 2 && contactPlayer) {
+		if (this.type == type_monster && contactPlayer) {
 			// Contact with player
 			if (!gamePanel.getPlayer().invincible) {
 				// Damage the player
