@@ -36,12 +36,15 @@ public class Entity {
 	public int hpBarCounter = 0;
 	public boolean invincible = false;
 	public int invincibleCounter = 0;
+	public int shootCooldownCounter = 0;
 	
 	// CHARACTER STATUS
 	public String name;
 	public int speed;
 	public int maxLife;
 	public int life;
+	public int maxMana;
+	public int mana;
 	public int level;
 	public int strength;
 	public int dexterity;
@@ -52,11 +55,13 @@ public class Entity {
 	public int coin;
 	public Entity currentWeapon;
 	public Entity currentShield;
+	public Projectile projectile;
 	
 	// ITEM ATTRIBUTES
 	public int attackValue;
 	public int defenseValue;
 	public String description = "";
+	public int useCost;
 	
 	// TYPE
 	public int type;
@@ -221,7 +226,6 @@ public class Entity {
 			}
 		}
 		else {
-			dying = false;
 			alive = false;
 		}
 	}

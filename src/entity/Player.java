@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -66,6 +67,7 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gamePanel);
 		currentShield = new OBJ_Shield_Wood(gamePanel);
+		projectile = new OBJ_Fireball(gamePanel);
 		attack = getAttack(); // Calculate attack value based on weapon and strength
 		defense = getDefense(); // Calculate defense value based on shield and dexterity
 	}
@@ -129,16 +131,16 @@ public class Player extends Entity {
 		
 		// Move player
 		else if (keyHandler.isKeyPressed() || keyHandler.enterPressed) {
-			if (keyHandler.isUpPressed()) {
+			if (keyHandler.upPressed) {
 				direction = "up";
 			}
-			else if (keyHandler.isDownPressed()) {
+			else if (keyHandler.downPressed) {
 				direction = "down";
 			}
-			else if (keyHandler.isLeftPressed()) {
+			else if (keyHandler.leftPressed) {
 				direction = "left";
 			}
-			else if (keyHandler.isRightPressed()) {
+			else if (keyHandler.rightPressed) {
 				direction = "right";
 			}
 			
@@ -201,6 +203,22 @@ public class Player extends Entity {
 			}
 		}
 		
+		// Shoot projectile
+		if (gamePanel.getKeyHandler().shootKeyPressed && !projectile.alive && shootCooldownCounter == 30) {
+			projectile.set(worldX, worldY, direction, true, this);
+			
+			gamePanel.getProjectiles().add(projectile);
+			
+			shootCooldownCounter = 0;
+			
+			gamePanel.playSoundEffect(10);
+		}
+		
+		// Shoot cooldown
+		if (shootCooldownCounter < 30) {
+			shootCooldownCounter++;
+		}
+		
 		// Invincibility countdown
 		if (invincible) {
 			invincibleCounter++;
@@ -240,7 +258,7 @@ public class Player extends Entity {
 			
 			// Check monster collision with updated worldX, worldY and attack area
 			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 			
 			// Restore original worldX, worldY, and solidArea
 			worldX = currentWorldX;
@@ -288,7 +306,7 @@ public class Player extends Entity {
 	public void contactMonster(int index) {
 		if (index != 999) {
 			// Damage player
-			if (!invincible) {
+			if (!invincible && !gamePanel.getMonster()[index].dying) {
 				gamePanel.playSoundEffect(6); // Hurt sound
 				int damage = gamePanel.getMonster()[index].attack - defense;
 				life -= damage;
@@ -297,7 +315,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void damageMonster(int index) {
+	public void damageMonster(int index, int attack) {
 		if (index != 999) {
 			Entity monster = gamePanel.getMonster()[index];
 			if (!monster.invincible) {

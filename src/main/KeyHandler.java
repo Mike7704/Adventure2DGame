@@ -7,11 +7,12 @@ public class KeyHandler {
 
 	private GamePanel gamePanel;
 	
-    private boolean upPressed = false;
-    private boolean downPressed = false;
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
+	public boolean upPressed = false;
+    public boolean downPressed = false;
+    public boolean leftPressed = false;
+    public boolean rightPressed = false;
     public boolean enterPressed = false;
+    public boolean shootKeyPressed = false;
     
     public boolean showDebugText = false;
 
@@ -98,6 +99,9 @@ public class KeyHandler {
         if (code == KeyCode.ENTER) {
         	enterPressed = true;
         }
+        if (code == KeyCode.F) {
+        	shootKeyPressed = true;
+        }
 	}
 	
 	private void pauseState(KeyCode code) {
@@ -160,23 +164,10 @@ public class KeyHandler {
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             rightPressed = false;
         }
+        if (code == KeyCode.F) {
+            shootKeyPressed = false;
+        }
     }
-
-	public boolean isUpPressed() {
-		return upPressed;
-	}
-	
-	public boolean isDownPressed() {
-		return downPressed;
-	}
-	
-	public boolean isLeftPressed() {
-		return leftPressed;
-	}
-	
-	public boolean isRightPressed() {
-		return rightPressed;
-	}
 	
 	public boolean isKeyPressed() {
 		return upPressed || downPressed || leftPressed || rightPressed;

@@ -53,6 +53,7 @@ public class GamePanel extends AnchorPane {
     private Entity[] npc = new Entity[10];
     private Entity[] monster = new Entity[20];
     private ArrayList<Entity> entityList = new ArrayList<>();
+    private ArrayList<Entity> projectileList = new ArrayList<>();
     
     // GAME STATE
     public int gameState;
@@ -139,6 +140,18 @@ public class GamePanel extends AnchorPane {
 					}
 				}
 			}
+			
+			// PROJECTILES
+			for (int i = 0; i < projectileList.size(); i++) {
+				if (projectileList.get(i) != null) {
+					if (projectileList.get(i).alive) {
+						projectileList.get(i).update();
+					}
+					else if (!projectileList.get(i).alive) {
+						projectileList.remove(i);
+					}
+				}
+			}
 
 		}
 		else if (gameState == pauseState) {
@@ -183,6 +196,13 @@ public class GamePanel extends AnchorPane {
         for (int i = 0; i < monster.length; i++) {
 			if (monster[i] != null) {
 				entityList.add(monster[i]);
+			}
+		}
+        
+        // PROJECTILE ENTITY
+        for (int i = 0; i < projectileList.size(); i++) {
+			if (projectileList.get(i) != null) {
+				entityList.add(projectileList.get(i));
 			}
 		}
         
@@ -255,6 +275,10 @@ public class GamePanel extends AnchorPane {
 	
 	public Entity[] getMonster() {
 		return monster;
+	}
+	
+	public ArrayList<Entity> getProjectiles() {
+		return projectileList;
 	}
 	
 	public UI getUI() {
