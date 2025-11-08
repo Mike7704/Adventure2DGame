@@ -6,6 +6,7 @@ import entity.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
+import object.OBJ_Rock;
 
 public class MON_GreenSlime extends Entity {
 	
@@ -20,6 +21,7 @@ public class MON_GreenSlime extends Entity {
 		attack = 5;
 		defense = 0;
 		exp = 2;
+		projectile = new OBJ_Rock(gamePanel);
 		
 		solidArea = new Rectangle(3, 18, 42, 30);
 		solidAreaDefaultX = (int) solidArea.getX();
@@ -42,27 +44,34 @@ public class MON_GreenSlime extends Entity {
 	
 	public void setAction() {
 		
+		Random random = new Random();
+		
 		actionLockCounter++;
 		
-		if (actionLockCounter < 120) {
-			return;
+		if (actionLockCounter == 120) {	
+			int i = random.nextInt(100)+1; // 1-100
+			if (i <= 25) {
+				direction = "up";
+			}
+			else if (i > 25 && i <= 50) {
+				direction = "down";
+			}
+			else if (i > 50 && i <= 75) {
+				direction = "left";
+			}
+			else if (i > 75 && i <= 100) {
+				direction = "right";
+			}
+			
+			actionLockCounter = 0;
 		}
 		
-		actionLockCounter = 0;
-		
-		Random random = new Random();
-		int i = random.nextInt(100)+1; // 1-100
-		if (i <= 25) {
-			direction = "up";
-		}
-		else if (i > 25 && i <= 50) {
-			direction = "down";
-		}
-		else if (i > 50 && i <= 75) {
-			direction = "left";
-		}
-		else if (i > 75 && i <= 100) {
-			direction = "right";
+		// Shoot projectile
+		int p = random.nextInt(100)+1;
+		if (p > 99 && !projectile.alive && shootCooldownCounter == 30) {
+			projectile.set(worldX, worldY, direction, true, this);
+			gamePanel.getProjectiles().add(projectile);
+			shootCooldownCounter = 0;
 		}
 	}
 	

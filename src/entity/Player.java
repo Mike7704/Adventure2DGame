@@ -3,7 +3,6 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Fireball;
-import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 
@@ -60,6 +59,9 @@ public class Player extends Entity {
 		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		maxMana = 4;
+		mana = maxMana;
+		ammo = 10;
 		strength = 1; // Damage
 		dexterity = 1; // Defense
 		exp = 0;
@@ -204,8 +206,10 @@ public class Player extends Entity {
 		}
 		
 		// Shoot projectile
-		if (gamePanel.getKeyHandler().shootKeyPressed && !projectile.alive && shootCooldownCounter == 30) {
+		if (gamePanel.getKeyHandler().shootKeyPressed && !projectile.alive && shootCooldownCounter == 30 && mana >= projectile.useCost) {
 			projectile.set(worldX, worldY, direction, true, this);
+			
+			mana -= projectile.useCost;
 			
 			gamePanel.getProjectiles().add(projectile);
 			

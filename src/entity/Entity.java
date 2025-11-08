@@ -45,6 +45,7 @@ public class Entity {
 	public int life;
 	public int maxMana;
 	public int mana;
+	public int ammo;
 	public int level;
 	public int strength;
 	public int dexterity;
@@ -85,6 +86,20 @@ public class Entity {
 		// Overridden in subclasses
 	}
 	
+	public void damagePlayer(int attack) {
+		// Contact with player
+		if (!gamePanel.getPlayer().invincible) {
+			// Damage the player
+			gamePanel.playSoundEffect(6); // Hurt sound
+			int damage = attack - gamePanel.getPlayer().defense;
+			if (damage < 0) {
+				damage = 0;
+			}
+			gamePanel.getPlayer().life -= damage;
+			gamePanel.getPlayer().invincible = true;
+		}
+	}
+	
 	public void speak() {
 		if (dialogues[dialogueIndex] == null) {
 			dialogueIndex = 0;
@@ -116,17 +131,7 @@ public class Entity {
 		boolean contactPlayer = gamePanel.getCollisionChecker().checkPlayer(this);
 		
 		if (this.type == type_monster && contactPlayer) {
-			// Contact with player
-			if (!gamePanel.getPlayer().invincible) {
-				// Damage the player
-				gamePanel.playSoundEffect(6); // Hurt sound
-				int damage = attack - gamePanel.getPlayer().defense;
-				if (damage < 0) {
-					damage = 0;
-				}
-				gamePanel.getPlayer().life -= damage;
-				gamePanel.getPlayer().invincible = true;
-			}
+			damagePlayer(attack);
 		}
 		
 		// If no collision, NPC can move
@@ -158,6 +163,11 @@ public class Entity {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+		}
+		
+		// Shoot cooldown
+		if (shootCooldownCounter < 30) {
+			shootCooldownCounter++;
 		}
 	}
 	

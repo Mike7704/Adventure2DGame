@@ -32,7 +32,11 @@ public class Projectile extends Entity {
 		}
 		// Monster shoots - check it hits the player
 		else {
-			// TODO
+			boolean contactPlayer = gamePanel.getCollisionChecker().checkPlayer(this);
+			if (!gamePanel.getPlayer().invincible && contactPlayer) {
+				damagePlayer(attack);
+				alive = false;
+			}
 		}
 		
 		switch(direction) {

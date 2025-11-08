@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import object.OBJ_Heart;
+import object.OBJ_ManaCrystal;
 
 public class UI {
 
@@ -19,7 +20,7 @@ public class UI {
 	
 	private Font font_very_small, font_small, font_large;
 	
-	private Image heart_full, heart_half, heart_blank;
+	private Image heart_full, heart_half, heart_blank, crystal_full, crystal_blank;
 	
 	public boolean gameFinished = false;
 	private boolean messageOn = false;
@@ -60,6 +61,10 @@ public class UI {
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;
+		
+		Entity crystal = new OBJ_ManaCrystal(gamePanel);
+		crystal_full = crystal.image;
+		crystal_blank = crystal.image2;
 	}
 	
 	public void addMessage(String text) {
@@ -80,16 +85,19 @@ public class UI {
 		// PLAY STATE
 		else if (gamePanel.gameState == gamePanel.playState) {
 			drawPlayerLife();
+			drawManaCrystal();
 			drawMessage();
 		}
 		// PAUSE STATE
 		else if (gamePanel.gameState == gamePanel.pauseState) {
 			drawPlayerLife();
+			drawManaCrystal();
 			drawPauseScreen();
 		}
 		// DIAGLOUE STATE
 		else if (gamePanel.gameState == gamePanel.dialogueState) {
 			drawPlayerLife();
+			drawManaCrystal();
 			drawDialogueScreen();
 		}
 		// CHARACTER STATE
@@ -184,6 +192,8 @@ public class UI {
 		textY += lineHeight;
 		drawTextWithShadow("Life", textX, textY);
 		textY += lineHeight;
+		drawTextWithShadow("Mana", textX, textY);
+		textY += lineHeight;
 		drawTextWithShadow("Strength", textX, textY);
 		textY += lineHeight;
 		drawTextWithShadow("Dexterity", textX, textY);
@@ -212,6 +222,9 @@ public class UI {
 		drawTextWithShadow(value, textX, textY);
 		textY += lineHeight;
 		value = String.valueOf(gamePanel.getPlayer().life + "/" + gamePanel.getPlayer().maxLife);
+		drawTextWithShadow(value, textX, textY);
+		textY += lineHeight;
+		value = String.valueOf(gamePanel.getPlayer().mana + "/" + gamePanel.getPlayer().maxMana);
 		drawTextWithShadow(value, textX, textY);
 		textY += lineHeight;
 		value = String.valueOf(gamePanel.getPlayer().strength);
@@ -354,10 +367,33 @@ public class UI {
 		}
 	}
 	
+	private void drawManaCrystal() {
+		int x = (int) (gamePanel.screenWidth - (gamePanel.tileSize * 1.5));
+		int y = gamePanel.tileSize / 2;
+		
+		// Draw max mana
+		for (int i = 0; i < gamePanel.getPlayer().maxMana; i++) {
+			gc.drawImage(crystal_blank, x, y, gamePanel.tileSize, gamePanel.tileSize);
+			x -= (gamePanel.tileSize / 1.5);
+		}
+		
+		// Reset
+		x = (int) (gamePanel.screenWidth - (gamePanel.tileSize * 1.5));
+		y = gamePanel.tileSize / 2;
+		
+		// Draw current mana
+		for (int i = 0; i < gamePanel.getPlayer().mana; i ++) {
+			if (i < gamePanel.getPlayer().mana) {
+				gc.drawImage(crystal_full, x, y, gamePanel.tileSize, gamePanel.tileSize);
+			}
+			x -= (gamePanel.tileSize / 1.5);
+		}
+	}
+	
 	private void drawMessage() {
 		int messageX = gamePanel.tileSize;
-		int messageY = gamePanel.tileSize * 4;
-		gc.setFont(font_small);
+		int messageY = gamePanel.screenHeight - (gamePanel.tileSize * 3);
+		gc.setFont(font_very_small);
 		gc.setFill(Color.WHITE);
 		gc.setTextAlign(TextAlignment.LEFT);
 		
@@ -366,7 +402,7 @@ public class UI {
 				drawTextWithShadow(message.get(i), messageX, messageY);
 				
 				messageCounter.set(i, messageCounter.get(i) + 1);
-				messageY += 50;
+				messageY += 30;
 				
 				if (messageCounter.get(i) > 180) {
 					message.remove(i);
