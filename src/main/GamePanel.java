@@ -49,8 +49,8 @@ public class GamePanel extends AnchorPane {
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
-    private Entity[] obj = new Entity[10];
-    private Entity[] npc = new Entity[10];
+    private Entity[] obj = new Entity[20];
+    private Entity[] npc = new Entity[20];
     private Entity[] monster = new Entity[20];
     private ArrayList<Entity> entityList = new ArrayList<>();
     private ArrayList<Entity> projectileList = new ArrayList<>();
@@ -136,6 +136,7 @@ public class GamePanel extends AnchorPane {
 						monster[i].update();
 					}
 					else if (!monster[i].alive) {
+						monster[i].checkDrop();
 						monster[i] = null;
 					}
 				}

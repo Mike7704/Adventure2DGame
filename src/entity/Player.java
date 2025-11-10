@@ -281,16 +281,24 @@ public class Player extends Entity {
 		if (index != 999) {
 			Entity object = gamePanel.getObject()[index];
 			
-			if (inventory.size() != maxInventorySize) {
-				// Pick up item
-				inventory.add(object);
-				gamePanel.playSoundEffect(1); // Item pickup sound
-				gamePanel.getUI().addMessage("Picked up " + object.name + "!");
+			// Pick up only items
+			if (object.type == type_pickup) {
+				object.use(this);
 				gamePanel.getObject()[index] = null;
 			}
+			// Inventory items
 			else {
-				// Inventory full
-				gamePanel.getUI().addMessage("Cannot pick up " + object.name + ". Inventory full!");
+				if (inventory.size() != maxInventorySize) {
+					// Pick up item
+					inventory.add(object);
+					gamePanel.playSoundEffect(1); // Item pickup sound
+					gamePanel.getUI().addMessage("Picked up " + object.name + "!");
+					gamePanel.getObject()[index] = null;
+				}
+				else {
+					// Inventory full
+					gamePanel.getUI().addMessage("Cannot pick up " + object.name + ". Inventory full!");
+				}
 			}
 		}
 	}

@@ -10,7 +10,6 @@ public class Entity {
 	
 	protected GamePanel gamePanel;
 	
-		
 	public Image up1, up2, down1, down2, left1, left2, right1, right2;
 	public Image attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	public Image image, image2, image3;
@@ -59,6 +58,7 @@ public class Entity {
 	public Projectile projectile;
 	
 	// ITEM ATTRIBUTES
+	public int value;
 	public int attackValue;
 	public int defenseValue;
 	public String description = "";
@@ -73,6 +73,7 @@ public class Entity {
 	public final int type_axe = 4;
 	public final int type_sheild = 5;
 	public final int type_consumable = 6;
+	public final int type_pickup = 7;
 	
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -117,6 +118,22 @@ public class Entity {
 	
 	public void use(Entity entity) {
 		// Overridden in subclasses
+	}
+	
+	public void checkDrop() {
+		// Overridden in subclasses
+	}
+	
+	public void dropItem(Entity droppedItem) {
+		for (int i = 0; i < gamePanel.getObject().length; i++) {
+			// Entity is dead, replace it with a dropped item
+			if (gamePanel.getObject()[i] == null) {
+				gamePanel.getObject()[i] = droppedItem;
+				gamePanel.getObject()[i].worldX = worldX;
+				gamePanel.getObject()[i].worldY = worldY;
+				break;
+			}
+		}
 	}
 	
 	public void update() {

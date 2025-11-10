@@ -7,7 +7,6 @@ import main.GamePanel;
 public class OBJ_Potion_Red extends Entity {
 
 	GamePanel gamePanel;
-	int healAmount = 5;
 	
 	public OBJ_Potion_Red(GamePanel gamePanel) {
 		super(gamePanel);
@@ -16,16 +15,17 @@ public class OBJ_Potion_Red extends Entity {
 		
 		name = "Red Potion";
 		type = type_consumable;
+		value = 5;
 		down1 = new Image(getClass().getResourceAsStream("/Object/potion_red.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		description = "[" + name + "]\n+" + healAmount + " HP";
+		description = "[" + name + "]\n+" + value + " HP";
 	}
 	
 	public void use(Entity entity) {
 		gamePanel.gameState = gamePanel.dialogueState;
-		gamePanel.getUI().currentDialogue = "You drink the " + name + "!\n" + "You gained " + healAmount + " HP";
+		gamePanel.getUI().currentDialogue = "You drink the " + name + "!\n" + "You gained " + value + " HP";
 		gamePanel.playSoundEffect(2); // Power up sound effect
 		
-		entity.life += healAmount;
+		entity.life += value;
 		if(entity.life > entity.maxLife) {
 			entity.life = entity.maxLife;
 		}
