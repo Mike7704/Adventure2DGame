@@ -9,6 +9,7 @@ import object.OBJ_Key;
 import object.OBJ_ManaCrystal;
 import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Blue;
+import tile_interactive.IT_DryTree;
 
 public class AssetSetter {
 
@@ -86,5 +87,24 @@ public class AssetSetter {
 		gamePanel.getMonster()[i] = new MON_GreenSlime(gamePanel);
 		gamePanel.getMonster()[i].worldX = gamePanel.tileSize * 38;
 		gamePanel.getMonster()[i].worldY = gamePanel.tileSize * 42;
+	}
+	
+	public void setInteractiveTile() {
+		
+		int i = 0;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 27, 12);
+		i++;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 28, 12);
+		i++;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 29, 12);
+		i++;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 30, 12);
+		i++;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 31, 12);
+		i++;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 32, 12);
+		i++;
+		gamePanel.getInteractiveTile()[i] = new IT_DryTree(gamePanel, 33, 12);
+		i++;
 	}
 }

@@ -145,6 +145,7 @@ public class Entity {
 		gamePanel.getCollisionChecker().checkObject(this, false);
 		gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
 		gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
+		gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getInteractiveTile());
 		boolean contactPlayer = gamePanel.getCollisionChecker().checkPlayer(this);
 		
 		if (this.type == type_monster && contactPlayer) {

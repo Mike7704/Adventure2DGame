@@ -13,6 +13,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import tile.TileManager;
+import tile_interactive.InteractiveTile;
 
 public class GamePanel extends AnchorPane {
 
@@ -52,6 +53,7 @@ public class GamePanel extends AnchorPane {
     private Entity[] obj = new Entity[20];
     private Entity[] npc = new Entity[20];
     private Entity[] monster = new Entity[20];
+    private InteractiveTile[] interactiveTile = new InteractiveTile[50];
     private ArrayList<Entity> entityList = new ArrayList<>();
     private ArrayList<Entity> projectileList = new ArrayList<>();
     
@@ -79,7 +81,7 @@ public class GamePanel extends AnchorPane {
 		assetSetter.setObject();
 		assetSetter.setNPC();
 		assetSetter.setMonster();
-		
+		assetSetter.setInteractiveTile();
 		//playMusic(0);
 		
 		gameState = titleState;
@@ -154,6 +156,13 @@ public class GamePanel extends AnchorPane {
 				}
 			}
 
+			// INTERACTIVE TILES
+			for (int i = 0; i < interactiveTile.length; i++) {
+				if (interactiveTile[i] != null) {
+					interactiveTile[i].update();
+				}
+			}
+			
 		}
 		else if (gameState == pauseState) {
 			// nothing yet
@@ -175,6 +184,13 @@ public class GamePanel extends AnchorPane {
 		
 		// TILE
         tileManager.draw(gc);
+        
+        // INTERACTIVE TILES
+		for (int i = 0; i < interactiveTile.length; i++) {
+			if (interactiveTile[i] != null) {
+				interactiveTile[i].draw(gc);
+			}
+		}
         
         // PLAYER ENTITY
         entityList.add(player);
@@ -276,6 +292,10 @@ public class GamePanel extends AnchorPane {
 	
 	public Entity[] getMonster() {
 		return monster;
+	}
+	
+	public InteractiveTile[] getInteractiveTile() {
+		return interactiveTile;
 	}
 	
 	public ArrayList<Entity> getProjectiles() {

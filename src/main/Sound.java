@@ -19,6 +19,7 @@ public class Sound {
 		soundPath[8] = getClass().getResource("/Sound/fanfare.wav").toString();
 		soundPath[9] = getClass().getResource("/Sound/cursor.wav").toString();
 		soundPath[10] = getClass().getResource("/Sound/burning.wav").toString();
+		soundPath[11] = getClass().getResource("/Sound/cuttree.wav").toString();
 	}
 	
 	public void setFile(int i) {

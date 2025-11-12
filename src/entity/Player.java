@@ -5,6 +5,7 @@ import main.KeyHandler;
 import object.OBJ_Fireball;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
+import tile_interactive.InteractiveTile;
 
 import java.util.ArrayList;
 
@@ -162,6 +163,9 @@ public class Player extends Entity {
 			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
 			contactMonster(monsterIndex);
 			
+			// Check interactive tile collision
+			gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getInteractiveTile());
+			
 			// Check event collision
 			gamePanel.getEventHandler().checkEvent();
 			
@@ -264,6 +268,10 @@ public class Player extends Entity {
 			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
 			damageMonster(monsterIndex, attack);
 			
+			// Check interactive tile collision
+			int interactiveTileIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getInteractiveTile());
+			damageInteractiveTile(interactiveTileIndex);
+			
 			// Restore original worldX, worldY, and solidArea
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -349,6 +357,21 @@ public class Player extends Entity {
 					gamePanel.getUI().addMessage("+" + monster.exp + " Exp");
 					exp += monster.exp;
 					checkLevelUp();
+				}
+			}
+		}
+	}
+	
+	private void damageInteractiveTile(int index) {
+		if (index != 999) {
+			InteractiveTile interactiveTile = gamePanel.getInteractiveTile()[index];
+			if (interactiveTile.destructible && interactiveTile.isCorrectItem(this) && !interactiveTile.invincible) {
+				interactiveTile.playSoundEffect();
+				interactiveTile.life--;
+				interactiveTile.invincible = true; // Cool down
+				
+				if (interactiveTile.life == 0) {
+					gamePanel.getInteractiveTile()[index] = interactiveTile.getDestroyedForm();
 				}
 			}
 		}
