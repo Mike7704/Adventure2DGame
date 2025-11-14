@@ -1,6 +1,9 @@
 package tile_interactive;
 
 import entity.Entity;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import main.GamePanel;
 
 public class InteractiveTile extends Entity {
@@ -19,6 +22,21 @@ public class InteractiveTile extends Entity {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+		}
+	}
+	
+	public void draw(GraphicsContext gc) {
+
+		int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
+		int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
+		
+		// Draw object only visible on screen around the player
+		if (worldX + gamePanel.tileSize > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
+			worldX - gamePanel.tileSize < gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX &&
+			worldY + gamePanel.tileSize > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
+			worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY)
+		{		
+			gc.drawImage(down1, screenX, screenY);
 		}
 	}
 	

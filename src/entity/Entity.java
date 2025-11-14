@@ -136,6 +136,43 @@ public class Entity {
 		}
 	}
 	
+	public Color getParticleColor() {
+		// Overridden in subclasses
+		return null;
+	}
+	
+	public int getParticleSize() {
+		// Overridden in subclasses
+		return 0;
+	}
+	
+	public int getParticleSpeed() {
+		// Overridden in subclasses
+		return 0;
+	}
+	
+	public int getParticleMaxLife() {
+		// Overridden in subclasses
+		return 0;
+	}
+	
+	public void generateParticle(Entity generator, Entity target) {
+		Color color = generator.getParticleColor();
+		int size = generator.getParticleSize();
+		int speed = generator.getParticleSpeed();
+		int maxLife = generator.getParticleMaxLife();		
+		
+		Particle p1 = new Particle(gamePanel, target, color, size, speed, maxLife, -2, -1);
+		Particle p2 = new Particle(gamePanel, target, color, size, speed, maxLife, 2, -1);
+		Particle p3 = new Particle(gamePanel, target, color, size, speed, maxLife, -2, 1);
+		Particle p4 = new Particle(gamePanel, target, color, size, speed, maxLife, 2, 1);
+		
+		gamePanel.getParticles().add(p1);
+		gamePanel.getParticles().add(p2);
+		gamePanel.getParticles().add(p3);
+		gamePanel.getParticles().add(p4);
+	}
+	
 	public void update() {
 		setAction();
 		

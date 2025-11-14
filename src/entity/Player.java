@@ -366,9 +366,12 @@ public class Player extends Entity {
 		if (index != 999) {
 			InteractiveTile interactiveTile = gamePanel.getInteractiveTile()[index];
 			if (interactiveTile.destructible && interactiveTile.isCorrectItem(this) && !interactiveTile.invincible) {
+				// Hit tile
 				interactiveTile.playSoundEffect();
 				interactiveTile.life--;
 				interactiveTile.invincible = true; // Cool down
+				
+				generateParticle(interactiveTile, interactiveTile);
 				
 				if (interactiveTile.life == 0) {
 					gamePanel.getInteractiveTile()[index] = interactiveTile.getDestroyedForm();

@@ -56,6 +56,7 @@ public class GamePanel extends AnchorPane {
     private InteractiveTile[] interactiveTile = new InteractiveTile[50];
     private ArrayList<Entity> entityList = new ArrayList<>();
     private ArrayList<Entity> projectileList = new ArrayList<>();
+    private ArrayList<Entity> particleList = new ArrayList<>();
     
     // GAME STATE
     public int gameState;
@@ -156,6 +157,18 @@ public class GamePanel extends AnchorPane {
 				}
 			}
 
+			// PARTICLES
+			for (int i = 0; i < particleList.size(); i++) {
+				if (particleList.get(i) != null) {
+					if (particleList.get(i).alive) {
+						particleList.get(i).update();
+					}
+					else if (!particleList.get(i).alive) {
+						particleList.remove(i);
+					}
+				}
+			}
+			
 			// INTERACTIVE TILES
 			for (int i = 0; i < interactiveTile.length; i++) {
 				if (interactiveTile[i] != null) {
@@ -220,6 +233,13 @@ public class GamePanel extends AnchorPane {
         for (int i = 0; i < projectileList.size(); i++) {
 			if (projectileList.get(i) != null) {
 				entityList.add(projectileList.get(i));
+			}
+		}
+        
+        // PARTICLE ENTITY
+        for (int i = 0; i < particleList.size(); i++) {
+			if (particleList.get(i) != null) {
+				entityList.add(particleList.get(i));
 			}
 		}
         
@@ -300,6 +320,10 @@ public class GamePanel extends AnchorPane {
 	
 	public ArrayList<Entity> getProjectiles() {
 		return projectileList;
+	}
+	
+	public ArrayList<Entity> getParticles() {
+		return particleList;
 	}
 	
 	public UI getUI() {

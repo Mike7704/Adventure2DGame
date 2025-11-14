@@ -2,6 +2,7 @@ package tile_interactive;
 
 import entity.Entity;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import main.GamePanel;
 
 public class IT_DryTree extends InteractiveTile {
@@ -29,4 +30,19 @@ public class IT_DryTree extends InteractiveTile {
 		return new IT_Trunk(gamePanel, worldX/gamePanel.tileSize, worldY/gamePanel.tileSize);
 	}
 
+	public Color getParticleColor() {
+		return new Color(0.25, 0.19, 0.11, 1.0);
+	}
+	
+	public int getParticleSize() {
+		return 6; // 6 pixels
+	}
+	
+	public int getParticleSpeed() {
+		return 1;
+	}
+	
+	public int getParticleMaxLife() {
+		return 20;
+	}
 }
