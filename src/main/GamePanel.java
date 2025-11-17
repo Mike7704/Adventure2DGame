@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import tile.TileManager;
 import tile_interactive.InteractiveTile;
 
@@ -22,9 +23,9 @@ public class GamePanel extends AnchorPane {
 	private final int scale = 3; // Scale tiles
 	
 	public final int tileSize = originalTileSize * scale; // 16 x 3 = 48 tile
-	public final int maxScreenCol = 16;
+	public final int maxScreenCol = 20;
 	public final int maxScreenRow = 12;
-	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+	public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
 	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 	
 	// WORLD SETTINGS
@@ -66,7 +67,10 @@ public class GamePanel extends AnchorPane {
     public final int dialogueState = 3;
     public final int characterState = 4;
     
-	public GamePanel() {
+    Stage primaryStage;
+    
+	public GamePanel(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 		this.setPrefSize(screenWidth, screenHeight);
 
         // Create canvas for drawing
@@ -181,7 +185,7 @@ public class GamePanel extends AnchorPane {
 			// nothing yet
 		}		
 	}
-	
+		
 	public void draw() {
 		// DEBUG
 		long drawStart = 0;
@@ -264,6 +268,31 @@ public class GamePanel extends AnchorPane {
 	        System.out.println("Draw Time: " + passed);
 	        System.out.println("WorldX: " + (int)player.worldX + ", WorldY: " + (int)player.worldY);
 	        System.out.println("Column: " + ((int)(player.worldX + player.solidArea.getX()) / tileSize) + ", Row: " + ((int)(player.worldY + player.solidArea.getY()) / tileSize));
+        }
+    }
+	
+	public void toggleFullscreen() {
+        primaryStage.setFullScreen(!primaryStage.isFullScreen());
+        
+        if (primaryStage.isFullScreen()) {
+            // Update canvas size to match full screen window size
+            canvas.setWidth(primaryStage.getWidth());
+            canvas.setHeight(primaryStage.getHeight());
+            
+            // Calculate the scale factors based on the current canvas size
+            double scaleX = canvas.getWidth() / (double) (tileSize * maxScreenCol); // Scale relative to the original resolution width
+            double scaleY = canvas.getHeight() / (double) (tileSize * maxScreenRow);
+
+    	    // Apply the scaling to the GraphicsContext
+    	    gc.save(); // Save the current state of the GC
+    	    gc.scale(scaleX, scaleY); // Scale everything based on the canvas size
+    	    
+        } else {
+            // Reset to default screen size
+            canvas.setWidth(screenWidth);
+            canvas.setHeight(screenHeight);
+            
+            gc.restore(); // Restore the default scale
         }
     }
 	

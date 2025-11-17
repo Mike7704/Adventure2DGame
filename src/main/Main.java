@@ -9,7 +9,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			GamePanel gamePanel = new GamePanel();
+			GamePanel gamePanel = new GamePanel(primaryStage);
 			Scene scene = new Scene(gamePanel);
 			
 			KeyHandler keyHandler = gamePanel.getKeyHandler();
@@ -19,6 +19,8 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("2D Adventure");
 			primaryStage.setResizable(false);
+			primaryStage.setFullScreen(false);
+			primaryStage.setFullScreenExitHint("");
 			primaryStage.show();
 			
 			gamePanel.setupGame();

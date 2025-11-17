@@ -44,6 +44,11 @@ public class KeyHandler {
  			characterState(code);
  		}
         
+        // FULL SCREEN TOGGLE
+        if (code == KeyCode.F11) {
+			gamePanel.toggleFullscreen();
+		}
+        
         // DEBUG
         if (code == KeyCode.T) { 
 			showDebugText = !showDebugText;
