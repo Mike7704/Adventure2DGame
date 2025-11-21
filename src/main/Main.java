@@ -2,6 +2,7 @@ package main;
 	
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 
@@ -21,6 +22,7 @@ public class Main extends Application {
 			primaryStage.setResizable(false);
 			primaryStage.setFullScreen(false);
 			primaryStage.setFullScreenExitHint("");
+			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			primaryStage.show();
 			
 			gamePanel.setupGame();

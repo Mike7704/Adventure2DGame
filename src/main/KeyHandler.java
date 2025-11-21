@@ -43,6 +43,10 @@ public class KeyHandler {
  		else if (gamePanel.gameState == gamePanel.characterState) {
  			characterState(code);
  		}
+        // OPTIONS STATE
+  		else if (gamePanel.gameState == gamePanel.optionsState) {
+  			optionsState(code);
+  		}
         
         // FULL SCREEN TOGGLE
         if (code == KeyCode.F11) {
@@ -107,6 +111,9 @@ public class KeyHandler {
         if (code == KeyCode.F) {
         	shootKeyPressed = true;
         }
+        if (code == KeyCode.ESCAPE) {
+        	gamePanel.gameState = gamePanel.optionsState;
+        }
 	}
 	
 	private void pauseState(KeyCode code) {
@@ -122,7 +129,7 @@ public class KeyHandler {
 	}
 	
 	private void characterState(KeyCode code) {
-		if (code == KeyCode.C) {
+		if (code == KeyCode.C || code == KeyCode.ESCAPE) {
 			gamePanel.gameState = gamePanel.playState;
 		}
 		if (code == KeyCode.W || code == KeyCode.UP) {
@@ -153,7 +160,56 @@ public class KeyHandler {
 			gamePanel.getPlayer().selectItem();
 		}
 	}
-    
+	
+	private void optionsState(KeyCode code) {
+		if (code == KeyCode.ESCAPE) {
+			gamePanel.gameState = gamePanel.playState;
+		}
+		if (code == KeyCode.ENTER) {
+			enterPressed = true;
+		}
+		if (code == KeyCode.W || code == KeyCode.UP) {
+			if (gamePanel.getUI().commandNum > 0) {
+				gamePanel.getUI().commandNum--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.S || code == KeyCode.DOWN) {
+			if (gamePanel.getUI().commandNum < 4) {
+				gamePanel.getUI().commandNum++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.A || code == KeyCode.LEFT) {
+			// Music volume
+			if (gamePanel.getUI().commandNum == 1 && gamePanel.getMusic().volume > 0.2f) {
+				gamePanel.stopMusic(); // Need to stop music before changing volume
+				gamePanel.setMusicVolume(gamePanel.getMusic().volume - 0.2f);
+				gamePanel.playMusic(0);
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+			// Sound volume
+			if (gamePanel.getUI().commandNum == 2 && gamePanel.getSoundEffect().volume > 0.2f) {
+				gamePanel.setSoundVolume(gamePanel.getSoundEffect().volume - 0.2f);
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.D || code == KeyCode.RIGHT) {
+			// Music volume
+			if (gamePanel.getUI().commandNum == 1 && gamePanel.getMusic().volume < 1.0f) {
+				gamePanel.stopMusic(); // Need to stop music before changing volume
+				gamePanel.setMusicVolume(gamePanel.getMusic().volume + 0.2f);
+				gamePanel.playMusic(0);
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+			// Sound volume
+			if (gamePanel.getUI().commandNum == 2 && gamePanel.getSoundEffect().volume < 1.0f) {
+				gamePanel.setSoundVolume(gamePanel.getSoundEffect().volume + 0.2f);
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+	}
+	
     public void handleKeyReleased(KeyEvent e) {
         KeyCode code = e.getCode();
 

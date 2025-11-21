@@ -36,6 +36,9 @@ public class GamePanel extends AnchorPane {
 	public final int TARGET_FPS = 60;
 	private final double TARGET_TIME_BETWEEN_FRAMES = 1_000_000_000.0 / TARGET_FPS; // in nanoseconds
 	
+	// SETTINGS
+	public boolean fullscreen = false;
+	
 	private Canvas canvas;
     private GraphicsContext gc;
 	
@@ -66,6 +69,7 @@ public class GamePanel extends AnchorPane {
     public final int pauseState = 2;
     public final int dialogueState = 3;
     public final int characterState = 4;
+    public final int optionsState = 5;
     
     Stage primaryStage;
     
@@ -87,7 +91,7 @@ public class GamePanel extends AnchorPane {
 		assetSetter.setNPC();
 		assetSetter.setMonster();
 		assetSetter.setInteractiveTile();
-		//playMusic(0);
+		playMusic(0);
 		
 		gameState = titleState;
 	}
@@ -272,9 +276,10 @@ public class GamePanel extends AnchorPane {
     }
 	
 	public void toggleFullscreen() {
-        primaryStage.setFullScreen(!primaryStage.isFullScreen());
+		fullscreen = !fullscreen;
+        primaryStage.setFullScreen(fullscreen);
         
-        if (primaryStage.isFullScreen()) {
+        if (fullscreen) {
             // Update canvas size to match full screen window size
             canvas.setWidth(primaryStage.getWidth());
             canvas.setHeight(primaryStage.getHeight());
@@ -309,6 +314,22 @@ public class GamePanel extends AnchorPane {
 	public void playSoundEffect(int i) {
 		soundEffect.setFile(i);
 		soundEffect.play();
+	}
+	
+	public void setMusicVolume(float i) {
+		music.setVolume(i);
+	}
+	
+	public void setSoundVolume(float i) {
+		soundEffect.setVolume(i);
+	}
+	
+	public Sound getMusic() {
+		return music;
+	}
+	
+	public Sound getSoundEffect() {
+		return soundEffect;
 	}
 	
 	public KeyHandler getKeyHandler() {

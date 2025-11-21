@@ -6,6 +6,7 @@ public class Sound {
 
 	AudioClip audioClip;
 	String[] soundPath = new String[30];
+	float volume = 1.0f;
 	
 	public Sound() {
 		soundPath[0] = getClass().getResource("/Sound/BlueBoyAdventure.wav").toString();
@@ -31,6 +32,7 @@ public class Sound {
 	}
 	
 	public void play() {
+		audioClip.setVolume(volume);
 		audioClip.play();
 	}
 	
@@ -40,5 +42,10 @@ public class Sound {
 	
 	public void stop() {
 		audioClip.stop();
+	}
+	
+	public void setVolume(float volume) {
+		this.volume = volume;
+		audioClip.setVolume(volume);
 	}
 }

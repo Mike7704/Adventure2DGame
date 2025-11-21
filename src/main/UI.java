@@ -106,6 +106,11 @@ public class UI {
 			drawInventoryScreen();
 			drawDescriptionScreen();
 		}
+		// OPTIONS STATE
+		else if (gamePanel.gameState == gamePanel.optionsState) {
+			drawOptionsScreen();
+			drawControlScreen();
+		}
 	}
 	
 	private void drawTitleScreen() {
@@ -324,6 +329,177 @@ public class UI {
 			
 			drawTextWithShadow(gamePanel.getPlayer().inventory.get(itemIndex).description, textX, textY);
 		}
+	}
+	
+	private void drawOptionsScreen() {
+		// Window
+		int frameX = gamePanel.tileSize;
+		int frameY = gamePanel.tileSize;
+		int frameWidth = gamePanel.tileSize * 8;
+		int frameHeight = gamePanel.tileSize * 10;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+				
+		// Title text
+		gc.setFont(font_large);
+		gc.setFill(Color.WHITE);
+		gc.setTextAlign(TextAlignment.CENTER);
+		
+		// Title
+		int textX = frameX + (frameWidth / 2);
+		int textY = frameY + gamePanel.tileSize;
+		drawTextWithShadow("OPTIONS", textX, textY);
+		
+		// Options text
+		textX = frameX + (gamePanel.tileSize);
+		gc.setFont(font_small);
+		gc.setTextAlign(TextAlignment.LEFT);
+		
+		// Full screen
+		textY += gamePanel.tileSize * 2;
+		drawTextWithShadow("FULL SCREEN", textX, textY);
+		if (commandNum == 0) {
+			drawTextWithShadow(">", textX - 25, textY);
+			if (gamePanel.getKeyHandler().enterPressed) {
+				gamePanel.toggleFullscreen();
+			}
+		}
+		
+		// Music
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("MUSIC", textX, textY);
+		if (commandNum == 1) {
+			drawTextWithShadow(">", textX - 25, textY);
+		}
+		
+		// Sound effects
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("SOUND", textX, textY);
+		if (commandNum == 2) {
+			drawTextWithShadow(">", textX - 25, textY);
+		}
+				
+		// Exit game
+		textY += (gamePanel.tileSize * 2);
+		drawTextWithShadow("EXIT GAME", textX, textY);
+		if (commandNum == 3) {
+			drawTextWithShadow(">", textX - 25, textY);
+			if (gamePanel.getKeyHandler().enterPressed) {
+				gamePanel.gameState = gamePanel.titleState;
+				commandNum = 0;
+			}
+		}
+		
+		// Close
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("CLOSE", textX, textY);
+		if (commandNum == 4) {
+			drawTextWithShadow(">", textX - 25, textY);
+			if (gamePanel.getKeyHandler().enterPressed) {
+				gamePanel.gameState = gamePanel.playState;
+				commandNum = 0;
+			}
+		}
+				
+		// Full screen check box
+		textX = frameX + frameWidth - (gamePanel.tileSize + 25);
+		textY = frameY + (gamePanel.tileSize * 3);
+		gc.setFill(Color.WHITE);
+		gc.setLineWidth(3);
+		gc.strokeRoundRect(textX, textY - 25, 25, 25, 10, 10);
+		if (gamePanel.fullscreen) {
+			gc.fillRoundRect(textX, textY - 25, 25, 25, 10, 10);
+		}
+		
+		// Music volume
+		textY += gamePanel.tileSize;
+		gc.strokeRoundRect(textX - 75, textY - 25, 100, 25, 10, 10);
+		int volumeWidth = (int) (gamePanel.getMusic().volume * 100);
+		gc.fillRoundRect(textX - 75, textY - 25, volumeWidth, 25, 10, 10);
+		
+		// Sound volume
+		textY += gamePanel.tileSize;
+		gc.strokeRoundRect(textX - 75, textY - 25, 100, 25, 10, 10);
+		volumeWidth = (int) (gamePanel.getSoundEffect().volume * 100);
+		gc.fillRoundRect(textX - 75, textY - 25, volumeWidth, 25, 10, 10);
+				
+		gamePanel.getKeyHandler().enterPressed = false;
+	}
+	
+	private void drawControlScreen() {
+		// Window
+		int frameX = gamePanel.tileSize * 11;
+		int frameY = gamePanel.tileSize;
+		int frameWidth = gamePanel.tileSize * 8;
+		int frameHeight = gamePanel.tileSize * 10;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+				
+		// Title text
+		gc.setFont(font_large);
+		gc.setFill(Color.WHITE);
+		gc.setTextAlign(TextAlignment.CENTER);
+		
+		// Title
+		int textX = frameX + (frameWidth / 2);
+		int textY = frameY + gamePanel.tileSize;
+		drawTextWithShadow("CONTROLS", textX, textY);
+		
+		// Options text
+		textX = frameX + (gamePanel.tileSize);
+		gc.setFont(font_small);
+		gc.setTextAlign(TextAlignment.LEFT);
+		
+		// Move
+		textY += gamePanel.tileSize * 2;
+		drawTextWithShadow("MOVE", textX, textY);
+		
+		// Use/Attack
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("USE/ATTACK", textX, textY);
+		
+		// Shoot/Cast
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("SHOOT/CAST", textX, textY);
+		
+		// Character screen
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("CHARACTER SCREEN", textX, textY);
+		
+		// Pause
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("PAUSE", textX, textY);
+		
+		// Options
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("OPTIONS", textX, textY);
+		
+		// Second column
+		gc.setTextAlign(TextAlignment.RIGHT);
+		textX = frameX + frameWidth - gamePanel.tileSize;
+		textY = frameY + (gamePanel.tileSize * 2);
+		
+		// Move
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("WASD", textX, textY);
+		
+		// Confirm/Attack
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("ENTER", textX, textY);
+		
+		// Shoot/Cast
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("F", textX, textY);
+		
+		// Character screen
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("C", textX, textY);
+		
+		// Pause
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("P", textX, textY);
+		
+		// Options
+		textY += gamePanel.tileSize;
+		drawTextWithShadow("ESC", textX, textY);
 	}
 	
 	public int getItemIndexOnSlot() {
