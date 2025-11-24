@@ -1,0 +1,3 @@
+fullscreen:false
+musicVolume:0.6
+soundVolume:0.6

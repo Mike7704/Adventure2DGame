@@ -25,6 +25,12 @@ public class Main extends Application {
 			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			primaryStage.show();
 			
+			gamePanel.getConfig().loadConfig();
+			if (gamePanel.fullscreen) {
+				gamePanel.fullscreen = false; // Prevents double toggle
+				gamePanel.toggleFullscreen();
+			}
+			
 			gamePanel.setupGame();
 			gamePanel.startGameLoop();
 			

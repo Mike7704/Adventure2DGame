@@ -384,6 +384,7 @@ public class UI {
 		if (commandNum == 3) {
 			drawTextWithShadow(">", textX - 25, textY);
 			if (gamePanel.getKeyHandler().enterPressed) {
+				gamePanel.getConfig().saveConfig();
 				gamePanel.gameState = gamePanel.titleState;
 				commandNum = 0;
 			}
@@ -395,6 +396,7 @@ public class UI {
 		if (commandNum == 4) {
 			drawTextWithShadow(">", textX - 25, textY);
 			if (gamePanel.getKeyHandler().enterPressed) {
+				gamePanel.getConfig().saveConfig();
 				gamePanel.gameState = gamePanel.playState;
 				commandNum = 0;
 			}

@@ -51,6 +51,7 @@ public class GamePanel extends AnchorPane {
     private AssetSetter assetSetter = new AssetSetter(this);
     private UI ui = new UI(this);
     private EventHandler eventHandler = new EventHandler(this);
+    private Config config = new Config(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -382,5 +383,9 @@ public class GamePanel extends AnchorPane {
 	
 	public EventHandler getEventHandler() {
 		return eventHandler;
+	}
+	
+	public Config getConfig() {
+		return config;
 	}
 }

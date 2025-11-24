@@ -163,6 +163,7 @@ public class KeyHandler {
 	
 	private void optionsState(KeyCode code) {
 		if (code == KeyCode.ESCAPE) {
+			gamePanel.getConfig().saveConfig();
 			gamePanel.gameState = gamePanel.playState;
 		}
 		if (code == KeyCode.ENTER) {
