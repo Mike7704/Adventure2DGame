@@ -71,6 +71,7 @@ public class GamePanel extends AnchorPane {
     public final int dialogueState = 3;
     public final int characterState = 4;
     public final int optionsState = 5;
+    public final int gameOverState = 6;
     
     Stage primaryStage;
     
@@ -301,6 +302,30 @@ public class GamePanel extends AnchorPane {
             gc.restore(); // Restore the default scale
         }
     }
+	
+	public void respawn() {
+		player.setDefaultPositions();
+		player.restoreLifeAndMana();
+				
+		assetSetter.setNPC();
+		assetSetter.setMonster();
+		
+		playMusic(0);
+	}
+	
+	public void restart() {
+		player.setDefaultValues();
+		player.setDefaultPositions();
+		player.restoreLifeAndMana();
+		player.setItems();
+		
+		assetSetter.setObject();
+		assetSetter.setNPC();
+		assetSetter.setMonster();
+		assetSetter.setInteractiveTile();
+		
+		playMusic(0);
+	}
 	
 	public void playMusic(int i) {
 		music.setFile(i);

@@ -48,13 +48,11 @@ public class Player extends Entity {
 	}
 	
 	// Initial player start position
-	private void setDefaultValues() {
+	public void setDefaultValues() {
 		name = "Player";
 		type = type_player;
-		worldX = gamePanel.tileSize * 23;
-		worldY = gamePanel.tileSize * 21;
+		setDefaultPositions();
 		speed= 4;
-		direction = "down";
 		
 		// PLAYER STATUS
 		level = 1;
@@ -75,7 +73,20 @@ public class Player extends Entity {
 		defense = getDefense(); // Calculate defense value based on shield and dexterity
 	}
 	
-	private void setItems() {
+	public void setDefaultPositions() {
+		worldX = gamePanel.tileSize * 23;
+		worldY = gamePanel.tileSize * 21;
+		direction = "down";
+	}
+	
+	public void restoreLifeAndMana() {
+		life = maxLife;
+		mana = maxMana;
+		invincible = false;
+	}
+	
+	public void setItems() {
+		inventory.clear();
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 	}
@@ -234,6 +245,22 @@ public class Player extends Entity {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+		}
+		
+		if (life > maxLife) {
+			life = maxLife;
+		}
+		
+		if (mana > maxMana) {
+			mana = maxMana;
+		}
+		
+		if (life <= 0) {
+			gamePanel.stopMusic();
+			gamePanel.getUI().commandNum = -1; // Prevent accidentally selecting an option
+			gamePanel.gameState = gamePanel.gameOverState;
+			gamePanel.playSoundEffect(12); // Game over sound
+			
 		}
 	}
 	

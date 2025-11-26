@@ -47,6 +47,10 @@ public class KeyHandler {
   		else if (gamePanel.gameState == gamePanel.optionsState) {
   			optionsState(code);
   		}
+        // GAME OVER STATE
+  		else if (gamePanel.gameState == gamePanel.gameOverState) {
+  			gameOverState(code);
+  		}
         
         // FULL SCREEN TOGGLE
         if (code == KeyCode.F11) {
@@ -206,6 +210,31 @@ public class KeyHandler {
 			// Sound volume
 			if (gamePanel.getUI().commandNum == 2 && gamePanel.getSoundEffect().volume < 1.0f) {
 				gamePanel.setSoundVolume(gamePanel.getSoundEffect().volume + 0.2f);
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+	}
+	
+	private void gameOverState(KeyCode code) {
+		if (code == KeyCode.ENTER) {
+			if (gamePanel.getUI().commandNum == 0) {
+				gamePanel.gameState = gamePanel.playState;
+				gamePanel.respawn();
+			}
+			else if (gamePanel.getUI().commandNum == 1) {
+				gamePanel.gameState = gamePanel.titleState;
+				gamePanel.restart();
+			}
+		}
+		if (code == KeyCode.W || code == KeyCode.UP) {
+			if (gamePanel.getUI().commandNum > 0) {
+				gamePanel.getUI().commandNum--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.S || code == KeyCode.DOWN) {
+			if (gamePanel.getUI().commandNum < 1) {
+				gamePanel.getUI().commandNum++;
 				gamePanel.playSoundEffect(9); // cursor sound
 			}
 		}

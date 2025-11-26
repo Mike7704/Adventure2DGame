@@ -111,6 +111,10 @@ public class UI {
 			drawOptionsScreen();
 			drawControlScreen();
 		}
+		// GAME OVER STATE
+		else if (gamePanel.gameState == gamePanel.gameOverState) {
+			drawGameOverScreen();
+		}
 	}
 	
 	private void drawTitleScreen() {
@@ -502,6 +506,29 @@ public class UI {
 		// Options
 		textY += gamePanel.tileSize;
 		drawTextWithShadow("ESC", textX, textY);
+	}
+	
+	public void drawGameOverScreen() {
+		// Background
+		gc.setFill(new Color(0, 0, 0, 0.7));
+		gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+		
+		// Text
+		gc.setFont(font_large);
+		gc.setTextAlign(TextAlignment.CENTER);
+		drawTextWithShadow("GAME OVER", gamePanel.screenWidth / 2, gamePanel.screenHeight / 5);
+		
+		// Respawn
+		drawTextWithShadow("RESPAWN", gamePanel.screenWidth / 2, gamePanel.screenHeight / 1.5);
+		if (commandNum == 0) {
+			drawTextWithShadow(">", gamePanel.screenWidth / 2 - 130, gamePanel.screenHeight / 1.5);
+		}
+		
+		// Title screen
+		drawTextWithShadow("QUIT", gamePanel.screenWidth / 2, (gamePanel.screenHeight / 1.5) + 42);
+		if (commandNum == 1) {
+			drawTextWithShadow(">", gamePanel.screenWidth / 2 - 130, (gamePanel.screenHeight / 1.5) + 42);
+		}
 	}
 	
 	public int getItemIndexOnSlot() {
