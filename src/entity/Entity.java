@@ -125,12 +125,12 @@ public class Entity {
 	}
 	
 	public void dropItem(Entity droppedItem) {
-		for (int i = 0; i < gamePanel.getObject().length; i++) {
+		for (int i = 0; i < gamePanel.getObject()[1].length; i++) {
 			// Entity is dead, replace it with a dropped item
-			if (gamePanel.getObject()[i] == null) {
-				gamePanel.getObject()[i] = droppedItem;
-				gamePanel.getObject()[i].worldX = worldX;
-				gamePanel.getObject()[i].worldY = worldY;
+			if (gamePanel.getObject()[gamePanel.currentMap][i] == null) {
+				gamePanel.getObject()[gamePanel.currentMap][i] = droppedItem;
+				gamePanel.getObject()[gamePanel.currentMap][i].worldX = worldX;
+				gamePanel.getObject()[gamePanel.currentMap][i].worldY = worldY;
 				break;
 			}
 		}

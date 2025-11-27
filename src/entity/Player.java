@@ -314,12 +314,12 @@ public class Player extends Entity {
 	
 	public void pickUpObject(int index) {
 		if (index != 999) {
-			Entity object = gamePanel.getObject()[index];
+			Entity object = gamePanel.getObject()[gamePanel.currentMap][index];
 			
 			// Pick up only items
 			if (object.type == type_pickup) {
 				object.use(this);
-				gamePanel.getObject()[index] = null;
+				gamePanel.getObject()[gamePanel.currentMap][index] = null;
 			}
 			// Inventory items
 			else {
@@ -328,7 +328,7 @@ public class Player extends Entity {
 					inventory.add(object);
 					gamePanel.playSoundEffect(1); // Item pickup sound
 					gamePanel.getUI().addMessage("Picked up " + object.name + "!");
-					gamePanel.getObject()[index] = null;
+					gamePanel.getObject()[gamePanel.currentMap][index] = null;
 				}
 				else {
 					// Inventory full
@@ -344,7 +344,7 @@ public class Player extends Entity {
 			if (index != 999) {
 				attackCanceled = true;
 				gamePanel.gameState = gamePanel.dialogueState;
-				gamePanel.getNPC()[index].speak();
+				gamePanel.getNPC()[gamePanel.currentMap][index].speak();
 			}
 		}
 	}
@@ -353,9 +353,9 @@ public class Player extends Entity {
 	public void contactMonster(int index) {
 		if (index != 999) {
 			// Damage player
-			if (!invincible && !gamePanel.getMonster()[index].dying) {
+			if (!invincible && !gamePanel.getMonster()[gamePanel.currentMap][index].dying) {
 				gamePanel.playSoundEffect(6); // Hurt sound
-				int damage = gamePanel.getMonster()[index].attack - defense;
+				int damage = gamePanel.getMonster()[gamePanel.currentMap][index].attack - defense;
 				life -= damage;
 				invincible = true;
 			}
@@ -364,7 +364,7 @@ public class Player extends Entity {
 	
 	public void damageMonster(int index, int attack) {
 		if (index != 999) {
-			Entity monster = gamePanel.getMonster()[index];
+			Entity monster = gamePanel.getMonster()[gamePanel.currentMap][index];
 			if (!monster.invincible) {
 				// Damage monster
 				gamePanel.playSoundEffect(5); // Damage monster sound
@@ -391,7 +391,7 @@ public class Player extends Entity {
 	
 	private void damageInteractiveTile(int index) {
 		if (index != 999) {
-			InteractiveTile interactiveTile = gamePanel.getInteractiveTile()[index];
+			InteractiveTile interactiveTile = gamePanel.getInteractiveTile()[gamePanel.currentMap][index];
 			if (interactiveTile.destructible && interactiveTile.isCorrectItem(this) && !interactiveTile.invincible) {
 				// Hit tile
 				interactiveTile.playSoundEffect();
@@ -401,7 +401,7 @@ public class Player extends Entity {
 				generateParticle(interactiveTile, interactiveTile);
 				
 				if (interactiveTile.life == 0) {
-					gamePanel.getInteractiveTile()[index] = interactiveTile.getDestroyedForm();
+					gamePanel.getInteractiveTile()[gamePanel.currentMap][index] = interactiveTile.getDestroyedForm();
 				}
 			}
 		}

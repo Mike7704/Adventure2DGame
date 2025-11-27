@@ -31,6 +31,8 @@ public class GamePanel extends AnchorPane {
 	// WORLD SETTINGS
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
+	public final int maxMap = 10;
+	public int currentMap = 0;
 	
 	// FPS
 	public final int TARGET_FPS = 60;
@@ -55,10 +57,10 @@ public class GamePanel extends AnchorPane {
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
-    private Entity[] obj = new Entity[20];
-    private Entity[] npc = new Entity[20];
-    private Entity[] monster = new Entity[20];
-    private InteractiveTile[] interactiveTile = new InteractiveTile[50];
+    private Entity[][] obj = new Entity[maxMap][20];
+    private Entity[][] npc = new Entity[maxMap][20];
+    private Entity[][] monster = new Entity[maxMap][20];
+    private InteractiveTile[][] interactiveTile = new InteractiveTile[maxMap][50];
     private ArrayList<Entity> entityList = new ArrayList<>();
     private ArrayList<Entity> projectileList = new ArrayList<>();
     private ArrayList<Entity> particleList = new ArrayList<>();
@@ -136,21 +138,21 @@ public class GamePanel extends AnchorPane {
 			player.update();
 			
 			// NPC
-			for (int i = 0; i < npc.length; i++) {
-				if (npc[i] != null) {
-					npc[i].update();
+			for (int i = 0; i < npc[1].length; i++) {
+				if (npc[currentMap][i] != null) {
+					npc[currentMap][i].update();
 				}
 			}
 			
 			// MONSTER
-			for (int i = 0; i < monster.length; i++) {
-				if (monster[i] != null) {
-					if (monster[i].alive && !monster[i].dying) {
-						monster[i].update();
+			for (int i = 0; i < monster[1].length; i++) {
+				if (monster[currentMap][i] != null) {
+					if (monster[currentMap][i].alive && !monster[currentMap][i].dying) {
+						monster[currentMap][i].update();
 					}
-					else if (!monster[i].alive) {
-						monster[i].checkDrop();
-						monster[i] = null;
+					else if (!monster[currentMap][i].alive) {
+						monster[currentMap][i].checkDrop();
+						monster[currentMap][i] = null;
 					}
 				}
 			}
@@ -180,9 +182,9 @@ public class GamePanel extends AnchorPane {
 			}
 			
 			// INTERACTIVE TILES
-			for (int i = 0; i < interactiveTile.length; i++) {
-				if (interactiveTile[i] != null) {
-					interactiveTile[i].update();
+			for (int i = 0; i < interactiveTile[1].length; i++) {
+				if (interactiveTile[currentMap][i] != null) {
+					interactiveTile[currentMap][i].update();
 				}
 			}
 			
@@ -209,9 +211,9 @@ public class GamePanel extends AnchorPane {
         tileManager.draw(gc);
         
         // INTERACTIVE TILES
-		for (int i = 0; i < interactiveTile.length; i++) {
-			if (interactiveTile[i] != null) {
-				interactiveTile[i].draw(gc);
+		for (int i = 0; i < interactiveTile[1].length; i++) {
+			if (interactiveTile[currentMap][i] != null) {
+				interactiveTile[currentMap][i].draw(gc);
 			}
 		}
         
@@ -219,23 +221,23 @@ public class GamePanel extends AnchorPane {
         entityList.add(player);
         
         // NPC ENTITY
-        for (int i = 0; i < npc.length; i++) {
-			if (npc[i] != null) {
-				entityList.add(npc[i]);
+        for (int i = 0; i < npc[1].length; i++) {
+			if (npc[currentMap][i] != null) {
+				entityList.add(npc[currentMap][i]);
 			}
 		}
         
         // OBJECT ENTITY
-        for (int i = 0; i < obj.length; i++) {
-			if (obj[i] != null) {
-				entityList.add(obj[i]);
+        for (int i = 0; i < obj[1].length; i++) {
+			if (obj[currentMap][i] != null) {
+				entityList.add(obj[currentMap][i]);
 			}
 		}
         
         // MONSTER ENTITY
-        for (int i = 0; i < monster.length; i++) {
-			if (monster[i] != null) {
-				entityList.add(monster[i]);
+        for (int i = 0; i < monster[1].length; i++) {
+			if (monster[currentMap][i] != null) {
+				entityList.add(monster[currentMap][i]);
 			}
 		}
         
@@ -378,19 +380,19 @@ public class GamePanel extends AnchorPane {
 		return player;
 	}
 	
-	public Entity[] getObject() {
+	public Entity[][] getObject() {
 		return obj;
 	}
 	
-	public Entity[] getNPC() {
+	public Entity[][] getNPC() {
 		return npc;
 	}
 	
-	public Entity[] getMonster() {
+	public Entity[][] getMonster() {
 		return monster;
 	}
 	
-	public InteractiveTile[] getInteractiveTile() {
+	public InteractiveTile[][] getInteractiveTile() {
 		return interactiveTile;
 	}
 	

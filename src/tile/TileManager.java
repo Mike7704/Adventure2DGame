@@ -13,16 +13,17 @@ public class TileManager {
 
 	private GamePanel gamePanel;
 	public Tile[] tile;
-	public int[][] mapTileNum;
+	public int[][][] mapTileNum;
 	
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		
 		tile = new Tile[50];
-		mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
+		mapTileNum = new int[gamePanel.maxMap][gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 		
 		getTileImage();
-		loadMap("/Maps/worldV2.txt");
+		loadMap("/Maps/worldV3.txt", 0);
+		loadMap("/Maps/interior01.txt", 1);
 	}
 	
 	// Tile texture images
@@ -53,6 +54,10 @@ public class TileManager {
         setup(39, "earth", false);
         setup(40, "wall", true);
         setup(41,"tree", true);
+        
+        setup(42, "hut", false);
+        setup(43, "floor01", false);
+        setup(44,"table01", true);
 	}
 	
 	public void setup(int index, String imageName, boolean collision) {
@@ -67,7 +72,7 @@ public class TileManager {
 	}
 	
 	// Read map data from text file
-	public void loadMap(String filePath) {
+	public void loadMap(String filePath, int map) {
 		try {
 			InputStream inputStream = getClass().getResourceAsStream(filePath);
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -83,7 +88,7 @@ public class TileManager {
 					String[] numbers = line.split(" ");
 					int num = Integer.parseInt(numbers[col]);
 					
-					mapTileNum[col][row] = num;
+					mapTileNum[map][col][row] = num;
 					col++;
 				}
 				// Next row
@@ -105,7 +110,7 @@ public class TileManager {
 		int worldRow = 0;
 	
 		while(worldCol < gamePanel.maxWorldCol && worldRow < gamePanel.maxWorldRow) {
-			int tileNum = mapTileNum[worldCol][worldRow]; // Get tile number/texture from map data
+			int tileNum = mapTileNum[gamePanel.currentMap][worldCol][worldRow]; // Get tile number/texture from map data
 			
 			// Set tile screen position relative to the player position
 			int worldX = worldCol * gamePanel.tileSize;
