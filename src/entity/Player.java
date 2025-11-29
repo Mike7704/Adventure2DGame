@@ -23,10 +23,7 @@ public class Player extends Entity {
 	private int standCounter = 0;
 	
 	public boolean attackCanceled = false;
-	
-	public ArrayList<Entity> inventory = new ArrayList<>();
-	public final int maxInventorySize = 16;
-	
+		
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		
 		super(gamePanel);
@@ -65,7 +62,7 @@ public class Player extends Entity {
 		dexterity = 1; // Defense
 		exp = 0;
 		nextLevelExp = 5;
-		coin = 0;
+		coin = 200;
 		currentWeapon = new OBJ_Sword_Normal(gamePanel);
 		currentShield = new OBJ_Shield_Wood(gamePanel);
 		projectile = new OBJ_Fireball(gamePanel);
@@ -426,7 +423,7 @@ public class Player extends Entity {
 	
 	public void selectItem() {
 		// Get the selected item index from the UI
-		int itemIndex = gamePanel.getUI().getItemIndexOnSlot();
+		int itemIndex = gamePanel.getUI().getItemIndexOnSlot(gamePanel.getUI().playerSlotCol, gamePanel.getUI().playerSlotRow);
 		
 		if (itemIndex < inventory.size()) {
 			// Equip or use the selected item

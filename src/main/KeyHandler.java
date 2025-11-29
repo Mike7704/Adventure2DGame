@@ -51,6 +51,10 @@ public class KeyHandler {
   		else if (gamePanel.gameState == gamePanel.gameOverState) {
   			gameOverState(code);
   		}
+        // TRADE STATE
+  		else if (gamePanel.gameState == gamePanel.tradeState) {
+  			tradeState(code);
+  		}
         
         // FULL SCREEN TOGGLE
         if (code == KeyCode.F11) {
@@ -136,33 +140,10 @@ public class KeyHandler {
 		if (code == KeyCode.C || code == KeyCode.ESCAPE) {
 			gamePanel.gameState = gamePanel.playState;
 		}
-		if (code == KeyCode.W || code == KeyCode.UP) {
-			if (gamePanel.getUI().slotRow > 0) {
-				gamePanel.getUI().slotRow--;
-				gamePanel.playSoundEffect(9); // cursor sound
-			}
-		}
-		if (code == KeyCode.S || code == KeyCode.DOWN) {
-			if (gamePanel.getUI().slotRow < 3) {
-				gamePanel.getUI().slotRow++;
-				gamePanel.playSoundEffect(9); // cursor sound
-			}
-		}
-		if (code == KeyCode.A || code == KeyCode.LEFT) {
-			if (gamePanel.getUI().slotCol > 0) {
-				gamePanel.getUI().slotCol--;
-				gamePanel.playSoundEffect(9); // cursor sound
-			}
-		}
-		if (code == KeyCode.D || code == KeyCode.RIGHT) {
-			if (gamePanel.getUI().slotCol < 3) {
-				gamePanel.getUI().slotCol++;
-				gamePanel.playSoundEffect(9); // cursor sound
-			}
-		}
 		if (code == KeyCode.ENTER) {
 			gamePanel.getPlayer().selectItem();
 		}
+		playerInventory(code);
 	}
 	
 	private void optionsState(KeyCode code) {
@@ -235,6 +216,100 @@ public class KeyHandler {
 		if (code == KeyCode.S || code == KeyCode.DOWN) {
 			if (gamePanel.getUI().commandNum < 1) {
 				gamePanel.getUI().commandNum++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+	}
+	
+	private void tradeState(KeyCode code) {
+		if (code == KeyCode.ENTER) {
+			enterPressed = true;
+		}
+		
+		// Trade option selection
+		if (gamePanel.getUI().subState == 0) {
+			if (code == KeyCode.W || code == KeyCode.UP) {
+				if (gamePanel.getUI().commandNum > 0) {
+					gamePanel.getUI().commandNum--;
+					gamePanel.playSoundEffect(9); // cursor sound
+				}
+			}
+			if (code == KeyCode.S || code == KeyCode.DOWN) {
+				if (gamePanel.getUI().commandNum < 2) {
+					gamePanel.getUI().commandNum++;
+					gamePanel.playSoundEffect(9); // cursor sound
+				}
+			}
+		}
+		
+		// Buy selection
+		if (gamePanel.getUI().subState == 1) {
+			npcInventory(code);
+			if (code == KeyCode.ESCAPE) {
+				gamePanel.getUI().subState = 0;
+				gamePanel.getUI().commandNum = 0;
+			}
+		}
+		
+		// Sell selection
+		if (gamePanel.getUI().subState == 2) {
+			playerInventory(code);
+			if (code == KeyCode.ESCAPE) {
+				gamePanel.getUI().subState = 0;
+				gamePanel.getUI().commandNum = 0;
+			}
+		}
+	}
+	
+	public void playerInventory(KeyCode code) {
+		if (code == KeyCode.W || code == KeyCode.UP) {
+			if (gamePanel.getUI().playerSlotRow > 0) {
+				gamePanel.getUI().playerSlotRow--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.S || code == KeyCode.DOWN) {
+			if (gamePanel.getUI().playerSlotRow < 3) {
+				gamePanel.getUI().playerSlotRow++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.A || code == KeyCode.LEFT) {
+			if (gamePanel.getUI().playerSlotCol > 0) {
+				gamePanel.getUI().playerSlotCol--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.D || code == KeyCode.RIGHT) {
+			if (gamePanel.getUI().playerSlotCol < 3) {
+				gamePanel.getUI().playerSlotCol++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+	}
+	
+	public void npcInventory(KeyCode code) {
+		if (code == KeyCode.W || code == KeyCode.UP) {
+			if (gamePanel.getUI().npcSlotRow > 0) {
+				gamePanel.getUI().npcSlotRow--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.S || code == KeyCode.DOWN) {
+			if (gamePanel.getUI().npcSlotRow < 3) {
+				gamePanel.getUI().npcSlotRow++;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.A || code == KeyCode.LEFT) {
+			if (gamePanel.getUI().npcSlotCol > 0) {
+				gamePanel.getUI().npcSlotCol--;
+				gamePanel.playSoundEffect(9); // cursor sound
+			}
+		}
+		if (code == KeyCode.D || code == KeyCode.RIGHT) {
+			if (gamePanel.getUI().npcSlotCol < 3) {
+				gamePanel.getUI().npcSlotCol++;
 				gamePanel.playSoundEffect(9); // cursor sound
 			}
 		}

@@ -18,6 +18,7 @@ public class OBJ_Potion_Red extends Entity {
 		value = 5;
 		down1 = new Image(getClass().getResourceAsStream("/Object/potion_red.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		description = "[" + name + "]\n+" + value + " HP";
+		price = 25;
 	}
 	
 	public void use(Entity entity) {

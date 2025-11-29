@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.ArrayList;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -58,11 +60,14 @@ public class Entity {
 	public Projectile projectile;
 	
 	// ITEM ATTRIBUTES
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int maxInventorySize = 16;
 	public int value;
 	public int attackValue;
 	public int defenseValue;
 	public String description = "";
 	public int useCost;
+	public int price;
 	
 	// TYPE
 	public int type;
@@ -201,7 +206,7 @@ public class Entity {
 		}
 		
 		spriteCounter++;
-		if (spriteCounter > 12) {
+		if (spriteCounter > 24) {
 			if (spriteNum == 1) {
 				spriteNum = 2;
 			}

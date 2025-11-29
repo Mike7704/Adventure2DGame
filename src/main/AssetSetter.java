@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_Merchant;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
 import object.OBJ_Axe;
@@ -68,7 +69,8 @@ public class AssetSetter {
 		i++;
 		
 		mapNum = 1;
-		gamePanel.getNPC()[mapNum][i] = new NPC_OldMan(gamePanel);
+		i = 0;
+		gamePanel.getNPC()[mapNum][i] = new NPC_Merchant(gamePanel);
 		gamePanel.getNPC()[mapNum][i].worldX = gamePanel.tileSize * 12;
 		gamePanel.getNPC()[mapNum][i].worldY = gamePanel.tileSize * 7;
 	}

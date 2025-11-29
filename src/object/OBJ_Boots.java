@@ -13,5 +13,6 @@ public class OBJ_Boots extends Entity {
 		type = type_consumable;
 		down1 = new Image(getClass().getResourceAsStream("/Object/boots.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		description = "[" + name + "]\nIncreases speed.";
+		price = 100;
 	}
 }

@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import entity.Player;
 
 public class EventHandler {
@@ -68,6 +69,11 @@ public class EventHandler {
 			// Hut exit teleport
 			else if (hit(1, 12, 13, "any")) {
 				teleport(0, 10, 39);
+			}
+			
+			// Hut merchant speak
+			else if (hit(1, 12, 9, "up")) {
+				speak(gamePanel.getNPC()[1][0]);
 			}
 		}
 	}
@@ -141,4 +147,12 @@ public class EventHandler {
 		}
 	}
 	
+	// Event: Speak to NPC
+	public void speak(Entity entity) {
+		if (gamePanel.getKeyHandler().enterPressed) {
+			gamePanel.gameState = gamePanel.dialogueState;
+			gamePanel.getPlayer().attackCanceled = true;
+			entity.speak();
+		}
+	}
 }

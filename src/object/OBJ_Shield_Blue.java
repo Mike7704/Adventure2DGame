@@ -14,5 +14,6 @@ public class OBJ_Shield_Blue extends Entity {
 		down1 = new Image(getClass().getResourceAsStream("/Object/shield_blue.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		defenseValue = 2;
 		description = "[" + name + "]\nA blue shield.\n+" + defenseValue + " Defense";
+		price = 100;
 	}
 }
