@@ -8,7 +8,8 @@ public class EventHandler {
 	private EventRect eventRect[][][];
 	
 	// Track previous event position
-	private int previousEventX, previousEventY;
+	public int previousEventX, previousEventY;
+	public int tempMap, tempCol, tempRow;
 	private boolean canTouchEvent = true;
 	
 	public EventHandler(GamePanel gamePanel) {
@@ -110,11 +111,10 @@ public class EventHandler {
 	
 	// Event: Teleport
 	public void teleport(int map, int col, int row) {
-		gamePanel.currentMap = map;
-		gamePanel.getPlayer().worldX = gamePanel.tileSize * col;
-		gamePanel.getPlayer().worldY = gamePanel.tileSize * row;
-		previousEventX = gamePanel.getPlayer().worldX;
-		previousEventY = gamePanel.getPlayer().worldY;
+		gamePanel.gameState = gamePanel.transitionState;
+		tempMap = map;
+		tempCol = col;
+		tempRow = row;
 		canTouchEvent = false;
 		gamePanel.playSoundEffect(13); // Stairs sound effect
 	}

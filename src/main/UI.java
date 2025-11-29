@@ -30,6 +30,7 @@ public class UI {
 	public int commandNum = 0;
 	public int slotCol = 0;
 	public int slotRow = 0;
+	private int counter = 0;
 	
 	public UI(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -114,6 +115,10 @@ public class UI {
 		// GAME OVER STATE
 		else if (gamePanel.gameState == gamePanel.gameOverState) {
 			drawGameOverScreen();
+		}
+		// TRANSITION STATE
+		else if (gamePanel.gameState == gamePanel.transitionState) {
+			drawTransition();
 		}
 	}
 	
@@ -528,6 +533,21 @@ public class UI {
 		drawTextWithShadow("QUIT", gamePanel.screenWidth / 2, (gamePanel.screenHeight / 1.5) + 42);
 		if (commandNum == 1) {
 			drawTextWithShadow(">", gamePanel.screenWidth / 2 - 130, (gamePanel.screenHeight / 1.5) + 42);
+		}
+	}
+	
+	public void drawTransition() {
+		counter++;
+		gc.setFill(new Color(0, 0, 0, Math.clamp((counter * 5) / 255.0, 0, 1)));
+		gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+		if (counter >= 60) {
+			counter = 0;
+			gamePanel.gameState = gamePanel.playState;
+			gamePanel.currentMap = gamePanel.getEventHandler().tempMap;
+			gamePanel.getPlayer().worldX = gamePanel.getEventHandler().tempCol * gamePanel.tileSize;
+			gamePanel.getPlayer().worldY = gamePanel.getEventHandler().tempRow * gamePanel.tileSize;
+			gamePanel.getEventHandler().previousEventX = gamePanel.getPlayer().worldX;
+			gamePanel.getEventHandler().previousEventY = gamePanel.getPlayer().worldY;
 		}
 	}
 	
