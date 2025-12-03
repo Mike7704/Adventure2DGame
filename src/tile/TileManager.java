@@ -8,12 +8,14 @@ import java.io.InputStreamReader;
 import main.GamePanel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class TileManager {
 
 	private GamePanel gamePanel;
 	public Tile[] tile;
 	public int[][][] mapTileNum;
+	public boolean drawPath = false;
 	
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -132,6 +134,20 @@ public class TileManager {
 			if (worldCol == gamePanel.maxWorldCol) {
 				worldCol = 0;
 				worldRow++;
+			}
+		}
+		
+		// Draw path finder (debug)
+		if (drawPath) {
+			gc.setFill(new Color(1, 1, 1, 0.2));
+			
+			for (int i = 0; i < gamePanel.getPathFinder().pathList.size(); i++) {
+				int worldX = gamePanel.getPathFinder().pathList.get(i).col * gamePanel.tileSize;
+				int worldY = gamePanel.getPathFinder().pathList.get(i).row * gamePanel.tileSize;
+				int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
+				int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
+				
+				gc.fillRect(screenX, screenY, gamePanel.tileSize, gamePanel.tileSize);
 			}
 		}
 	}

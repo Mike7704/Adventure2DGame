@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
 import javafx.animation.AnimationTimer;
@@ -54,6 +55,7 @@ public class GamePanel extends AnchorPane {
     private UI ui = new UI(this);
     private EventHandler eventHandler = new EventHandler(this);
     private Config config = new Config(this);
+    private PathFinder pathFinder = new PathFinder(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -416,5 +418,9 @@ public class GamePanel extends AnchorPane {
 	
 	public Config getConfig() {
 		return config;
+	}
+	
+	public PathFinder getPathFinder() {
+		return pathFinder;
 	}
 }

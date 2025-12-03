@@ -38,6 +38,7 @@ public class Entity {
 	public boolean invincible = false;
 	public int invincibleCounter = 0;
 	public int shootCooldownCounter = 0;
+	public boolean onPath = false;
 	
 	// CHARACTER STATUS
 	public String name;
@@ -178,9 +179,7 @@ public class Entity {
 		gamePanel.getParticles().add(p4);
 	}
 	
-	public void update() {
-		setAction();
-		
+	public void checkCollision() {
 		// Check tile collision
 		collisionOn = false;
 		gamePanel.getCollisionChecker().checkTile(this);
@@ -193,6 +192,11 @@ public class Entity {
 		if (this.type == type_monster && contactPlayer) {
 			damagePlayer(attack);
 		}
+	}
+	
+	public void update() {
+		setAction();
+		checkCollision();
 		
 		// If no collision, NPC can move
 		if (!collisionOn) {
@@ -297,6 +301,77 @@ public class Entity {
 		}
 		else {
 			alive = false;
+		}
+	}
+	
+	public void searchPath(int goalCol, int goalRow) {
+		// Current position
+		int startCol = (int) ((worldX + solidArea.getX()) / gamePanel.tileSize);
+		int startRow = (int) ((worldY + solidArea.getY()) / gamePanel.tileSize);
+		
+		gamePanel.getPathFinder().setNodes(startCol, startRow, goalCol, goalRow);
+		
+		// Check if a path has been found
+		if (gamePanel.getPathFinder().search()) {
+			// Next worldX and worldY
+			int nextX = gamePanel.getPathFinder().pathList.get(0).col * gamePanel.tileSize;
+			int nextY = gamePanel.getPathFinder().pathList.get(0).row * gamePanel.tileSize;
+			
+			// Entity solid area position
+			int entLeftX = (int) (worldX + solidArea.getX());
+			int entRightX = (int) (worldX + solidArea.getX() + solidArea.getWidth());
+			int entTopY = (int) (worldY + solidArea.getY());
+			int entBottomY = (int) (worldY + solidArea.getY() + solidArea.getHeight());
+			
+			if (entTopY > nextY && entLeftX >= nextX && entRightX < nextX + gamePanel.tileSize) {
+				direction = "up";
+			}
+			else if (entTopY < nextY && entLeftX >= nextX && entRightX < nextX + gamePanel.tileSize) {
+				direction = "down";
+			}
+			else if (entTopY >= nextY && entLeftX > nextX && entBottomY < nextY + gamePanel.tileSize) {
+				direction = "left";
+			}
+			else if (entTopY >= nextY && entLeftX < nextX && entBottomY < nextY + gamePanel.tileSize) {
+				direction = "right";
+			}
+			
+			else if (entTopY > nextY && entLeftX > nextX) {
+				direction = "up";
+				checkCollision();
+				if (collisionOn) {
+					direction = "left";
+				}
+			}
+			else if (entTopY > nextY && entLeftX < nextX) {
+				direction = "up";
+				checkCollision();
+				if (collisionOn) {
+					direction = "right";
+				}
+			}
+			else if (entTopY < nextY && entLeftX > nextX) {
+				direction = "down";
+				checkCollision();
+				if (collisionOn) {
+					direction = "left";
+				}
+			}
+			else if (entTopY < nextY && entLeftX < nextX) {
+				direction = "down";
+				checkCollision();
+				if (collisionOn) {
+					direction = "right";
+				}
+			}
+			
+			// Check if the goal has been reached
+			int nextCol = gamePanel.getPathFinder().pathList.get(0).col;
+			int nextRow = gamePanel.getPathFinder().pathList.get(0).row;
+			
+			if (nextCol == goalCol && nextRow == goalRow) {
+				onPath = false;
+			}
 		}
 	}
 	

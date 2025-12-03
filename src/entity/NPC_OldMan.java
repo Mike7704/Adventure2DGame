@@ -51,31 +51,43 @@ public class NPC_OldMan extends Entity {
 	// NPC behavior
 	public void setAction() {
 		
-		actionLockCounter++;
-		
-		if (actionLockCounter < 120) {
-			return;
+		if (onPath) {
+			// Follow a path (walks to his house)
+			int goalCol = 12;
+			int goalRow = 9;
+			
+			searchPath(goalCol, goalRow);
 		}
-		
-		actionLockCounter = 0;
-		
-		Random random = new Random();
-		int i = random.nextInt(100)+1; // 1-100
-		if (i <= 25) {
-			direction = "up";
-		}
-		else if (i > 25 && i <= 50) {
-			direction = "down";
-		}
-		else if (i > 50 && i <= 75) {
-			direction = "left";
-		}
-		else if (i > 75 && i <= 100) {
-			direction = "right";
+		else {
+			// Random movement
+			actionLockCounter++;
+			
+			if (actionLockCounter < 120) {
+				return;
+			}
+			
+			actionLockCounter = 0;
+			
+			Random random = new Random();
+			int i = random.nextInt(100)+1; // 1-100
+			if (i <= 25) {
+				direction = "up";
+			}
+			else if (i > 25 && i <= 50) {
+				direction = "down";
+			}
+			else if (i > 50 && i <= 75) {
+				direction = "left";
+			}
+			else if (i > 75 && i <= 100) {
+				direction = "right";
+			}
 		}
 	}
 	
 	public void speak() {
 		super.speak();
+		
+		onPath = true;
 	}
 }
