@@ -49,7 +49,8 @@ public class Player extends Entity {
 		name = "Player";
 		type = type_player;
 		setDefaultPositions();
-		speed= 4;
+		defaultSpeed = 4;
+		speed= defaultSpeed;
 		
 		// PLAYER STATUS
 		level = 1;
@@ -223,7 +224,12 @@ public class Player extends Entity {
 			
 			mana -= projectile.useCost;
 			
-			gamePanel.getProjectiles().add(projectile);
+			for (int i = 0; i < gamePanel.getProjectiles()[1].length; i++) {
+				if (gamePanel.getProjectiles()[gamePanel.currentMap][i] == null) {
+					gamePanel.getProjectiles()[gamePanel.currentMap][i] = projectile;
+					break;
+				}
+			}
 			
 			shootCooldownCounter = 0;
 			
@@ -290,11 +296,15 @@ public class Player extends Entity {
 			
 			// Check monster collision with updated worldX, worldY and attack area
 			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
-			damageMonster(monsterIndex, attack);
+			damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
 			
 			// Check interactive tile collision
 			int interactiveTileIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getInteractiveTile());
 			damageInteractiveTile(interactiveTileIndex);
+			
+			// Check projectile collision
+			int projectileIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getProjectiles());
+			damageProjectile(projectileIndex);
 			
 			// Restore original worldX, worldY, and solidArea
 			worldX = currentWorldX;
@@ -359,10 +369,14 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void damageMonster(int index, int attack) {
+	public void damageMonster(int index, int attack, int knockBackPower) {
 		if (index != 999) {
 			Entity monster = gamePanel.getMonster()[gamePanel.currentMap][index];
 			if (!monster.invincible) {
+				// Knock back monster
+				if (knockBackPower > 0) {
+					knockBack(monster, knockBackPower);
+				}
 				// Damage monster
 				gamePanel.playSoundEffect(5); // Damage monster sound
 				int damage = attack - monster.defense;
@@ -386,6 +400,12 @@ public class Player extends Entity {
 		}
 	}
 	
+	private void knockBack(Entity entity, int knockBackPower) {
+		entity.direction = direction;
+		entity.speed += knockBackPower;
+		entity.knockBack = true;
+	}
+	
 	private void damageInteractiveTile(int index) {
 		if (index != 999) {
 			InteractiveTile interactiveTile = gamePanel.getInteractiveTile()[gamePanel.currentMap][index];
@@ -401,6 +421,14 @@ public class Player extends Entity {
 					gamePanel.getInteractiveTile()[gamePanel.currentMap][index] = interactiveTile.getDestroyedForm();
 				}
 			}
+		}
+	}
+	
+	private void damageProjectile(int index) {
+		if (index != 999) {
+			Entity projectile = gamePanel.getProjectiles()[gamePanel.currentMap][index];
+			projectile.alive = false;
+			generateParticle(projectile, projectile);
 		}
 	}
 	

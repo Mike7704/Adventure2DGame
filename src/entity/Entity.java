@@ -39,9 +39,12 @@ public class Entity {
 	public int invincibleCounter = 0;
 	public int shootCooldownCounter = 0;
 	public boolean onPath = false;
+	public boolean knockBack = false;
+	public int knockBackCounter = 0;
 	
 	// CHARACTER STATUS
 	public String name;
+	public int defaultSpeed;
 	public int speed;
 	public int maxLife;
 	public int life;
@@ -69,6 +72,7 @@ public class Entity {
 	public String description = "";
 	public int useCost;
 	public int price;
+	public int knockBackPower = 0;
 	
 	// TYPE
 	public int type;
@@ -195,17 +199,46 @@ public class Entity {
 	}
 	
 	public void update() {
-		setAction();
-		checkCollision();
 		
-		// If no collision, NPC can move
-		if (!collisionOn) {
-			switch(direction) {
-				case "up": 		worldY -= speed; break;
-				case "down": 	worldY += speed; break;
-				case "left": 	worldX -= speed; break;
-				case "right": 	worldX += speed; break;
-			default: 		break;
+		if (knockBack) {
+			checkCollision();
+			
+			if (collisionOn) {
+				knockBackCounter = 0;
+				knockBack = false;
+				speed = defaultSpeed;
+			}
+			else {
+				switch(gamePanel.getPlayer().direction) {
+					case "up": 		worldY -= speed; break;
+					case "down": 	worldY += speed; break;
+					case "left": 	worldX -= speed; break;
+					case "right": 	worldX += speed; break;
+					default: 		break;
+				}
+			}
+			
+			knockBackCounter++;
+			if (knockBackCounter >= 10) {
+				knockBackCounter = 0;
+				knockBack = false;
+				speed = defaultSpeed;
+			}
+			
+		}
+		else {
+			setAction();
+			checkCollision();
+			
+			// If no collision, NPC can move
+			if (!collisionOn) {
+				switch(direction) {
+					case "up": 		worldY -= speed; break;
+					case "down": 	worldY += speed; break;
+					case "left": 	worldX -= speed; break;
+					case "right": 	worldX += speed; break;
+				default: 		break;
+				}
 			}
 		}
 		
