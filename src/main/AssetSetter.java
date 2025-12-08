@@ -4,7 +4,9 @@ import entity.NPC_Merchant;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
 import object.OBJ_Axe;
+import object.OBJ_Chest;
 import object.OBJ_Coin_Bronze;
+import object.OBJ_Door;
 import object.OBJ_Heart;
 import object.OBJ_Key;
 import object.OBJ_ManaCrystal;
@@ -58,6 +60,14 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i] = new OBJ_ManaCrystal(gamePanel);
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 22;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 31;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Door(gamePanel);
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 12;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 12;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel, new OBJ_Potion_Red(gamePanel));
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 12;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 10;
 	}
 	
 	public void setNPC() {

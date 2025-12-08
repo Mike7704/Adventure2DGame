@@ -15,4 +15,21 @@ public class OBJ_Key extends Entity {
 		description = "[" + name + "]\nOpens a door.";
 		price = 50;
 	}
+	
+	public boolean use(Entity entity) {
+		gamePanel.gameState = gamePanel.dialogueState;
+		
+		int objectIndex = getDetected(entity, gamePanel.getObject(), "Door");
+		
+		if (objectIndex != 999) {
+			gamePanel.getUI().currentDialogue = "You used the " + name + " and opened the door.";
+			gamePanel.playSoundEffect(3); // Unlock sound
+			gamePanel.getObject()[gamePanel.currentMap][objectIndex] = null;
+			return true;
+		}
+		else {
+			gamePanel.getUI().currentDialogue = "You can't use this right now.";
+			return false;
+		}
+	}
 }

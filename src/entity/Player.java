@@ -328,6 +328,13 @@ public class Player extends Entity {
 				object.use(this);
 				gamePanel.getObject()[gamePanel.currentMap][index] = null;
 			}
+			// Obstacles
+			else if (object.type == type_obstacle) {
+				if (gamePanel.getKeyHandler().enterPressed) {
+					attackCanceled = true;
+					object.interact();
+				}
+			}
 			// Inventory items
 			else {
 				if (inventory.size() != maxInventorySize) {
@@ -467,8 +474,9 @@ public class Player extends Entity {
 				defense = getDefense();
 			}
 			else if (selectedItem.type == type_consumable) {
-				selectedItem.use(this);
-				inventory.remove(itemIndex);
+				if (selectedItem.use(this)) {
+					inventory.remove(itemIndex);
+				}
 			}			
 		}
 	}

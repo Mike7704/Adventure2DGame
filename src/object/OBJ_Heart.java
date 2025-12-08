@@ -18,12 +18,13 @@ public class OBJ_Heart extends Entity {
 		image3 = new Image(getClass().getResourceAsStream("/Object/heart_blank.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
 	
-	public void use(Entity entity) {
+	public boolean use(Entity entity) {
 		gamePanel.playSoundEffect(2); // Power up sound effect
 		gamePanel.getUI().addMessage("+" + value + " Life");
 		entity.life += value;
 		if (entity.life > entity.maxLife) {
 			entity.life = entity.maxLife;
 		}
+		return true;
 	}
 }

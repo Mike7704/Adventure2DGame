@@ -21,7 +21,7 @@ public class OBJ_Potion_Red extends Entity {
 		price = 25;
 	}
 	
-	public void use(Entity entity) {
+	public boolean use(Entity entity) {
 		gamePanel.gameState = gamePanel.dialogueState;
 		gamePanel.getUI().currentDialogue = "You drink the " + name + "!\n" + "You gained " + value + " HP";
 		gamePanel.playSoundEffect(2); // Power up sound effect
@@ -30,6 +30,7 @@ public class OBJ_Potion_Red extends Entity {
 		if(entity.life > entity.maxLife) {
 			entity.life = entity.maxLife;
 		}
+		return true;
 	}
 	
 }

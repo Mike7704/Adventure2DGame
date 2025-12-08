@@ -16,9 +16,10 @@ public class OBJ_Coin_Bronze extends Entity {
 		description = "[" + name + "]\nA bronze coin.";
 	}
 	
-	public void use(Entity entity) {
+	public boolean use(Entity entity) {
 		gamePanel.playSoundEffect(1); // Coin sound effect
 		gamePanel.getUI().addMessage("+" + value + " Coin");
 		entity.coin += value;
+		return true;
 	}
 }

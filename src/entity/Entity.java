@@ -84,6 +84,7 @@ public class Entity {
 	public final int type_sheild = 5;
 	public final int type_consumable = 6;
 	public final int type_pickup = 7;
+	public final int type_obstacle = 8;
 	
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -126,8 +127,13 @@ public class Entity {
 		}
 	}
 	
-	public void use(Entity entity) {
+	public void interact() {
 		// Overridden in subclasses
+	}
+	
+	public boolean use(Entity entity) {
+		// Overridden in subclasses
+		return false;
 	}
 	
 	public void checkDrop() {
@@ -144,6 +150,37 @@ public class Entity {
 				break;
 			}
 		}
+	}
+	
+	public int getDetected(Entity user, Entity[][] target, String targetName) {
+		int index = 999;
+		
+		// Check the surrounding object
+		int nextWorldX = user.getLeftX();
+		int nextWorldY = user.getTopY();
+		
+		switch (user.direction) {
+			case "up": nextWorldY = user.getTopY() - user.speed - 1; break;
+			case "down": nextWorldY = user.getBottomY() + user.speed; break;
+			case "left": nextWorldX = user.getLeftX() - user.speed; break;
+			case "right": nextWorldX = user.getRightX() + user.speed + 1; break;
+		}
+		
+		int col = nextWorldX / gamePanel.tileSize;
+		int row = nextWorldY / gamePanel.tileSize;
+		
+		for (int i = 0; i < target[1].length; i++) {
+			Entity object = target[gamePanel.currentMap][i];
+			
+			if (object != null) {
+				// Check if we have found the target object
+				if (object.getCol() == col && object.getRow() == row && object.name.equals(targetName)) {
+					index = i;
+					break;
+				}
+			}
+		}
+		return index;
 	}
 	
 	public Color getParticleColor() {
@@ -197,6 +234,31 @@ public class Entity {
 			damagePlayer(attack);
 		}
 	}
+	
+	public int getLeftX() {
+		return (int) (worldX + solidArea.getX());
+	}
+	
+	public int getRightX() {
+		return (int) (worldX + solidArea.getX() + solidArea.getWidth());
+	}
+	
+	public int getTopY() {
+		return (int) (worldY + solidArea.getY());
+	}
+	
+	public int getBottomY() {
+		return (int) (worldY + solidArea.getY() + solidArea.getHeight());
+	}
+	
+	public int getCol() {
+		return (int) ((worldX + solidArea.getX()) / gamePanel.tileSize);
+	}
+	
+	public int getRow() {
+		return (int) ((worldY + solidArea.getY()) / gamePanel.tileSize);
+	}
+	
 	
 	public void update() {
 		
