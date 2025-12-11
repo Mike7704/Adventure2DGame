@@ -324,6 +324,12 @@ public class UI {
 			// Item image
 			gc.drawImage(entity.inventory.get(i).down1, slotX, slotY, gamePanel.tileSize, gamePanel.tileSize);
 			
+			// Display stack amount
+			if (entity == gamePanel.getPlayer() && entity.inventory.get(i).stackAmount > 1) {
+				gc.setFont(font_very_small);
+				drawTextWithShadow("" + entity.inventory.get(i).stackAmount, slotX + slotSize - 5, slotY + slotSize - 5);
+			}
+			
 			// Next slot position
 			slotX += slotSize;
 			if ((i + 1) % 4 == 0) {
@@ -676,9 +682,8 @@ public class UI {
 					currentDialogue = "You don't have enough coin.";
 					drawDialogueScreen();
 				}
-				else if (gamePanel.getPlayer().inventory.size() < gamePanel.getPlayer().maxInventorySize) {
+				else if (gamePanel.getPlayer().canObtainItem(npc.inventory.get(itemIndex))) {
 					gamePanel.getPlayer().coin -= npc.inventory.get(itemIndex).price;
-					gamePanel.getPlayer().inventory.add(npc.inventory.get(itemIndex));
 					npc.inventory.remove(itemIndex);
 				}
 				else {
@@ -737,10 +742,14 @@ public class UI {
 					currentDialogue = "You can't sell an equipped item.";
 				}
 				else {
+					if (gamePanel.getPlayer().inventory.get(itemIndex).stackAmount > 1) {
+						gamePanel.getPlayer().inventory.get(itemIndex).stackAmount--;
+					}
+					else {
+						gamePanel.getPlayer().inventory.remove(itemIndex);
+					}
 					gamePanel.getPlayer().coin += (gamePanel.getPlayer().inventory.get(itemIndex).price / 2);
-					gamePanel.getPlayer().inventory.remove(itemIndex);
 				}
-				
 			}
 		}
 		else {

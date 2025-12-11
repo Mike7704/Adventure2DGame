@@ -337,9 +337,8 @@ public class Player extends Entity {
 			}
 			// Inventory items
 			else {
-				if (inventory.size() != maxInventorySize) {
+				if (canObtainItem(object)) {
 					// Pick up item
-					inventory.add(object);
 					gamePanel.playSoundEffect(1); // Item pickup sound
 					gamePanel.getUI().addMessage("Picked up " + object.name + "!");
 					gamePanel.getObject()[gamePanel.currentMap][index] = null;
@@ -475,10 +474,58 @@ public class Player extends Entity {
 			}
 			else if (selectedItem.type == type_consumable) {
 				if (selectedItem.use(this)) {
-					inventory.remove(itemIndex);
+					if (selectedItem.stackAmount > 1) {
+						selectedItem.stackAmount--;
+					}
+					else {
+						inventory.remove(itemIndex);
+					}
 				}
 			}			
 		}
+	}
+	
+	// Get item index by name
+	public int searchItemInInventory(String itemName) {
+		int itemIndex = 999;
+		
+		for (int i = 0; i < inventory.size(); i++) {
+			if (inventory.get(i).name.equals(itemName)) {
+				itemIndex = i;
+				break;
+			}
+		}
+		return itemIndex;
+	}
+	
+	// Check space in our inventory
+	public boolean canObtainItem(Entity item) {
+		boolean canObtain = false;
+		
+		// Check stackable items
+		if (item.stackable) {
+			int index = searchItemInInventory(item.name);
+			
+			if (index != 999) {
+				inventory.get(index).stackAmount++;
+				canObtain = true;				
+			}
+			else {
+				// New item
+				if (inventory.size() != maxInventorySize) {
+					inventory.add(item);
+					canObtain = true;
+				}
+			}			
+		}
+		else {
+			if (inventory.size() != maxInventorySize) {
+				inventory.add(item);
+				canObtain = true;
+			}
+		}
+		
+		return canObtain;
 	}
 	
 	// Draw player at updated position and image

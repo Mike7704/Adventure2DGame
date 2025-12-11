@@ -19,6 +19,7 @@ public class OBJ_Potion_Red extends Entity {
 		down1 = new Image(getClass().getResourceAsStream("/Object/potion_red.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		description = "[" + name + "]\n+" + value + " HP";
 		price = 25;
+		stackable = true;
 	}
 	
 	public boolean use(Entity entity) {
