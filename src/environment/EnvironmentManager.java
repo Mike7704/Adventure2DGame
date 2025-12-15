@@ -1,0 +1,24 @@
+package environment;
+
+import javafx.scene.canvas.GraphicsContext;
+import main.GamePanel;
+
+public class EnvironmentManager {
+
+	private GamePanel gamePanel;
+	private Lighting lighting;
+	
+	public EnvironmentManager(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
+	}
+	
+	public void setup() {
+		lighting = new Lighting(gamePanel, 350);
+	}
+	
+	public void draw(GraphicsContext gc) {
+		lighting.draw(gc);
+	}
+	
+	
+}

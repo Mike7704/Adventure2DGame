@@ -6,6 +6,7 @@ import java.util.Collections;
 import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
+import environment.EnvironmentManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -56,6 +57,7 @@ public class GamePanel extends AnchorPane {
     private EventHandler eventHandler = new EventHandler(this);
     private Config config = new Config(this);
     private PathFinder pathFinder = new PathFinder(this);
+    private EnvironmentManager environmentManager = new EnvironmentManager(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -99,6 +101,7 @@ public class GamePanel extends AnchorPane {
 		assetSetter.setNPC();
 		assetSetter.setMonster();
 		assetSetter.setInteractiveTile();
+		environmentManager.setup();
 		playMusic(0);
 		
 		gameState = titleState;
@@ -269,8 +272,11 @@ public class GamePanel extends AnchorPane {
 			entity.draw(gc);
 		}
 		entityList.clear();
-                
-       // UI
+        
+		// ENVIRONMENT
+		environmentManager.draw(gc);
+		
+		// UI
         ui.draw(gc);
         
         // DEBUG
