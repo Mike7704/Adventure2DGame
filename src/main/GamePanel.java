@@ -195,6 +195,9 @@ public class GamePanel extends AnchorPane {
 				}
 			}
 			
+			// ENVIRONMENT
+			environmentManager.update();
+			
 		}
 		else if (gameState == pauseState) {
 			// nothing yet

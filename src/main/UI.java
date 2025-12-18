@@ -316,7 +316,9 @@ public class UI {
 			
 			// Equipped item highlight
 			if (entity.inventory.get(i) == entity.currentWeapon ||
-					entity.inventory.get(i) == entity.currentShield) {
+				entity.inventory.get(i) == entity.currentShield ||
+				entity.inventory.get(i) == entity.currentLightSource)
+			{
 				gc.setFill(Color.GOLD);
 				gc.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
 			}

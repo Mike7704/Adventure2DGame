@@ -9,6 +9,7 @@ import object.OBJ_Coin_Bronze;
 import object.OBJ_Door;
 import object.OBJ_Heart;
 import object.OBJ_Key;
+import object.OBJ_Lantern;
 import object.OBJ_ManaCrystal;
 import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Blue;
@@ -68,6 +69,10 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel, new OBJ_Potion_Red(gamePanel));
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 12;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 10;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Lantern(gamePanel);
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 22;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 36;
 	}
 	
 	public void setNPC() {

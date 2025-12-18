@@ -23,7 +23,8 @@ public class Player extends Entity {
 	private int standCounter = 0;
 	
 	public boolean attackCanceled = false;
-		
+	public boolean lightUpdated = false;
+	
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
 		
 		super(gamePanel);
@@ -481,7 +482,18 @@ public class Player extends Entity {
 						inventory.remove(itemIndex);
 					}
 				}
-			}			
+			}
+			else if (selectedItem.type == type_light) {
+				if (currentLightSource == selectedItem) {
+					// Turn off light
+					currentLightSource = null;
+				}
+				else {
+					// Equip new light
+					currentLightSource = selectedItem;
+				}
+				lightUpdated = true;
+			}	
 		}
 	}
 	
