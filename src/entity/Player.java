@@ -113,6 +113,17 @@ public class Player extends Entity {
 		right2 = new Image(getClass().getResourceAsStream("/Player/Walking sprites/boy_right_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
 	
+	public void getSleepingImage(Image sleepImage) {
+		up1 = sleepImage;
+		up2 = sleepImage;
+		down1 = sleepImage;
+		down2 = sleepImage;
+		left1 = sleepImage;
+		left2 = sleepImage;
+		right1 = sleepImage;
+		right2 = sleepImage;
+	}
+	
 	public void getPlayerAttackImage() {
 		if (currentWeapon.type == type_sword) {
 			attackUp1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_attack_up_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);

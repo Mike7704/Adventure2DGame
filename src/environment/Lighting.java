@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.TextAlignment;
 import main.GamePanel;
 
 public class Lighting {
@@ -12,15 +13,15 @@ public class Lighting {
 	private GamePanel gamePanel;
 	private RadialGradient darknessGradient;
 	
-	private int dayCounter;
-	float filterAlpha = 0f;
+	public int dayCounter;
+	public float filterAlpha = 0f;
 	
 	// Day states
-	private final int day = 0;
+	public final int day = 0;
 	private final int dusk = 1;
 	private final int night = 2;
 	private final int dawn = 3;
-	private int dayState = day;
+	public int dayState = day;
 	
 	public Lighting(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -84,8 +85,10 @@ public class Lighting {
 		    case night: dayStateString = "Night"; break;
 		    case dawn: dayStateString = "Dawn"; break;
 	    }
+	    gc.setFont(gamePanel.getUI().font_very_small);
+	    gc.setTextAlign(TextAlignment.RIGHT);
 	    gc.setFill(Color.WHITE);
-	    gc.fillText("Day State: " + dayStateString, gamePanel.screenWidth - 155, gamePanel.screenHeight - 20);
+	    gc.fillText("Day State: " + dayStateString, gamePanel.screenWidth - 20, gamePanel.screenHeight - 20);
 	}
 	
 	public void update() {

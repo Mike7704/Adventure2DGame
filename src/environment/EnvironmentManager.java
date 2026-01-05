@@ -6,7 +6,7 @@ import main.GamePanel;
 public class EnvironmentManager {
 
 	private GamePanel gamePanel;
-	private Lighting lighting;
+	public Lighting lighting;
 	
 	public EnvironmentManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;

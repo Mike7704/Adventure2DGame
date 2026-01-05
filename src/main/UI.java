@@ -18,7 +18,7 @@ public class UI {
 	private GamePanel gamePanel;
 	private GraphicsContext gc;
 	
-	private Font font_very_small, font_small, font_large;
+	public Font font_very_small, font_small, font_large;
 	
 	private Image heart_full, heart_half, heart_blank, crystal_full, crystal_blank;
 	
@@ -124,6 +124,10 @@ public class UI {
 		// TRADE STATE
 		else if (gamePanel.gameState == gamePanel.tradeState) {
 			drawTradeScreen();
+		}
+		// SLEEP STATE
+		else if (gamePanel.gameState == gamePanel.sleepState) {
+			drawSleepScreen();
 		}
 	}
 	
@@ -761,6 +765,28 @@ public class UI {
 		// Back option
 		textY += gamePanel.tileSize;
 		drawTextWithShadow("[ESC] Back", textX, textY);
+	}
+	
+	public void drawSleepScreen() {
+		counter++;
+		
+		if (counter < 120) {
+			gamePanel.getEnvironmentManager().lighting.filterAlpha += 0.01;
+			if (gamePanel.getEnvironmentManager().lighting.filterAlpha > 0.96f) {
+				gamePanel.getEnvironmentManager().lighting.filterAlpha = 0.96f;
+			}
+		}
+		if (counter >= 120) {
+			gamePanel.getEnvironmentManager().lighting.filterAlpha -= 0.01;
+			if (gamePanel.getEnvironmentManager().lighting.filterAlpha <= 0f) {
+				gamePanel.getEnvironmentManager().lighting.filterAlpha = 0f;
+				counter = 0;
+				gamePanel.getEnvironmentManager().lighting.dayState = gamePanel.getEnvironmentManager().lighting.day;
+				gamePanel.getEnvironmentManager().lighting.dayCounter = 0;
+				gamePanel.getPlayer().getPlayerImage();
+				gamePanel.gameState = gamePanel.playState;
+			}
+		}
 	}
 	
 	public int getItemIndexOnSlot(int slotCol, int slotRow) {

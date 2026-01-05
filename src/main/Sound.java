@@ -23,6 +23,7 @@ public class Sound {
 		soundPath[11] = getClass().getResource("/Sound/cuttree.wav").toString();
 		soundPath[12] = getClass().getResource("/Sound/gameover.wav").toString();
 		soundPath[13] = getClass().getResource("/Sound/stairs.wav").toString();
+		soundPath[14] = getClass().getResource("/Sound/sleep.wav").toString();
 	}
 	
 	public void setFile(int i) {

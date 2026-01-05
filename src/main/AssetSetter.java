@@ -13,6 +13,7 @@ import object.OBJ_Lantern;
 import object.OBJ_ManaCrystal;
 import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Blue;
+import object.OBJ_Tent;
 import tile_interactive.IT_DryTree;
 
 public class AssetSetter {
@@ -72,6 +73,10 @@ public class AssetSetter {
 		i++;
 		gamePanel.getObject()[mapNum][i] = new OBJ_Lantern(gamePanel);
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 22;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 36;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Tent(gamePanel);
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 23;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 36;
 	}
 	

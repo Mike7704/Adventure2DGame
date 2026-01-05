@@ -80,6 +80,7 @@ public class GamePanel extends AnchorPane {
     public final int gameOverState = 6;
     public final int transitionState = 7;
     public final int tradeState = 8;
+    public final int sleepState = 9;
     
     Stage primaryStage;
     
@@ -431,5 +432,9 @@ public class GamePanel extends AnchorPane {
 	
 	public PathFinder getPathFinder() {
 		return pathFinder;
+	}
+	
+	public EnvironmentManager getEnvironmentManager() {
+		return environmentManager;
 	}
 }
