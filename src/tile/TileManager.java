@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import main.GamePanel;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,56 +17,67 @@ public class TileManager {
 	public Tile[] tile;
 	public int[][][] mapTileNum;
 	public boolean drawPath = false;
+	private ArrayList<String> fileNames = new ArrayList<>();
+	private ArrayList<String> collisionStatus = new ArrayList<>();
+	
 	
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		
-		tile = new Tile[50];
-		mapTileNum = new int[gamePanel.maxMap][gamePanel.maxWorldCol][gamePanel.maxWorldRow];
+		// Read tile data file
+		InputStream inputStream = getClass().getResourceAsStream("/Maps/tiledata.txt");
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		
+		// Get tile names and collision status
+		String line;
+		try {
+			while ((line = bufferedReader.readLine()) != null) {
+				fileNames.add(line);
+				collisionStatus.add(bufferedReader.readLine());
+			}
+			bufferedReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Initialise tile array
+		tile = new Tile[fileNames.size()];
 		getTileImage();
-		loadMap("/Maps/worldV3.txt", 0);
-		loadMap("/Maps/interior01.txt", 1);
+		
+		// Get the max row and column for map array
+		inputStream = getClass().getResourceAsStream("/Maps/worldmap.txt");
+		bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+		try {
+			String line2 = bufferedReader.readLine();
+			String[] maxTiles = line2.split(" ");
+			
+			gamePanel.maxWorldCol = maxTiles.length;
+			gamePanel.maxWorldRow = maxTiles.length;
+			
+			mapTileNum = new int[gamePanel.maxMap][gamePanel.maxWorldCol][gamePanel.maxWorldRow];
+			
+			bufferedReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+		loadMap("/Maps/worldmap.txt", 0);
+		loadMap("/Maps/indoor01.txt", 1);
 	}
 	
 	// Tile texture images
 	public void getTileImage() {
-		// PLACEHOLDER (To make world map file neater)
-        int indexes[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        for(int i = 0; i < indexes.length; i++){
-            setup(indexes[i], "grass00", false);
-        }
-        
-        // TILES
-        setup(11, "grass01", false);
-
-        // WATER loop
-        indexes = new int[]{12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
-        for(int i = 0; i < indexes.length; i++){
-            String waterIndex = "water" + String.format("%02d", i);
-            setup(indexes[i], waterIndex, true);
-        }
-
-        // ROAD loop
-        indexes = new int[]{26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38};
-        for(int i = 0; i < indexes.length; i++){
-            String roadIndex = "road" + String.format("%02d", i);
-            setup(indexes[i], roadIndex, false);
-        }
-
-        setup(39, "earth", false);
-        setup(40, "wall", true);
-        setup(41,"tree", true);
-        
-        setup(42, "hut", false);
-        setup(43, "floor01", false);
-        setup(44,"table01", true);
+		for (int i = 0; i < fileNames.size(); i++) {
+			String imageName = fileNames.get(i);
+			boolean collision = Boolean.parseBoolean(collisionStatus.get(i));
+			setup(i, imageName, collision);
+		}
 	}
 	
 	public void setup(int index, String imageName, boolean collision) {
 		try {
 			tile[index] = new Tile();
-			tile[index].image = new Image(getClass().getResourceAsStream("/Tiles/" + imageName + ".png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+			tile[index].image = new Image(getClass().getResourceAsStream("/Tiles/" + imageName), gamePanel.tileSize, gamePanel.tileSize, true, false);
 			tile[index].collision = collision;
 		}
 		catch (Exception e) {
