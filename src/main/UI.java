@@ -875,7 +875,7 @@ public class UI {
 		}
 	}
 	
-	private void drawTextWithShadow(String text, double x, double y) {
+	public void drawTextWithShadow(String text, double x, double y) {
 		int shadowOffset = 2;
         // Shadow
         gc.setFill(Color.BLACK);

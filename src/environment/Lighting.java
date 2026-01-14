@@ -87,8 +87,7 @@ public class Lighting {
 	    }
 	    gc.setFont(gamePanel.getUI().font_very_small);
 	    gc.setTextAlign(TextAlignment.RIGHT);
-	    gc.setFill(Color.WHITE);
-	    gc.fillText("Day State: " + dayStateString, gamePanel.screenWidth - 20, gamePanel.screenHeight - 20);
+	    gamePanel.getUI().drawTextWithShadow("Day State: " + dayStateString, gamePanel.screenWidth - 20, gamePanel.screenHeight - 20);
 	}
 	
 	public void update() {

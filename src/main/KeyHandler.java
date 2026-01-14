@@ -55,6 +55,10 @@ public class KeyHandler {
   		else if (gamePanel.gameState == gamePanel.tradeState) {
   			tradeState(code);
   		}
+        // MAP SCREEN STATE
+  		else if (gamePanel.gameState == gamePanel.mapState) {
+  			mapState(code);
+  		}
         
         // FULL SCREEN TOGGLE
         if (code == KeyCode.F11) {
@@ -121,6 +125,12 @@ public class KeyHandler {
         }
         if (code == KeyCode.ESCAPE) {
         	gamePanel.gameState = gamePanel.optionsState;
+        }
+        if (code == KeyCode.M) {
+        	gamePanel.gameState = gamePanel.mapState;
+        }
+        if (code == KeyCode.X) {
+        	gamePanel.getMap().miniMapOn = !gamePanel.getMap().miniMapOn;
         }
 	}
 	
@@ -312,6 +322,12 @@ public class KeyHandler {
 				gamePanel.getUI().npcSlotCol++;
 				gamePanel.playSoundEffect(9); // cursor sound
 			}
+		}
+	}
+	
+	private void mapState(KeyCode code) {
+		if (code == KeyCode.M || code == KeyCode.ESCAPE) {
+			gamePanel.gameState = gamePanel.playState;
 		}
 	}
 	

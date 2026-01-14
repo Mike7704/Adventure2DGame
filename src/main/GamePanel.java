@@ -15,6 +15,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import tile.Map;
 import tile.TileManager;
 import tile_interactive.InteractiveTile;
 
@@ -58,6 +59,7 @@ public class GamePanel extends AnchorPane {
     private Config config = new Config(this);
     private PathFinder pathFinder = new PathFinder(this);
     private EnvironmentManager environmentManager = new EnvironmentManager(this);
+    private Map map = new Map(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -81,6 +83,7 @@ public class GamePanel extends AnchorPane {
     public final int transitionState = 7;
     public final int tradeState = 8;
     public final int sleepState = 9;
+    public final int mapState = 10;
     
     Stage primaryStage;
     
@@ -218,6 +221,12 @@ public class GamePanel extends AnchorPane {
 			return;
 		}
 		
+		// MAP SCREEN
+		if (gameState == mapState) {
+			map.drawFullMapScreen(gc);
+			return;
+		}
+		
 		// TILE
         tileManager.draw(gc);
         
@@ -279,6 +288,9 @@ public class GamePanel extends AnchorPane {
         
 		// ENVIRONMENT
 		environmentManager.draw(gc);
+		
+		// MINI MAP
+		map.drawMiniMap(gc);
 		
 		// UI
         ui.draw(gc);
@@ -378,6 +390,10 @@ public class GamePanel extends AnchorPane {
 	    return keyHandler;
 	}
 	
+	public Canvas getCanvas() {
+	    return canvas;
+	}
+	
 	public TileManager getTileManager() {
 	    return tileManager;
 	}
@@ -436,5 +452,9 @@ public class GamePanel extends AnchorPane {
 	
 	public EnvironmentManager getEnvironmentManager() {
 		return environmentManager;
+	}
+	
+	public Map getMap() {
+		return map;
 	}
 }
