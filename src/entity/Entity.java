@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -21,6 +22,7 @@ public class Entity {
 	public boolean collision = false;
 	public int actionLockCounter = 0;
 	protected String dialogues[] = new String[20];
+	private Random random = new Random();
 	
 	// STATE
 	public int worldX, worldY;
@@ -94,7 +96,7 @@ public class Entity {
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
-	
+		
 	public void setAction() {
 		// Overridden in subclasses
 	}
@@ -404,6 +406,62 @@ public class Entity {
 		}
 	}
 	
+	public void checkShootProjectile(int rate, int shotInterval) {
+		int p = random.nextInt(rate);
+		if (p == 0 && !projectile.alive && shootCooldownCounter == shotInterval) {
+			projectile.set(worldX, worldY, direction, true, this);
+
+			for (int i = 0; i < gamePanel.getProjectiles()[1].length; i++) {
+				if (gamePanel.getProjectiles()[gamePanel.currentMap][i] == null) {
+					gamePanel.getProjectiles()[gamePanel.currentMap][i] = projectile;
+					break;
+				}
+			}
+			
+			shootCooldownCounter = 0;
+		}
+	}
+	
+	public void checkStartChasing(Entity target, int distance, int rate) {
+		if (getTileDistance(target) < distance) {
+			int i = new Random().nextInt(rate);
+			if (i == 0) {
+				onPath = true;
+			}
+		}
+	}
+	
+	public void checkStopChasing(Entity target, int distance, int rate) {
+		if (getTileDistance(target) > distance) {
+			int i = new Random().nextInt(rate);
+			if (i == 0) {
+				onPath = false;
+			}
+		}
+	}
+	
+	public void getRandomDirection() {
+		actionLockCounter++;
+		
+		if (actionLockCounter == 120) {	
+			int i = random.nextInt(100)+1; // 1-100
+			if (i <= 25) {
+				direction = "up";
+			}
+			else if (i > 25 && i <= 50) {
+				direction = "down";
+			}
+			else if (i > 50 && i <= 75) {
+				direction = "left";
+			}
+			else if (i > 75 && i <= 100) {
+				direction = "right";
+			}
+			
+			actionLockCounter = 0;
+		}
+	}
+	
 	public void searchPath(int goalCol, int goalRow) {
 		// Current position
 		int startCol = (int) ((worldX + solidArea.getX()) / gamePanel.tileSize);
@@ -475,4 +533,19 @@ public class Entity {
 		}
 	}
 	
+	public int getXDistance(Entity target) {
+		return Math.abs(worldX - target.worldX);
+	}
+	public int getYDistance(Entity target) {
+		return Math.abs(worldY - target.worldY);
+	}
+	public int getTileDistance(Entity target) {
+		return (getXDistance(target) + getYDistance(target)) / gamePanel.tileSize;
+	}
+	public int getGoalCol(Entity target) {
+		return (int)(target.worldX + target.solidArea.getX()) / gamePanel.tileSize;
+	}
+	public int getGoalRow(Entity target) {
+		return (int)(target.worldY + target.solidArea.getY()) / gamePanel.tileSize;
+	}
 }

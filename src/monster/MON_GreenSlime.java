@@ -12,7 +12,7 @@ import object.OBJ_ManaCrystal;
 import object.OBJ_Rock;
 
 public class MON_GreenSlime extends Entity {
-	
+		
 	public MON_GreenSlime(GamePanel gamePanel) {
 		super(gamePanel);
 		
@@ -45,74 +45,25 @@ public class MON_GreenSlime extends Entity {
 		right1 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		right2 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
-	
-	public void update() {
-		super.update();
 		
-		// Check distance between player
-		int xDistance = Math.abs(worldX - gamePanel.getPlayer().worldX);
-		int yDistance = Math.abs(worldY - gamePanel.getPlayer().worldY);
-		int tileDistance = (xDistance + yDistance) / gamePanel.tileSize;
-		
-		if (!onPath && tileDistance < 5) {
-			int i = new Random().nextInt(100)+1;
-			if (i > 50) {
-				onPath = true;
-			}
-		}
-		else if (onPath && tileDistance > 10) {
-			// Player out of range
-			onPath = false;
-		}
-	}
-	
 	public void setAction() {
-		
-		Random random = new Random();
-		
+						
 		if (onPath) {
+			// Check if player is out of range
+			checkStopChasing(gamePanel.getPlayer(), 15, 100);
+
 			// Follow a path (attack the player)
-			int goalCol = (int)(gamePanel.getPlayer().worldX + gamePanel.getPlayer().solidArea.getX()) / gamePanel.tileSize;
-			int goalRow = (int)(gamePanel.getPlayer().worldY + gamePanel.getPlayer().solidArea.getY()) / gamePanel.tileSize;
-			
-			searchPath(goalCol, goalRow);
+			searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
 			
 			// Shoot projectile
-			int p = random.nextInt(100)+1;
-			if (p > 99 && !projectile.alive && shootCooldownCounter == 30) {
-				projectile.set(worldX, worldY, direction, true, this);
-
-				for (int i = 0; i < gamePanel.getProjectiles()[1].length; i++) {
-					if (gamePanel.getProjectiles()[gamePanel.currentMap][i] == null) {
-						gamePanel.getProjectiles()[gamePanel.currentMap][i] = projectile;
-						break;
-					}
-				}
-				
-				shootCooldownCounter = 0;
-			}
+			checkShootProjectile(200, 30);
 		}
 		else {
-			// Random movement
-			actionLockCounter++;
+			// Check if player is in range
+			checkStartChasing(gamePanel.getPlayer(), 5, 100);
 			
-			if (actionLockCounter == 120) {	
-				int i = random.nextInt(100)+1; // 1-100
-				if (i <= 25) {
-					direction = "up";
-				}
-				else if (i > 25 && i <= 50) {
-					direction = "down";
-				}
-				else if (i > 50 && i <= 75) {
-					direction = "left";
-				}
-				else if (i > 75 && i <= 100) {
-					direction = "right";
-				}
-				
-				actionLockCounter = 0;
-			}
+			// Random movement
+			getRandomDirection();
 		}
 	}
 	
