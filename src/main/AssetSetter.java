@@ -3,6 +3,7 @@ package main;
 import entity.NPC_Merchant;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
+import monster.MON_Orc;
 import object.OBJ_Axe;
 import object.OBJ_Chest;
 import object.OBJ_Coin_Bronze;
@@ -114,9 +115,9 @@ public class AssetSetter {
 		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 34;
 		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 42;
 		i++;
-		gamePanel.getMonster()[mapNum][i] = new MON_GreenSlime(gamePanel);
-		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 38;
-		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 42;
+		gamePanel.getMonster()[mapNum][i] = new MON_Orc(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 12;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 33;
 	}
 	
 	public void setInteractiveTile() {

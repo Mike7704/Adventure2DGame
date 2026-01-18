@@ -93,7 +93,8 @@ public class Player extends Entity {
 	
 	public int getAttack() {
 		attackArea = currentWeapon.attackArea;
-		
+		attackMotion1Duration = currentWeapon.attackMotion1Duration;
+		attackMotion2Duration = currentWeapon.attackMotion2Duration;
 		return strength * currentWeapon.attackValue;
 	}
 	
@@ -278,59 +279,7 @@ public class Player extends Entity {
 			
 		}
 	}
-	
-	public void attacking() {
-		spriteCounter++;
 		
-		if (spriteCounter <= 5) {
-			spriteNum = 1;
-		}
-		else if (spriteCounter > 5 && spriteCounter <= 25) {
-			spriteNum = 2;
-			
-			// Save current worldX, worldY, solidArea
-			int currentWorldX = worldX;
-			int currentWorldY = worldY;
-			int solidAreaWidth = (int) solidArea.getWidth();
-			int solidAreaHeight = (int) solidArea.getHeight();
-			
-			// Adjust player's worldX/Y for attack area
-			switch(direction) {
-				case "up": 		worldY -= attackArea.getHeight(); break;
-				case "down": 	worldY += attackArea.getHeight(); break;
-				case "left": 	worldX -= attackArea.getWidth(); break;
-				case "right": 	worldX += attackArea.getWidth(); break;
-			}
-			
-			// Adjust solid area to attack area
-			solidArea.setWidth(attackArea.getWidth());
-			solidArea.setHeight(attackArea.getHeight());
-			
-			// Check monster collision with updated worldX, worldY and attack area
-			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
-			damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
-			
-			// Check interactive tile collision
-			int interactiveTileIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getInteractiveTile());
-			damageInteractiveTile(interactiveTileIndex);
-			
-			// Check projectile collision
-			int projectileIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getProjectiles());
-			damageProjectile(projectileIndex);
-			
-			// Restore original worldX, worldY, and solidArea
-			worldX = currentWorldX;
-			worldY = currentWorldY;
-			solidArea.setWidth(solidAreaWidth);
-			solidArea.setHeight(solidAreaHeight);
-		}
-		else if (spriteCounter > 25) {
-			spriteNum = 1;
-			spriteCounter = 0;
-			attacking = false;
-		}
-	}
-	
 	public void pickUpObject(int index) {
 		if (index != 999) {
 			Entity object = gamePanel.getObject()[gamePanel.currentMap][index];
@@ -387,13 +336,13 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void damageMonster(int index, int attack, int knockBackPower) {
+	public void damageMonster(int index, Entity attacker, int attack, int knockBackPower) {
 		if (index != 999) {
 			Entity monster = gamePanel.getMonster()[gamePanel.currentMap][index];
 			if (!monster.invincible) {
 				// Knock back monster
 				if (knockBackPower > 0) {
-					knockBack(monster, knockBackPower);
+					setKnockBack(monster, attacker, knockBackPower);
 				}
 				// Damage monster
 				gamePanel.playSoundEffect(5); // Damage monster sound
@@ -417,14 +366,8 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-	private void knockBack(Entity entity, int knockBackPower) {
-		entity.direction = direction;
-		entity.speed += knockBackPower;
-		entity.knockBack = true;
-	}
-	
-	private void damageInteractiveTile(int index) {
+		
+	public void damageInteractiveTile(int index) {
 		if (index != 999) {
 			InteractiveTile interactiveTile = gamePanel.getInteractiveTile()[gamePanel.currentMap][index];
 			if (interactiveTile.destructible && interactiveTile.isCorrectItem(this) && !interactiveTile.invincible) {
@@ -442,7 +385,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	private void damageProjectile(int index) {
+	public void damageProjectile(int index) {
 		if (index != 999) {
 			Entity projectile = gamePanel.getProjectiles()[gamePanel.currentMap][index];
 			projectile.alive = false;
@@ -552,36 +495,11 @@ public class Player extends Entity {
 	}
 	
 	// Draw player at updated position and image
-	public void draw(GraphicsContext gc) {
-		Image image = null;
-		int offsetScreenX = screenX;
-		int offsetScreenY = screenY;		
-		
-		if (attacking) {
-			switch(direction) {
-				case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = screenY - gamePanel.tileSize;		break;
-				case "down": 	image = (spriteNum == 1 ? attackDown1 : attackDown2); 	break;
-				case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = screenX - gamePanel.tileSize; 	break;
-				case "right": 	image = (spriteNum == 1 ? attackRight1 : attackRight2); break;
-				default: 		break;
-			}
-		}
-		else {
-			switch(direction) {
-				case "up": 		image = (spriteNum == 1 ? up1 : up2); 		break;
-				case "down": 	image = (spriteNum == 1 ? down1 : down2); 	break;
-				case "left": 	image = (spriteNum == 1 ? left1 : left2); 	break;
-				case "right": 	image = (spriteNum == 1 ? right1 : right2); break;
-				default: 		break;
-			}
-		}
-		
+	public void draw(GraphicsContext gc) {	
 		// Invincibility effect
 		if (invincible) {
 			gc.setGlobalAlpha(0.4);
 		}
-		
-		gc.drawImage(image, offsetScreenX, offsetScreenY);
 		
 		gc.setGlobalAlpha(1.0);	// Reset alpha
 	}

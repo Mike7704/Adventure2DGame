@@ -22,9 +22,16 @@ public class CollisionChecker {
 		int entityTopRow = entityTopWorldY/gamePanel.tileSize;
 		int entityBottomRow = entityBottomWorldY/gamePanel.tileSize;
 		
-		// Predict player position and check for collision on 2 tiles infront of the player
 		int tileNum1, tileNum2;
-		switch(entity.direction) {
+		
+		String direction = entity.direction;
+		if (entity.knockBack) {
+			// Temp direction during knockback
+			direction = entity.knockBackDirection;
+		}
+		
+		// Predict player position and check for collision on 2 tiles infront of the player
+		switch(direction) {
 			case "up": 
 				entityTopRow = (entityTopWorldY - entity.speed)/gamePanel.tileSize;
 				tileNum1 = gamePanel.getTileManager().mapTileNum[gamePanel.currentMap][entityLeftCol][entityTopRow];
@@ -118,7 +125,13 @@ public class CollisionChecker {
 	
 	public int checkEntity(Entity entity, Entity[][] target) {
 		int index = 999;
-
+		
+		String direction = entity.direction;
+		if (entity.knockBack) {
+			// Temp direction during knockback
+			direction = entity.knockBackDirection;
+		}
+		
 		for (int i = 0; i < target[1].length; i++) {
 			if (target[gamePanel.currentMap][i] != null) {
 				// Get entity's solid area position
@@ -132,7 +145,7 @@ public class CollisionChecker {
 						target[gamePanel.currentMap][i].worldY + target[gamePanel.currentMap][i].solidArea.getY());
 				
 				// Predict entity position
-				switch (entity.direction) {
+				switch (direction) {
 					case "up":
 						entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
 						break;

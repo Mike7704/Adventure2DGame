@@ -26,7 +26,7 @@ public class Projectile extends Entity {
 		if (user == gamePanel.getPlayer()) {
 			int monsterIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
 			if (monsterIndex != 999) {
-				gamePanel.getPlayer().damageMonster(monsterIndex, attack, knockBackPower);
+				gamePanel.getPlayer().damageMonster(monsterIndex, this, attack, knockBackPower);
 				generateParticle(user.projectile, gamePanel.getMonster()[gamePanel.currentMap][monsterIndex]);
 				alive = false;
 			}

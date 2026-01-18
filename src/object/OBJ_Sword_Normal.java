@@ -14,6 +14,8 @@ public class OBJ_Sword_Normal extends Entity {
 		down1 = new Image(getClass().getResourceAsStream("/Object/sword_normal.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		attackValue = 1;
 		knockBackPower = 2;
+		attackMotion1Duration = 5;
+		attackMotion2Duration = 25;
 		attackArea.setWidth(36);
 		attackArea.setHeight(36);
 		
