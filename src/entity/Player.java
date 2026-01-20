@@ -7,8 +7,6 @@ import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 import tile_interactive.InteractiveTile;
 
-import java.util.ArrayList;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -42,6 +40,7 @@ public class Player extends Entity {
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
+		getPlayerGuardImage();
 		setItems();
 	}
 	
@@ -82,6 +81,7 @@ public class Player extends Entity {
 		life = maxLife;
 		mana = maxMana;
 		invincible = false;
+		transparent = false;
 	}
 	
 	public void setItems() {
@@ -148,12 +148,59 @@ public class Player extends Entity {
 		}
 	}
 	
+	public void getPlayerGuardImage() {
+		guardUp = new Image(getClass().getResourceAsStream("/Player/Guarding sprites/boy_guard_up.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+		guardDown = new Image(getClass().getResourceAsStream("/Player/Guarding sprites/boy_guard_down.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+		guardLeft = new Image(getClass().getResourceAsStream("/Player/Guarding sprites/boy_guard_left.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+		guardRight = new Image(getClass().getResourceAsStream("/Player/Guarding sprites/boy_guard_right.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+	}
+	
 	public void update() {
 		
-		if (attacking) {
+		if (knockBack) {
+
+			// Check tile collision
+			collisionOn = false;
+			gamePanel.getCollisionChecker().checkTile(this);
+			// Check object collision
+			gamePanel.getCollisionChecker().checkObject(this, true);
+			// Check NPC collision
+			gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNPC());
+			// Check monster collision
+			gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getMonster());
+			// Check interactive tile collision
+			gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getInteractiveTile());
+			
+			if (collisionOn) {
+				knockBackCounter = 0;
+				knockBack = false;
+				speed = defaultSpeed;
+			}
+			else {
+				switch(knockBackDirection) {
+					case "up": 		worldY -= speed; break;
+					case "down": 	worldY += speed; break;
+					case "left": 	worldX -= speed; break;
+					case "right": 	worldX += speed; break;
+					default: 		break;
+				}
+			}
+			
+			knockBackCounter++;
+			if (knockBackCounter >= 10) {
+				knockBackCounter = 0;
+				knockBack = false;
+				speed = defaultSpeed;
+			}
+			
+		}
+		else if (attacking) {
 			attacking();
 		}
-		
+		else if (keyHandler.spacePressed) {
+			guarding = true;
+			guardCounter++;
+		}
 		// Move player
 		else if (keyHandler.isKeyPressed() || keyHandler.enterPressed) {
 			if (keyHandler.upPressed) {
@@ -210,6 +257,8 @@ public class Player extends Entity {
 			
 			attackCanceled = false;
 			keyHandler.enterPressed = false; // Prevents multiple dialogues from opening
+			guarding = false;
+			guardCounter = 0;
 			
 			// Walk animation
 			spriteCounter++;
@@ -229,6 +278,8 @@ public class Player extends Entity {
 				spriteNum = 1;
 				standCounter = 0;
 			}
+			guarding = false;
+			guardCounter = 0;
 		}
 		
 		// Shoot projectile
@@ -259,6 +310,7 @@ public class Player extends Entity {
 			invincibleCounter++;
 			if (invincibleCounter > 60) {
 				invincible = false;
+				transparent = false;
 				invincibleCounter = 0;
 			}
 		}
@@ -330,8 +382,12 @@ public class Player extends Entity {
 			if (!invincible && !gamePanel.getMonster()[gamePanel.currentMap][index].dying) {
 				gamePanel.playSoundEffect(6); // Hurt sound
 				int damage = gamePanel.getMonster()[gamePanel.currentMap][index].attack - defense;
+				if (damage < 1) {
+					damage = 1;
+				}
 				life -= damage;
 				invincible = true;
+				transparent = true;
 			}
 		}
 	}
@@ -344,6 +400,11 @@ public class Player extends Entity {
 				if (knockBackPower > 0) {
 					setKnockBack(monster, attacker, knockBackPower);
 				}
+				
+				if (monster.offBalance) {
+					attack *= 2; // Double damage if monster is off balance
+				}
+				
 				// Damage monster
 				gamePanel.playSoundEffect(5); // Damage monster sound
 				int damage = attack - monster.defense;
@@ -495,11 +556,46 @@ public class Player extends Entity {
 	}
 	
 	// Draw player at updated position and image
-	public void draw(GraphicsContext gc) {	
+	public void draw(GraphicsContext gc) {
+		Image image = null;
+		int offsetScreenX = screenX;
+		int offsetScreenY = screenY;
+				
+		if (attacking) {
+			switch(direction) {
+				case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = screenY - gamePanel.tileSize;	break;
+				case "down": 	image = (spriteNum == 1 ? attackDown1 : attackDown2); break;
+				case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = screenX - gamePanel.tileSize; break;
+				case "right": 	image = (spriteNum == 1 ? attackRight1 : attackRight2); break;
+				default: 		break;
+			}
+		}
+		else if (guarding) {
+			switch(direction) {
+				case "up": 		image = guardUp; 	break;
+				case "down": 	image = guardDown; 	break;
+				case "left": 	image = guardLeft;  break;
+				case "right": 	image = guardRight; break;
+				default: 		break;
+			}
+		}
+		else {
+			switch(direction) {
+				case "up": 		image = (spriteNum == 1 ? up1 : up2); 		break;
+				case "down": 	image = (spriteNum == 1 ? down1 : down2); 	break;
+				case "left": 	image = (spriteNum == 1 ? left1 : left2); 	break;
+				case "right": 	image = (spriteNum == 1 ? right1 : right2); break;
+				default: 		break;
+			}
+		}
+
+		
 		// Invincibility effect
-		if (invincible) {
+		if (transparent) {
 			gc.setGlobalAlpha(0.4);
 		}
+		
+		gc.drawImage(image, offsetScreenX, offsetScreenY);
 		
 		gc.setGlobalAlpha(1.0);	// Reset alpha
 	}

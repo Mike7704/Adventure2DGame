@@ -13,6 +13,7 @@ public class KeyHandler {
     public boolean rightPressed = false;
     public boolean enterPressed = false;
     public boolean shootKeyPressed = false;
+    public boolean spacePressed = false;
     
     public boolean showDebugText = false;
 
@@ -131,6 +132,9 @@ public class KeyHandler {
         }
         if (code == KeyCode.X) {
         	gamePanel.getMap().miniMapOn = !gamePanel.getMap().miniMapOn;
+        }
+        if (code == KeyCode.SPACE) {
+        	spacePressed = true;
         }
 	}
 	
@@ -348,6 +352,12 @@ public class KeyHandler {
         }
         if (code == KeyCode.F) {
             shootKeyPressed = false;
+        }
+        if (code == KeyCode.ENTER) {
+           	enterPressed = false;
+        }
+        if (code == KeyCode.SPACE) {
+           	spacePressed = false;
         }
     }
 	

@@ -23,9 +23,10 @@ public class MON_Orc extends Entity {
 		life = maxLife;
 		attack = 8;
 		defense = 2;
+		knockBackPower = 5;
 		exp = 5;
 		attackMotion1Duration = 40;
-		attackMotion1Duration = 85;
+		attackMotion2Duration = 85;
 				
 		solidArea = new Rectangle(4, 4, 40, 44);
 		solidAreaDefaultX = (int) solidArea.getX();

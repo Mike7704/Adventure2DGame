@@ -15,6 +15,7 @@ public class Entity {
 	
 	public Image up1, up2, down1, down2, left1, left2, right1, right2;
 	public Image attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+	public Image guardUp, guardDown, guardLeft, guardRight;
 	public Image image, image2, image3;
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
@@ -45,6 +46,11 @@ public class Entity {
 	public boolean knockBack = false;
 	public int knockBackCounter = 0;
 	public String knockBackDirection;
+	public boolean guarding = false;
+	public int guardCounter = 0;
+	public int offBalanceCounter = 0;
+	public boolean offBalance = false;
+	public boolean transparent = false;
 	
 	// CHARACTER STATUS
 	public String name;
@@ -179,11 +185,36 @@ public class Entity {
 		// Contact with player
 		if (!gamePanel.getPlayer().invincible) {
 			// Damage the player
-			gamePanel.playSoundEffect(6); // Hurt sound
 			int damage = attack - gamePanel.getPlayer().defense;
-			if (damage < 0) {
-				damage = 0;
+			
+			//
+			String canGuardDirection = getOppositeDirection(direction);
+			if (gamePanel.getPlayer().guarding && gamePanel.getPlayer().direction.equals(canGuardDirection)) {
+				// Parry
+				if (gamePanel.getPlayer().guardCounter < 10) {
+					damage = 0;
+					gamePanel.playSoundEffect(16); // Parry sound
+					setKnockBack(this, gamePanel.getPlayer(), knockBackPower);
+					offBalance = true;
+					spriteCounter =- 60; // Stagger the monster
+				}
+				else { // Normal block
+					damage /= 3;
+					gamePanel.playSoundEffect(15); // Block sound
+				}
 			}
+			else { // Not guarding
+				gamePanel.playSoundEffect(6); // Hurt sound
+				if (damage < 1) {
+					damage = 1;
+				}
+			}
+			
+			if (damage > 0) {
+				gamePanel.getPlayer().transparent = true;
+				setKnockBack(gamePanel.getPlayer(), this, knockBackPower);
+			}
+			
 			gamePanel.getPlayer().life -= damage;
 			gamePanel.getPlayer().invincible = true;
 		}
@@ -408,6 +439,15 @@ public class Entity {
 		if (shootCooldownCounter < 30) {
 			shootCooldownCounter++;
 		}
+		
+		// Off-balance cooldown
+		if (offBalance) {
+			offBalanceCounter++;
+			if (offBalanceCounter > 60) {
+				offBalance = false;
+				offBalanceCounter = 0;
+			}
+		}
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -426,9 +466,9 @@ public class Entity {
 			
 			if (attacking) {
 				switch(direction) {
-					case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = screenY - gamePanel.tileSize;		break;
-					case "down": 	image = (spriteNum == 1 ? attackDown1 : attackDown2); 	break;
-					case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = screenX - gamePanel.tileSize; 	break;
+					case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = screenY - gamePanel.tileSize; break;
+					case "down": 	image = (spriteNum == 1 ? attackDown1 : attackDown2); break;
+					case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = screenX - gamePanel.tileSize; break;
 					case "right": 	image = (spriteNum == 1 ? attackRight1 : attackRight2); break;
 					default: 		break;
 				}
@@ -674,5 +714,15 @@ public class Entity {
 	}
 	public int getGoalRow(Entity target) {
 		return (int)(target.worldY + target.solidArea.getY()) / gamePanel.tileSize;
+	}
+	
+	public String getOppositeDirection(String direction) {
+		switch(direction) {
+			case "up": 		return "down";
+			case "down": 	return "up";
+			case "left": 	return "right";
+			case "right": 	return "left";
+			default: 		return "down";
+		}
 	}
 }
