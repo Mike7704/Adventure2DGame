@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import ai.PathFinder;
+import data.SaveLoad;
 import entity.Entity;
 import entity.Player;
 import environment.EnvironmentManager;
@@ -60,6 +61,7 @@ public class GamePanel extends AnchorPane {
     private PathFinder pathFinder = new PathFinder(this);
     private EnvironmentManager environmentManager = new EnvironmentManager(this);
     private Map map = new Map(this);
+    private SaveLoad saveLoad = new SaveLoad(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -334,6 +336,7 @@ public class GamePanel extends AnchorPane {
 	public void resetGame(boolean restart) {
 		player.setDefaultPositions();
 		player.restoreStatus();
+		player.resetCounters();
 		assetSetter.setNPC();
 		assetSetter.setMonster();
 				
@@ -450,5 +453,9 @@ public class GamePanel extends AnchorPane {
 	
 	public Map getMap() {
 		return map;
+	}
+	
+	public SaveLoad getSaveLoad() {
+		return saveLoad;
 	}
 }

@@ -51,6 +51,8 @@ public class Entity {
 	public int offBalanceCounter = 0;
 	public boolean offBalance = false;
 	public boolean transparent = false;
+	public Entity loot;
+	public boolean isOpen = false;
 	
 	// CHARACTER STATUS
 	public String name;
@@ -106,7 +108,23 @@ public class Entity {
 	public Entity(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
-		
+	
+	public void resetCounters() {
+		spriteCounter = 0;
+		actionLockCounter = 0;
+		invincibleCounter = 0;
+		shootCooldownCounter = 0;
+		dyingCounter = 0;
+		hpBarCounter = 0;
+		knockBackCounter = 0;	
+		guardCounter = 0;
+		offBalanceCounter = 0;
+	}
+	
+	public void setLoot(Entity loot) {
+		// Overridden in subclasses
+	}
+	
 	public void setAction() {
 		// Overridden in subclasses
 	}

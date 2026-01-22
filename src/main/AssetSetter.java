@@ -68,7 +68,8 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 12;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 12;
 		i++;
-		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel, new OBJ_Potion_Red(gamePanel));
+		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel);
+		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 12;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 10;
 		i++;

@@ -91,6 +91,8 @@ public class KeyHandler {
         		gamePanel.gameState = gamePanel.playState;
         		break;
         	case 1: // LOAD GAME
+        		gamePanel.getSaveLoad().load();
+        		gamePanel.gameState = gamePanel.playState;
         		break;
         	case 2: // QUIT GAME
         		System.exit(0);

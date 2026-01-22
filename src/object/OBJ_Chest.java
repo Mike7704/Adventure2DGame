@@ -5,13 +5,9 @@ import javafx.scene.image.Image;
 import main.GamePanel;
 
 public class OBJ_Chest extends Entity {
-	
-	Entity loot;
-	boolean isOpen = false;
-	
-	public OBJ_Chest(GamePanel gamePanel, Entity loot) {
+		
+	public OBJ_Chest(GamePanel gamePanel) {
 		super(gamePanel);
-		this.loot = loot;
 		
 		name = "Chest";
 		type = type_obstacle;
@@ -26,6 +22,10 @@ public class OBJ_Chest extends Entity {
 		solidArea.setHeight(32);
 		solidAreaDefaultX = (int) solidArea.getX();
 		solidAreaDefaultY = (int) solidArea.getY();
+	}
+	
+	public void setLoot(Entity loot) {
+		this.loot = loot;
 	}
 	
 	public void interact() {

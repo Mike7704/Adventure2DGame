@@ -137,13 +137,16 @@ public class EventHandler {
 	public void healingPool(int gameState) {
 		if (gamePanel.getKeyHandler().enterPressed) {
 			gamePanel.gameState = gameState;
-			gamePanel.getUI().currentDialogue = "You drink the water.\nYour life and mana are fully restored!";
+			gamePanel.getUI().currentDialogue = "You drink the water.\nYour life and mana are fully restored!\nThe game has been saved.";
 			gamePanel.getPlayer().life = gamePanel.getPlayer().maxLife;
 			gamePanel.getPlayer().mana = gamePanel.getPlayer().maxMana;
 			gamePanel.getPlayer().attackCanceled = true;
 			
 			// Respawn monsters
 			gamePanel.getAssetSetter().setMonster();
+			
+			// Save the game
+			gamePanel.getSaveLoad().save();
 		}
 	}
 	
