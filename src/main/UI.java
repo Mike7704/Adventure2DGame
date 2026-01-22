@@ -437,6 +437,7 @@ public class UI {
 				gamePanel.getConfig().saveConfig();
 				gamePanel.gameState = gamePanel.titleState;
 				commandNum = 0;
+				gamePanel.resetGame(true);
 			}
 		}
 		

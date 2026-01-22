@@ -214,11 +214,11 @@ public class KeyHandler {
 		if (code == KeyCode.ENTER) {
 			if (gamePanel.getUI().commandNum == 0) {
 				gamePanel.gameState = gamePanel.playState;
-				gamePanel.respawn();
+				gamePanel.resetGame(false);
 			}
 			else if (gamePanel.getUI().commandNum == 1) {
 				gamePanel.gameState = gamePanel.titleState;
-				gamePanel.restart();
+				gamePanel.resetGame(true);
 			}
 		}
 		if (code == KeyCode.W || code == KeyCode.UP) {

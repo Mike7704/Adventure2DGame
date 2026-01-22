@@ -38,10 +38,6 @@ public class Player extends Entity {
 		solidAreaDefaultY = (int) solidArea.getY();
 		
 		setDefaultValues();
-		getPlayerImage();
-		getPlayerAttackImage();
-		getPlayerGuardImage();
-		setItems();
 	}
 	
 	// Initial player start position
@@ -51,7 +47,7 @@ public class Player extends Entity {
 		setDefaultPositions();
 		defaultSpeed = 4;
 		speed= defaultSpeed;
-		
+				
 		// PLAYER STATUS
 		level = 1;
 		maxLife = 6;
@@ -66,9 +62,15 @@ public class Player extends Entity {
 		coin = 200;
 		currentWeapon = new OBJ_Sword_Normal(gamePanel);
 		currentShield = new OBJ_Shield_Wood(gamePanel);
+		currentLightSource = null;
 		projectile = new OBJ_Fireball(gamePanel);
 		attack = getAttack(); // Calculate attack value based on weapon and strength
 		defense = getDefense(); // Calculate defense value based on shield and dexterity
+		
+		getPlayerImage();
+		getPlayerAttackImage();
+		getPlayerGuardImage();
+		setItems();
 	}
 	
 	public void setDefaultPositions() {
@@ -77,11 +79,15 @@ public class Player extends Entity {
 		direction = "down";
 	}
 	
-	public void restoreLifeAndMana() {
+	public void restoreStatus() {
 		life = maxLife;
 		mana = maxMana;
 		invincible = false;
 		transparent = false;
+		attacking = false;
+		guarding = false;
+		knockBack = false;
+		lightUpdated = true;
 	}
 	
 	public void setItems() {

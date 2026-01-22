@@ -330,29 +330,23 @@ public class GamePanel extends AnchorPane {
             gc.restore(); // Restore the default scale
         }
     }
-	
-	public void respawn() {
+			
+	public void resetGame(boolean restart) {
 		player.setDefaultPositions();
-		player.restoreLifeAndMana();
+		player.restoreStatus();
+		assetSetter.setNPC();
+		assetSetter.setMonster();
 				
-		assetSetter.setNPC();
-		assetSetter.setMonster();
+		if (restart) {
+			player.setDefaultValues();
+			assetSetter.setObject();
+			assetSetter.setInteractiveTile();
+			environmentManager.lighting.resetDayNightCycle();
+		}
+		else {
+			playMusic(0);
+		}
 		
-		playMusic(0);
-	}
-	
-	public void restart() {
-		player.setDefaultValues();
-		player.setDefaultPositions();
-		player.restoreLifeAndMana();
-		player.setItems();
-		
-		assetSetter.setObject();
-		assetSetter.setNPC();
-		assetSetter.setMonster();
-		assetSetter.setInteractiveTile();
-		
-		playMusic(0);
 	}
 	
 	public void playMusic(int i) {

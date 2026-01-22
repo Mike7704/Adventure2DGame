@@ -90,6 +90,12 @@ public class Lighting {
 	    gamePanel.getUI().drawTextWithShadow("Day State: " + dayStateString, gamePanel.screenWidth - 20, gamePanel.screenHeight - 20);
 	}
 	
+	public void resetDayNightCycle() {
+		dayState = day;
+		dayCounter = 0;
+		filterAlpha = 0f;
+	}
+	
 	public void update() {
 		if (gamePanel.getPlayer().lightUpdated) {
 			setLightSource();
