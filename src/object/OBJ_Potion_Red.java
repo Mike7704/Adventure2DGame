@@ -20,11 +20,16 @@ public class OBJ_Potion_Red extends Entity {
 		description = "[" + name + "]\n+" + value + " HP";
 		price = 25;
 		stackable = true;
+		
+		setDialogue();
+	}
+	
+	public void setDialogue() {
+		dialogues[0][0] = "You drink the " + name + "!\n" + "You gained " + value + " HP";
 	}
 	
 	public boolean use(Entity entity) {
-		gamePanel.gameState = gamePanel.dialogueState;
-		gamePanel.getUI().currentDialogue = "You drink the " + name + "!\n" + "You gained " + value + " HP";
+		startDialogue(this, 0);
 		gamePanel.playSoundEffect(2); // Power up sound effect
 		
 		entity.life += value;

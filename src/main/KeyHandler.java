@@ -148,7 +148,7 @@ public class KeyHandler {
 	
 	private void dialogueState(KeyCode code) {
 		if (code == KeyCode.ENTER) {
-			gamePanel.gameState = gamePanel.playState;
+			enterPressed = true;
 		}
 	}
 	

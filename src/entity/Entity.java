@@ -22,7 +22,7 @@ public class Entity {
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collision = false;
 	public int actionLockCounter = 0;
-	protected String dialogues[] = new String[20];
+	public String dialogues[][] = new String[20][20];
 	public Entity attacker;
 	private Random random = new Random();
 	
@@ -31,7 +31,8 @@ public class Entity {
 	public String direction = "down";
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
-	protected int dialogueIndex = 0;
+	public int dialogueSet = 0;
+	public int dialogueIndex = 0;
 	public boolean collisionOn = false;
 	public boolean attacking = false;
 	public boolean alive = true;
@@ -239,12 +240,17 @@ public class Entity {
 	}
 	
 	public void speak() {
-		if (dialogues[dialogueIndex] == null) {
-			dialogueIndex = 0;
-		}
-		gamePanel.getUI().currentDialogue = dialogues[dialogueIndex];
-		dialogueIndex++;
-		
+		// Overridden in subclasses
+	}
+	
+	public void startDialogue(Entity entity, int setNum) {
+		gamePanel.gameState = gamePanel.dialogueState;
+		gamePanel.getUI().npc = entity;
+		dialogueSet = setNum;
+	}
+	
+	public void facePlayer() {
+		// Face the player
 		switch(gamePanel.getPlayer().direction) {
 			case "up": 		direction = "down"; break;
 			case "down": 	direction = "up"; break;

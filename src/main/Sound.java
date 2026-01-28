@@ -26,6 +26,7 @@ public class Sound {
 		soundPath[14] = getClass().getResource("/Sound/sleep.wav").toString();
 		soundPath[15] = getClass().getResource("/Sound/blocked.wav").toString();
 		soundPath[16] = getClass().getResource("/Sound/parry.wav").toString();
+		soundPath[17] = getClass().getResource("/Sound/speak.wav").toString();
 	}
 	
 	public void setFile(int i) {

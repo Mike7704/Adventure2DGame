@@ -35,6 +35,8 @@ public class UI {
 	public int npcSlotRow = 0;
 	private int counter = 0;
 	public Entity npc;
+	public int charIndex = 0;
+	public String combinedText = "";
 	
 	public UI(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -190,6 +192,31 @@ public class UI {
 		gc.setTextAlign(TextAlignment.LEFT);
 		x += gamePanel.tileSize;
 		y += gamePanel.tileSize;
+		
+		if (npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null) {
+			// Display text one character at a time
+			char characters[] = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+			if (charIndex < characters.length) {
+				gamePanel.playSoundEffect(17); // Speak sound
+				combinedText += String.valueOf(characters[charIndex]);
+				currentDialogue = combinedText;
+				charIndex++;
+			}
+			
+			if (gamePanel.getKeyHandler().enterPressed && gamePanel.gameState == gamePanel.dialogueState) {
+				charIndex = 0;
+				combinedText = "";
+				
+				npc.dialogueIndex++;
+				gamePanel.getKeyHandler().enterPressed = false;
+			}
+		}
+		else { // No more dialogue
+			npc.dialogueIndex = 0;
+			if (gamePanel.gameState == gamePanel.dialogueState) {
+				gamePanel.gameState = gamePanel.playState;
+			}
+		}
 		
 		drawTextWithShadow(currentDialogue, x, y);
 	}
@@ -603,6 +630,7 @@ public class UI {
 	}
 	
 	private void tradeSelect() {
+		npc.dialogueSet = 0;
 		drawDialogueScreen();
 		
 		// Window
@@ -647,8 +675,7 @@ public class UI {
 			drawTextWithShadow(">", textX - 25, textY);
 			if (gamePanel.getKeyHandler().enterPressed) {
 				commandNum = 0;
-				gamePanel.gameState = gamePanel.dialogueState;
-				currentDialogue = "Thank you! Come again.";
+				npc.startDialogue(npc, 1);
 			}
 		}		
 	}
@@ -685,9 +712,7 @@ public class UI {
 			if (gamePanel.getKeyHandler().enterPressed) {
 				if (npc.inventory.get(itemIndex).price > gamePanel.getPlayer().coin) {
 					subState = 0;
-					gamePanel.gameState = gamePanel.dialogueState;
-					currentDialogue = "You don't have enough coin.";
-					drawDialogueScreen();
+					npc.startDialogue(npc, 2);
 				}
 				else if (gamePanel.getPlayer().canObtainItem(npc.inventory.get(itemIndex))) {
 					gamePanel.getPlayer().coin -= npc.inventory.get(itemIndex).price;
@@ -695,8 +720,7 @@ public class UI {
 				}
 				else {
 					subState = 0;
-					gamePanel.gameState = gamePanel.dialogueState;
-					currentDialogue = "Your inventory is full.";
+					npc.startDialogue(npc, 3);
 					drawDialogueScreen();
 				}
 			}
@@ -745,8 +769,7 @@ public class UI {
 				{
 					commandNum = 0;
 					subState = 0;
-					gamePanel.gameState = gamePanel.dialogueState;
-					currentDialogue = "You can't sell an equipped item.";
+					npc.startDialogue(npc, 4);
 				}
 				else {
 					if (gamePanel.getPlayer().inventory.get(itemIndex).stackAmount > 1) {

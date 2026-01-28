@@ -71,6 +71,7 @@ public class Player extends Entity {
 		getPlayerAttackImage();
 		getPlayerGuardImage();
 		setItems();
+		setDialogue();
 	}
 	
 	public void setDefaultPositions() {
@@ -91,13 +92,16 @@ public class Player extends Entity {
 		lightUpdated = true;
 	}
 	
+	public void setDialogue() {
+		dialogues[0][0] = "Leveled up to " + level + "!";
+	}
+	
 	public void setItems() {
 		inventory.clear();
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 	}
-	
-	
+		
 	public int getAttack() {
 		attackArea = currentWeapon.attackArea;
 		attackMotion1Duration = currentWeapon.attackMotion1Duration;
@@ -400,7 +404,6 @@ public class Player extends Entity {
 		if (gamePanel.getKeyHandler().enterPressed) {
 			if (index != 999) {
 				attackCanceled = true;
-				gamePanel.gameState = gamePanel.dialogueState;
 				gamePanel.getNPC()[gamePanel.currentMap][index].speak();
 			}
 		}
@@ -498,7 +501,8 @@ public class Player extends Entity {
 			
 			gamePanel.playSoundEffect(8); // Level up sound
 			gamePanel.gameState = gamePanel.dialogueState;
-			gamePanel.getUI().currentDialogue = "Leveled up to " + level + "!";
+			setDialogue();
+			startDialogue(this,0);
 		}
 	}
 	

@@ -21,6 +21,8 @@ public class NPC_OldMan extends Entity {
 		solidAreaDefaultY = (int) solidArea.getY();
 		
 		getNPCImage();
+		
+		dialogueSet = -1;
 		setDialogue();
 	}
 	
@@ -37,15 +39,17 @@ public class NPC_OldMan extends Entity {
 	}
 
 	public void setDialogue() {
-		dialogues[0] = "Hello, young adventurer!";
-		dialogues[1] = "So you've come to this island to find the treasure?";
-		dialogues[2] = "I used to be a great adventurer like you.";
-		dialogues[3] = "But I made a mistake that cost me everything.";
-		dialogues[4] = "I was too greedy and trusted the wrong people.";
-		dialogues[5] = "Now I live here, alone and regretful.";
-		dialogues[6] = "Take this map. It will help you on your journey.";
-		dialogues[7] = "Remember, not all treasure is silver and gold.";
-		dialogues[8] = "Good luck!";
+		dialogues[0][0] = "Hello, young adventurer!";
+		dialogues[0][1] = "So you've come to this island to find the treasure?";
+		dialogues[0][2] = "I used to be a great adventurer like you.";
+		dialogues[0][3] = "Take this map. It will help you on your journey.";
+		dialogues[0][4] = "Remember, not all treasure is silver and gold.";
+		dialogues[0][5] = "Good luck!";
+		
+		dialogues[1][0] = "If you become tired, rest at the water.";
+		dialogues[1][1] = "But beware of the monsters coming back.";
+		
+		dialogues[2][0] = "I wonder how to open that door...";
 	}
 	
 	// NPC behavior
@@ -86,8 +90,16 @@ public class NPC_OldMan extends Entity {
 	}
 	
 	public void speak() {
-		super.speak();
 		
-		onPath = true;
+		facePlayer();
+		startDialogue(this, dialogueSet);
+		dialogueSet++;
+		
+		if (dialogues[dialogueSet][0] == null) {
+			// Reset dialogue
+			dialogueSet = 0;
+		}
+		
+		//onPath = true;
 	}
 }
