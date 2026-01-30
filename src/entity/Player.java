@@ -564,9 +564,11 @@ public class Player extends Entity {
 	public boolean canObtainItem(Entity item) {
 		boolean canObtain = false;
 		
+		Entity newItem = gamePanel.getEntityGenerator().getObject(item.name);
+		
 		// Check stackable items
-		if (item.stackable) {
-			int index = searchItemInInventory(item.name);
+		if (newItem.stackable) {
+			int index = searchItemInInventory(newItem.name);
 			
 			if (index != 999) {
 				inventory.get(index).stackAmount++;
@@ -575,14 +577,14 @@ public class Player extends Entity {
 			else {
 				// New item
 				if (inventory.size() != maxInventorySize) {
-					inventory.add(item);
+					inventory.add(newItem);
 					canObtain = true;
 				}
 			}			
 		}
 		else {
 			if (inventory.size() != maxInventorySize) {
-				inventory.add(item);
+				inventory.add(newItem);
 				canObtain = true;
 			}
 		}

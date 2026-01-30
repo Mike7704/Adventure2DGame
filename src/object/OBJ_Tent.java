@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Tent extends Entity{
 
+	public static final String objName = "Tent";
+	
 	public OBJ_Tent(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Tent";
+		name = objName;
 		type = type_consumable;
 		down1 = new Image(getClass().getResourceAsStream("/Object/tent.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		description = "[" + name + "]\nA tent for sleeping.";

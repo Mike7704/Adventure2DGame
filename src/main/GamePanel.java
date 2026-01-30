@@ -62,6 +62,7 @@ public class GamePanel extends AnchorPane {
     private EnvironmentManager environmentManager = new EnvironmentManager(this);
     private Map map = new Map(this);
     private SaveLoad saveLoad = new SaveLoad(this);
+    private EntityGenerator entityGenerator = new EntityGenerator(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -457,5 +458,9 @@ public class GamePanel extends AnchorPane {
 	
 	public SaveLoad getSaveLoad() {
 		return saveLoad;
+	}
+	
+	public EntityGenerator getEntityGenerator() {
+		return entityGenerator;
 	}
 }

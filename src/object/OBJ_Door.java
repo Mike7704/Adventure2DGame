@@ -7,10 +7,12 @@ import main.GamePanel;
 
 public class OBJ_Door extends Entity {
 	
+	public static final String objName = "Door";
+	
 	public OBJ_Door(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Door";
+		name = objName;
 		type = type_obstacle;
 		down1 = new Image(getClass().getResourceAsStream("/Object/door.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		collision = true;

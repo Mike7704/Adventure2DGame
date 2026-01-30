@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Key extends Entity {
 
+	public static final String objName = "Key";
+	
 	public OBJ_Key(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Key";
+		name = objName;
 		type = type_consumable;
 		down1 = new Image(getClass().getResourceAsStream("/Object/key.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		description = "[" + name + "]\nOpens a door.";

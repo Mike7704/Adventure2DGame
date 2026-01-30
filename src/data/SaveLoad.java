@@ -111,7 +111,7 @@ public class SaveLoad {
 			// Set player inventory
 			gamePanel.getPlayer().inventory.clear();
 			for (int i = 0; i < ds.itemNames.size(); i++) {
-				gamePanel.getPlayer().inventory.add(getObject(ds.itemNames.get(i)));
+				gamePanel.getPlayer().inventory.add(gamePanel.getEntityGenerator().getObject(ds.itemNames.get(i)));
 				gamePanel.getPlayer().inventory.get(i).stackAmount = ds.itemAmounts.get(i);
 			}
 			gamePanel.getPlayer().currentWeapon = gamePanel.getPlayer().inventory.get(ds.currentWeaponSlot);
@@ -124,11 +124,11 @@ public class SaveLoad {
 			for (int map = 0; map < gamePanel.maxMap; map++) {
 				for (int i = 0; i < gamePanel.getObject()[1].length; i++) {
 					if (!ds.mapObjectNames[map][i].equals("NA")) {
-						gamePanel.getObject()[map][i] = getObject(ds.mapObjectNames[map][i]);
+						gamePanel.getObject()[map][i] = gamePanel.getEntityGenerator().getObject(ds.mapObjectNames[map][i]);
 						gamePanel.getObject()[map][i].worldX = ds.mapObjectWorldX[map][i];
 						gamePanel.getObject()[map][i].worldY = ds.mapObjectWorldY[map][i];
 						if (ds.mapObjectLootNames[map][i] != null) {
-							gamePanel.getObject()[map][i].loot = getObject(ds.mapObjectLootNames[map][i]);
+							gamePanel.getObject()[map][i].loot = gamePanel.getEntityGenerator().getObject(ds.mapObjectLootNames[map][i]);
 						}
 						gamePanel.getObject()[map][i].isOpen = ds.mapObjectOpened[map][i];
 						if (gamePanel.getObject()[map][i].isOpen) {
@@ -145,29 +145,5 @@ public class SaveLoad {
 			System.out.println("Load Exception!");
 			e.printStackTrace();
 		}
-	}
-	
-	public Entity getObject(String itemName) {
-		Entity obj = null;
-		
-		switch (itemName) {
-			case "Woodcutter's Axe":obj = new OBJ_Axe(gamePanel); break;
-			case "Boots":			obj = new OBJ_Boots(gamePanel); break;
-			case "Bronze Coin":		obj = new OBJ_Coin_Bronze(gamePanel); break;
-			case "Chest": 			obj = new OBJ_Chest(gamePanel); break;
-			case "Door": 			obj = new OBJ_Door(gamePanel); break;
-			case "Key": 			obj = new OBJ_Key(gamePanel); break;
-			case "Mana Crystal": 	obj = new OBJ_ManaCrystal(gamePanel); break;
-			case "Red Potion": 		obj = new OBJ_Potion_Red(gamePanel); break;
-			case "Heart": 			obj = new OBJ_Heart(gamePanel); break;
-			case "Lantern": 		obj = new OBJ_Lantern(gamePanel); break;
-			case "Blue Shield": 	obj = new OBJ_Shield_Blue(gamePanel); break;
-			case "Wood Shield": 	obj = new OBJ_Shield_Wood(gamePanel); break;
-			case "Normal Sword": 	obj = new OBJ_Sword_Normal(gamePanel); break;
-			case "Tent": 			obj = new OBJ_Tent(gamePanel); break;
-			default: break;
-		}
-		
-		return obj;
 	}
 }

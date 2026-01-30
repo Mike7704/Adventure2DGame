@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Chest extends Entity {
 		
+	public static final String objName = "Chest";
+	
 	public OBJ_Chest(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Chest";
+		name = objName;
 		type = type_obstacle;
 		image = new Image(getClass().getResourceAsStream("/Object/chest.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		image2 = new Image(getClass().getResourceAsStream("/Object/chest_opened.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);

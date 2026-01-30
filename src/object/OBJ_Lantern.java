@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Lantern extends Entity {
 
+	public static final String objName = "Lantern";
+	
 	public OBJ_Lantern(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Lantern";
+		name = objName;
 		type = type_light;
 		down1 = new Image(getClass().getResourceAsStream("/Object/lantern.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		description = "[" + name + "]\nA light for dark areas.";

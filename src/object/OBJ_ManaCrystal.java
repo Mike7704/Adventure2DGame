@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_ManaCrystal extends Entity {
 	
+	public static final String objName = "Mana Crystal";
+	
 	public OBJ_ManaCrystal(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Mana Crystal";
+		name = objName;
 		type = type_pickup;
 		value = 1;
 		down1 = new Image(getClass().getResourceAsStream("/Object/manacrystal_full.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);

@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Sword_Normal extends Entity {
 
+	public static final String objName = "Normal Sword";
+	
 	public OBJ_Sword_Normal(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Normal Sword";
+		name = objName;
 		type = type_sword;
 		down1 = new Image(getClass().getResourceAsStream("/Object/sword_normal.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		attackValue = 1;

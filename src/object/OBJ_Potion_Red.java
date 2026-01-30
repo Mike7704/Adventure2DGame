@@ -7,13 +7,14 @@ import main.GamePanel;
 public class OBJ_Potion_Red extends Entity {
 
 	GamePanel gamePanel;
+	public static final String objName = "Red Potion";
 	
 	public OBJ_Potion_Red(GamePanel gamePanel) {
 		super(gamePanel);
 		
 		this.gamePanel = gamePanel;
 		
-		name = "Red Potion";
+		name = objName;
 		type = type_consumable;
 		value = 5;
 		down1 = new Image(getClass().getResourceAsStream("/Object/potion_red.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);

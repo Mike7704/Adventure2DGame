@@ -8,12 +8,13 @@ import main.GamePanel;
 public class OBJ_Rock extends Projectile {
 
 	GamePanel gamePanel;
+	public static final String objName = "Rock";
 	
 	public OBJ_Rock(GamePanel gamePanel) {
 		super(gamePanel);
 		this.gamePanel = gamePanel;
 		
-		name = "Rock";
+		name = objName;
 		speed = 8;
 		maxLife = 80;
 		life = maxLife;

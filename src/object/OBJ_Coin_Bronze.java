@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Coin_Bronze extends Entity {
 
+	public static final String objName = "Bronze Coin";
+	
 	public OBJ_Coin_Bronze(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Bronze Coin";
+		name = objName;
 		type = type_pickup;
 		value = 1;
 		down1 = new Image(getClass().getResourceAsStream("/Object/coin_bronze.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);

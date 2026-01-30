@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Axe extends Entity {
 
+	public static final String objName = "Woodcutter's Axe";
+	
 	public OBJ_Axe(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Woodcutter's Axe";
+		name = objName;
 		type = type_axe;
 		down1 = new Image(getClass().getResourceAsStream("/Object/axe.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 		attackValue = 2;

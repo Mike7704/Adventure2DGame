@@ -6,10 +6,12 @@ import main.GamePanel;
 
 public class OBJ_Heart extends Entity {
 	
+	public static final String objName = "Heart";
+	
 	public OBJ_Heart(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Heart";
+		name = objName;
 		type = type_pickup;
 		value = 2;
 		down1 = new Image(getClass().getResourceAsStream("/Object/heart_full.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
