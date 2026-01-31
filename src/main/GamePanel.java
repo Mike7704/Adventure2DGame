@@ -88,6 +88,13 @@ public class GamePanel extends AnchorPane {
     public final int sleepState = 9;
     public final int mapState = 10;
     
+    // AREA STATE
+    public int currentArea;
+    public int nextArea;
+    public final int outsideArea = 50;
+    public final int indoorArea = 51;
+    public final int dungeonArea = 52;
+    
     Stage primaryStage;
     
 	public GamePanel(Stage primaryStage) {
@@ -112,6 +119,7 @@ public class GamePanel extends AnchorPane {
 		playMusic(0);
 		
 		gameState = titleState;
+		currentArea = outsideArea;
 	}
 	
 	public void startGameLoop() {
@@ -307,6 +315,27 @@ public class GamePanel extends AnchorPane {
 	        System.out.println("Column: " + ((int)(player.worldX + player.solidArea.getX()) / tileSize) + ", Row: " + ((int)(player.worldY + player.solidArea.getY()) / tileSize));
         }
     }
+	
+	// Change current area to next area to update lighting and music
+	public void changeArea() {
+		
+		if (nextArea != currentArea) {
+			// Change music based on area
+			stopMusic();
+			if (nextArea == outsideArea) {
+				playMusic(0);
+			}
+			else if (nextArea == indoorArea) {
+				playMusic(18);
+			}
+			else if (nextArea == dungeonArea) {
+				playMusic(19);
+			}
+		}
+		
+		currentArea = nextArea;
+		assetSetter.setMonster(); // Reset monsters in new area
+	}
 	
 	public void toggleFullscreen() {
 		fullscreen = !fullscreen;

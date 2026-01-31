@@ -66,16 +66,26 @@ public class Lighting {
 	
 	public void draw(GraphicsContext gc) {
 		
-	    if (dayState == night) {
-	    	// Fill the entire screen with darkness and a light source
-		    gc.setFill(darknessGradient);
-		    gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
-	    }
-	    else {
-	    	// Apply day-night filter
-	    	gc.setFill(Color.rgb(0, 0, 0, filterAlpha));
+		if (gamePanel.currentArea == gamePanel.indoorArea) {
+	    	// Lighting for indoor area (no darkness)
+		}
+		else if (gamePanel.currentArea == gamePanel.dungeonArea) {
+			// Lighting for dungeon area (constant light level)
+	    	gc.setFill(Color.rgb(0, 0, 0, 0.8f));
 	    	gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
-	    }
+		}
+		else { // Outside area
+			if (dayState == night) {
+		    	// Fill the entire screen with darkness and a light source
+			    gc.setFill(darknessGradient);
+			    gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+		    }
+		    else {
+		    	// Apply day-night filter
+		    	gc.setFill(Color.rgb(0, 0, 0, filterAlpha));
+		    	gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+		    }
+		}
 	    	    
 	    // Debug
 	    String dayStateString = "";

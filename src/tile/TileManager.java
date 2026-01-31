@@ -63,6 +63,9 @@ public class TileManager {
 	
 		loadMap("/Maps/worldmap.txt", 0);
 		loadMap("/Maps/indoor01.txt", 1);
+		loadMap("/Maps/dungeon01.txt", 2);
+		loadMap("/Maps/dungeon02.txt", 3);
+		
 	}
 	
 	// Tile texture images

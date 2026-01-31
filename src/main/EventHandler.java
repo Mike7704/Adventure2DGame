@@ -74,17 +74,37 @@ public class EventHandler {
 			
 			// Hut enter teleport
 			else if (hit(0, 10, 39, "any")) {
-				teleport(1, 12, 13);
+				teleport(1, 12, 13, gamePanel.indoorArea);
 			}
 			
 			// Hut exit teleport
 			else if (hit(1, 12, 13, "any")) {
-				teleport(0, 10, 39);
+				teleport(0, 10, 39, gamePanel.outsideArea);
 			}
 			
 			// Hut merchant speak
 			else if (hit(1, 12, 9, "up")) {
 				speak(gamePanel.getNPC()[1][0]);
+			}
+			
+			// Dungeon 1 enter teleport
+			else if (hit(0, 12, 9, "any")) {
+				teleport(2, 9, 41, gamePanel.dungeonArea);
+			}
+			
+			// Dungeon 1 exit teleport
+			else if (hit(2, 9, 41, "any")) {
+				teleport(0, 12, 9, gamePanel.outsideArea);
+			}
+			
+			// Dungeon 2 enter teleport
+			else if (hit(2, 8, 7, "any")) {
+				teleport(3, 26, 41, gamePanel.dungeonArea);
+			}
+			
+			// Dungeon 2 exit teleport
+			else if (hit(3, 26, 41, "any")) {
+				teleport(2, 8, 7, gamePanel.dungeonArea);
 			}
 		}
 	}
@@ -127,8 +147,9 @@ public class EventHandler {
 	}
 	
 	// Event: Teleport
-	public void teleport(int map, int col, int row) {
+	public void teleport(int map, int col, int row, int area) {
 		gamePanel.gameState = gamePanel.transitionState;
+		gamePanel.nextArea = area;
 		tempMap = map;
 		tempCol = col;
 		tempRow = row;

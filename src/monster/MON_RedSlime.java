@@ -11,20 +11,20 @@ import object.OBJ_Heart;
 import object.OBJ_ManaCrystal;
 import object.OBJ_Rock;
 
-public class MON_GreenSlime extends Entity {
+public class MON_RedSlime extends Entity {
 		
-	public MON_GreenSlime(GamePanel gamePanel) {
+	public MON_RedSlime(GamePanel gamePanel) {
 		super(gamePanel);
 		
-		name = "Green Slime";
+		name = "Red Slime";
 		type = type_monster;
-		defaultSpeed = 1;
+		defaultSpeed = 2;
 		speed= defaultSpeed;
-		maxLife = 4;
+		maxLife = 8;
 		life = maxLife;
-		attack = 5;
+		attack = 7;
 		defense = 0;
-		exp = 2;
+		exp = 5;
 		projectile = new OBJ_Rock(gamePanel);
 		
 		solidArea = new Rectangle(3, 18, 42, 30);
@@ -36,14 +36,14 @@ public class MON_GreenSlime extends Entity {
 		
 	// NPC sprite images
 	private void getMonsterImage() {
-		up1 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		up2 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		down1 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		down2 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		left1 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		left2 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		right1 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
-		right2 = new Image(getClass().getResourceAsStream("/Monster/greenslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		up1 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		up2 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		down1 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		down2 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		left1 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		left2 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		right1 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_1.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
+		right2 = new Image(getClass().getResourceAsStream("/Monster/redslime_down_2.png"), gamePanel.tileSize, gamePanel.tileSize, true, false);
 	}
 		
 	public void setAction() {
@@ -56,7 +56,7 @@ public class MON_GreenSlime extends Entity {
 			searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
 			
 			// Shoot projectile
-			//checkShootProjectile(200, 30);
+			checkShootProjectile(200, 30);
 		}
 		else {
 			// Check if player is in range

@@ -617,6 +617,7 @@ public class UI {
 			gamePanel.getPlayer().worldY = gamePanel.getEventHandler().tempRow * gamePanel.tileSize;
 			gamePanel.getEventHandler().previousEventX = gamePanel.getPlayer().worldX;
 			gamePanel.getEventHandler().previousEventY = gamePanel.getPlayer().worldY;
+			gamePanel.changeArea();
 		}
 	}
 	
