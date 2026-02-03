@@ -29,6 +29,8 @@ public class Sound {
 		soundPath[17] = getClass().getResource("/Sound/speak.wav").toString();
 		soundPath[18] = getClass().getResource("/Sound/Merchant.wav").toString();
 		soundPath[19] = getClass().getResource("/Sound/Dungeon.wav").toString();
+		soundPath[20] = getClass().getResource("/Sound/chipwall.wav").toString();
+		soundPath[21] = getClass().getResource("/Sound/dooropen.wav").toString();
 	}
 	
 	public void setFile(int i) {

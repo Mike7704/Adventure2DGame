@@ -13,9 +13,11 @@ import object.OBJ_Heart;
 import object.OBJ_Key;
 import object.OBJ_Lantern;
 import object.OBJ_ManaCrystal;
+import object.OBJ_Pickaxe;
 import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Blue;
 import object.OBJ_Tent;
+import tile_interactive.IT_DestructibleWall;
 import tile_interactive.IT_DryTree;
 
 public class AssetSetter {
@@ -81,6 +83,29 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i] = new OBJ_Tent(gamePanel);
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 23;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 36;
+		
+		mapNum = 2; // Dungeon
+		i = 0;
+		
+		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel);
+		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Pickaxe(gamePanel));
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 40;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 41;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel);
+		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 13;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 16;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel);
+		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 26;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 34;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Chest(gamePanel);
+		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 27;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 15;
 	}
 	
 	public void setNPC() {
@@ -164,5 +189,18 @@ public class AssetSetter {
 		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DryTree(gamePanel, 10, 40);
 		i++;
+		
+		mapNum = 2; // Dungeon
+		i = 0;
+		
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 18, 30);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 17, 31);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 17, 32);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 17, 34);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 10, 22);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 38, 18);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 38, 19);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 22, 28);
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 30, 28);
 	}
 }

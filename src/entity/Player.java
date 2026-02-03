@@ -181,6 +181,16 @@ public class Player extends Entity {
 			attackRight1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_right_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
 			attackRight2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_axe_right_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
 		}
+		else if (currentWeapon.type == type_pickaxe) {
+			attackUp1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_up_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackUp2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_up_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackDown1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_down_1.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackDown2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_down_2.png"), gamePanel.tileSize, gamePanel.tileSize*2, true, false);
+			attackLeft1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_left_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackLeft2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_left_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackRight1 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_right_1.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+			attackRight2 = new Image(getClass().getResourceAsStream("/Player/Attacking sprites/boy_pick_right_2.png"), gamePanel.tileSize*2, gamePanel.tileSize, true, false);
+		}
 	}
 	
 	public void getPlayerGuardImage() {
@@ -474,6 +484,7 @@ public class Player extends Entity {
 				generateParticle(interactiveTile, interactiveTile);
 				
 				if (interactiveTile.life == 0) {
+					gamePanel.getInteractiveTile()[gamePanel.currentMap][index].checkDrop();
 					gamePanel.getInteractiveTile()[gamePanel.currentMap][index] = interactiveTile.getDestroyedForm();
 				}
 			}
@@ -514,7 +525,7 @@ public class Player extends Entity {
 			// Equip or use the selected item
 			Entity selectedItem = inventory.get(itemIndex);
 			
-			if (selectedItem.type == type_sword || selectedItem.type == type_axe) {
+			if (selectedItem.type == type_sword || selectedItem.type == type_axe || selectedItem.type == type_pickaxe) {
 				currentWeapon = selectedItem;
 				attack = getAttack();
 				getPlayerAttackImage();
