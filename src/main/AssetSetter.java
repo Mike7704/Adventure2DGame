@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_BigRock;
 import entity.NPC_Merchant;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
@@ -9,6 +10,7 @@ import object.OBJ_Axe;
 import object.OBJ_Chest;
 import object.OBJ_Coin_Bronze;
 import object.OBJ_Door;
+import object.OBJ_Door_Iron;
 import object.OBJ_Heart;
 import object.OBJ_Key;
 import object.OBJ_Lantern;
@@ -19,6 +21,7 @@ import object.OBJ_Shield_Blue;
 import object.OBJ_Tent;
 import tile_interactive.IT_DestructibleWall;
 import tile_interactive.IT_DryTree;
+import tile_interactive.IT_MetalPlate;
 
 public class AssetSetter {
 
@@ -106,6 +109,11 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 27;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 15;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Door_Iron(gamePanel);
+		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 18;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 23;
 	}
 	
 	public void setNPC() {
@@ -116,11 +124,25 @@ public class AssetSetter {
 		gamePanel.getNPC()[mapNum][i].worldY = gamePanel.tileSize * 21;
 		i++;
 		
-		mapNum = 1;
+		mapNum = 1; // Shop
 		i = 0;
 		gamePanel.getNPC()[mapNum][i] = new NPC_Merchant(gamePanel);
 		gamePanel.getNPC()[mapNum][i].worldX = gamePanel.tileSize * 12;
 		gamePanel.getNPC()[mapNum][i].worldY = gamePanel.tileSize * 7;
+		
+		mapNum = 2; // Dungeon
+		i = 0;
+		gamePanel.getNPC()[mapNum][i] = new NPC_BigRock(gamePanel);
+		gamePanel.getNPC()[mapNum][i].worldX = gamePanel.tileSize * 20;
+		gamePanel.getNPC()[mapNum][i].worldY = gamePanel.tileSize * 25;
+		i++;
+		gamePanel.getNPC()[mapNum][i] = new NPC_BigRock(gamePanel);
+		gamePanel.getNPC()[mapNum][i].worldX = gamePanel.tileSize * 11;
+		gamePanel.getNPC()[mapNum][i].worldY = gamePanel.tileSize * 18;
+		i++;
+		gamePanel.getNPC()[mapNum][i] = new NPC_BigRock(gamePanel);
+		gamePanel.getNPC()[mapNum][i].worldX = gamePanel.tileSize * 23;
+		gamePanel.getNPC()[mapNum][i].worldY = gamePanel.tileSize * 14;
 	}
 	
 	public void setMonster() {
@@ -194,13 +216,27 @@ public class AssetSetter {
 		i = 0;
 		
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 18, 30);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 17, 31);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 17, 32);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 17, 34);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 10, 22);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 38, 18);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 38, 19);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 22, 28);
+		i++;
 		gamePanel.getInteractiveTile()[mapNum][i] = new IT_DestructibleWall(gamePanel, 30, 28);
+		i++;
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_MetalPlate(gamePanel, 20, 22);
+		i++;
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_MetalPlate(gamePanel, 8, 17);
+		i++;
+		gamePanel.getInteractiveTile()[mapNum][i] = new IT_MetalPlate(gamePanel, 39, 31);
 	}
 }

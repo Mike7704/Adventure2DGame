@@ -331,6 +331,8 @@ public class GamePanel extends AnchorPane {
 			else if (nextArea == dungeonArea) {
 				playMusic(19);
 			}
+			
+			assetSetter.setNPC();
 		}
 		
 		currentArea = nextArea;

@@ -411,11 +411,13 @@ public class Player extends Entity {
 	
 	public void interactNPC(int index) {
 		
-		if (gamePanel.getKeyHandler().enterPressed) {
-			if (index != 999) {
+		if (index != 999) {
+			if (gamePanel.getKeyHandler().enterPressed) {
 				attackCanceled = true;
 				gamePanel.getNPC()[gamePanel.currentMap][index].speak();
 			}
+			
+			gamePanel.getNPC()[gamePanel.currentMap][index].move(direction);
 		}
 	}
 

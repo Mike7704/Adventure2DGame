@@ -24,6 +24,7 @@ public class Entity {
 	public int actionLockCounter = 0;
 	public String dialogues[][] = new String[20][20];
 	public Entity attacker;
+	public Entity linkedEntity;
 	private Random random = new Random();
 	
 	// STATE
@@ -128,6 +129,10 @@ public class Entity {
 	}
 	
 	public void setAction() {
+		// Overridden in subclasses
+	}
+	
+	public void move(String direction) {
 		// Overridden in subclasses
 	}
 	
