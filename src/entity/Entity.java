@@ -637,10 +637,10 @@ public class Entity {
 		}
 	}
 	
-	public void getRandomDirection() {
+	public void getRandomDirection(int interval) {
 		actionLockCounter++;
 		
-		if (actionLockCounter == 120) {	
+		if (actionLockCounter == interval) {	
 			int i = random.nextInt(100)+1; // 1-100
 			if (i <= 25) {
 				direction = "up";

@@ -63,7 +63,7 @@ public class MON_RedSlime extends Entity {
 			checkStartChasing(gamePanel.getPlayer(), 5, 100);
 			
 			// Random movement
-			getRandomDirection();
+			getRandomDirection(120);
 		}
 	}
 	

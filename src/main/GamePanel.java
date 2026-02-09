@@ -366,6 +366,7 @@ public class GamePanel extends AnchorPane {
     }
 			
 	public void resetGame(boolean restart) {
+		currentArea = outsideArea;
 		player.setDefaultPositions();
 		player.restoreStatus();
 		player.resetCounters();

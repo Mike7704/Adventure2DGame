@@ -74,6 +74,12 @@ public class CollisionChecker {
 	// Check object collision and return index of the object collided with
 	public int checkObject(Entity entity, boolean player) {
 		int index = 999;
+		
+		String direction = entity.direction;
+		if (entity.knockBack) {
+			// Temp direction during knockback
+			direction = entity.knockBackDirection;
+		}
 
 		for (int i = 0; i < gamePanel.getObject()[1].length; i++) {
 			if (gamePanel.getObject()[gamePanel.currentMap][i] != null) {
@@ -88,7 +94,7 @@ public class CollisionChecker {
 						gamePanel.getObject()[gamePanel.currentMap][i].worldY + gamePanel.getObject()[gamePanel.currentMap][i].solidArea.getY());
 				
 				// Predict entity position
-				switch (entity.direction) {
+				switch (direction) {
 					case "up":
 						entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
 						break;

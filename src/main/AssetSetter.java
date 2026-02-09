@@ -3,6 +3,7 @@ package main;
 import entity.NPC_BigRock;
 import entity.NPC_Merchant;
 import entity.NPC_OldMan;
+import monster.MON_Bat;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
 import monster.MON_RedSlime;
@@ -167,6 +168,29 @@ public class AssetSetter {
 		gamePanel.getMonster()[mapNum][i] = new MON_Orc(gamePanel);
 		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 12;
 		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 33;
+		
+		mapNum = 2; // Dungeon
+		i = 0;
+		gamePanel.getMonster()[mapNum][i] = new MON_Bat(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 34;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 39;
+		i++;
+		gamePanel.getMonster()[mapNum][i] = new MON_Bat(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 36;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 25;
+		i++;
+		gamePanel.getMonster()[mapNum][i] = new MON_Bat(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 39;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 26;
+		i++;
+		gamePanel.getMonster()[mapNum][i] = new MON_Bat(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 28;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 11;
+		i++;
+		gamePanel.getMonster()[mapNum][i] = new MON_Bat(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 10;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 19;
+		i++;
 	}
 	
 	public void setInteractiveTile() {

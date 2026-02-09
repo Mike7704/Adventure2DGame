@@ -128,7 +128,7 @@ public class SaveLoad {
 						gamePanel.getObject()[map][i].worldX = ds.mapObjectWorldX[map][i];
 						gamePanel.getObject()[map][i].worldY = ds.mapObjectWorldY[map][i];
 						if (ds.mapObjectLootNames[map][i] != null) {
-							gamePanel.getObject()[map][i].loot = gamePanel.getEntityGenerator().getObject(ds.mapObjectLootNames[map][i]);
+							gamePanel.getObject()[map][i].setLoot(gamePanel.getEntityGenerator().getObject(ds.mapObjectLootNames[map][i]));
 						}
 						gamePanel.getObject()[map][i].isOpen = ds.mapObjectOpened[map][i];
 						if (gamePanel.getObject()[map][i].isOpen) {
