@@ -16,6 +16,7 @@ public class KeyHandler {
     public boolean spacePressed = false;
     
     public boolean showDebugText = false;
+    public boolean godModeOn = false;
 
     public KeyHandler(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -69,6 +70,11 @@ public class KeyHandler {
         // DEBUG
         if (code == KeyCode.T) { 
 			showDebugText = !showDebugText;
+		}
+        
+        // GOD MODE
+        if (code == KeyCode.G) { 
+        	godModeOn = !godModeOn;
 		}
     }
 

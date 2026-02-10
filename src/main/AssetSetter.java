@@ -7,6 +7,7 @@ import monster.MON_Bat;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
 import monster.MON_RedSlime;
+import monster.MON_SkeletonLord;
 import object.OBJ_Axe;
 import object.OBJ_Chest;
 import object.OBJ_Coin_Bronze;
@@ -191,6 +192,12 @@ public class AssetSetter {
 		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 10;
 		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 19;
 		i++;
+		
+		mapNum = 3; // Dungeon boss
+		i = 0;
+		gamePanel.getMonster()[mapNum][i] = new MON_SkeletonLord(gamePanel);
+		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 23;
+		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 16;
 	}
 	
 	public void setInteractiveTile() {

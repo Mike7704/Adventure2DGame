@@ -369,7 +369,7 @@ public class Player extends Entity {
 			mana = maxMana;
 		}
 		
-		if (life <= 0) {
+		if (life <= 0 && !gamePanel.getKeyHandler().godModeOn) {
 			gamePanel.stopMusic();
 			gamePanel.getUI().commandNum = -1; // Prevent accidentally selecting an option
 			gamePanel.gameState = gamePanel.gameOverState;

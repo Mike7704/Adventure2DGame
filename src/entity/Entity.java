@@ -55,6 +55,7 @@ public class Entity {
 	public boolean transparent = false;
 	public Entity loot;
 	public boolean isOpen = false;
+	public boolean inRage = false;	
 	
 	// CHARACTER STATUS
 	public String name;
@@ -486,9 +487,9 @@ public class Entity {
 		int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
 		
 		// Draw object only visible on screen around the player
-		if (worldX + gamePanel.tileSize > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
+		if (worldX + gamePanel.tileSize*5 > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
 			worldX - gamePanel.tileSize < gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX &&
-			worldY + gamePanel.tileSize > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
+			worldY + gamePanel.tileSize*5 > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
 			worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY)
 		{
 			int offsetScreenX = screenX;
@@ -496,9 +497,9 @@ public class Entity {
 			
 			if (attacking) {
 				switch(direction) {
-					case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = screenY - gamePanel.tileSize; break;
+					case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = (int) (screenY - up1.getHeight()); break;
 					case "down": 	image = (spriteNum == 1 ? attackDown1 : attackDown2); break;
-					case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = screenX - gamePanel.tileSize; break;
+					case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = (int) (screenX - left1.getWidth()); break;
 					case "right": 	image = (spriteNum == 1 ? attackRight1 : attackRight2); break;
 					default: 		break;
 				}
@@ -570,22 +571,22 @@ public class Entity {
 		
 		switch (direction) {
 			case "up":
-				if (gamePanel.getPlayer().worldY < worldY && yDistance < straight && xDistance < horizontal) {
+				if (gamePanel.getPlayer().getCenterY() < getCenterY() && yDistance < straight && xDistance < horizontal) {
 					targetInRange = true;
 				}
 				break;
 			case "down":
-				if (gamePanel.getPlayer().worldY > worldY && yDistance < straight && xDistance < horizontal) {
+				if (gamePanel.getPlayer().getCenterY() > getCenterY() && yDistance < straight && xDistance < horizontal) {
 					targetInRange = true;
 				}
 				break;
 			case "left":
-				if (gamePanel.getPlayer().worldX < worldX && xDistance < straight && yDistance < horizontal) {
+				if (gamePanel.getPlayer().getCenterX() < getCenterX() && xDistance < straight && yDistance < horizontal) {
 					targetInRange = true;
 				}
 				break;
 			case "right":
-				if (gamePanel.getPlayer().worldX > worldX && xDistance < straight && yDistance < horizontal) {
+				if (gamePanel.getPlayer().getCenterX() > getCenterX() && xDistance < straight && yDistance < horizontal) {
 					targetInRange = true;
 				}
 				break;
@@ -637,10 +638,34 @@ public class Entity {
 		}
 	}
 	
+	public void moveTowardPlayer(int interval) {
+		actionLockCounter++;
+		
+		if (actionLockCounter >= interval) {	
+			if (getXDistance(gamePanel.getPlayer()) > getYDistance(gamePanel.getPlayer())) {
+				if (gamePanel.getPlayer().getCenterX() < getCenterX()) {
+					direction = "left";
+				}
+				else {
+					direction = "right";
+				}
+			}
+			else if (getXDistance(gamePanel.getPlayer()) < getYDistance(gamePanel.getPlayer())) {
+				if (gamePanel.getPlayer().getCenterY() < getCenterY()) {
+					direction = "up";
+				}
+				else {
+					direction = "down";
+				}
+			}
+			actionLockCounter = 0;
+		}
+	}
+	
 	public void getRandomDirection(int interval) {
 		actionLockCounter++;
 		
-		if (actionLockCounter == interval) {	
+		if (actionLockCounter >= interval) {	
 			int i = random.nextInt(100)+1; // 1-100
 			if (i <= 25) {
 				direction = "up";
@@ -730,11 +755,18 @@ public class Entity {
 		}
 	}
 	
+	
+	public int getCenterX() {
+		return (int) (worldX + left1.getWidth() / 2);
+	}
+	public int getCenterY() {
+		return (int) (worldY + up1.getHeight() / 2);
+	}
 	public int getXDistance(Entity target) {
-		return Math.abs(worldX - target.worldX);
+		return Math.abs(getCenterX() - target.getCenterX());
 	}
 	public int getYDistance(Entity target) {
-		return Math.abs(worldY - target.worldY);
+		return Math.abs(getCenterY() - target.getCenterY());
 	}
 	public int getTileDistance(Entity target) {
 		return (getXDistance(target) + getYDistance(target)) / gamePanel.tileSize;
