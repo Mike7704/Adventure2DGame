@@ -93,6 +93,7 @@ public class UI {
 		else if (gamePanel.gameState == gamePanel.playState) {
 			drawPlayerLife();
 			drawManaCrystal();
+			drawMonsterLife();
 			drawMessage();
 		}
 		// PAUSE STATE
@@ -831,13 +832,14 @@ public class UI {
 	}
 	
 	private void drawPlayerLife() {
+		int iconSize = 32;
 		int x = gamePanel.tileSize / 2;
 		int y = gamePanel.tileSize / 2;
 		
 		// Draw max life
 		for (int i = 0; i < gamePanel.getPlayer().maxLife / 2; i++) {
-			gc.drawImage(heart_blank, x, y, gamePanel.tileSize, gamePanel.tileSize);
-			x += gamePanel.tileSize;
+			gc.drawImage(heart_blank, x, y, iconSize, iconSize);
+			x += iconSize;
 		}
 		
 		// Reset
@@ -847,34 +849,80 @@ public class UI {
 		// Draw current life
 		for (int i = 0; i < gamePanel.getPlayer().life; i += 2) {
 			if (i + 1 < gamePanel.getPlayer().life) {
-				gc.drawImage(heart_full, x, y, gamePanel.tileSize, gamePanel.tileSize);
+				gc.drawImage(heart_full, x, y, iconSize, iconSize);
 			} else {
-				gc.drawImage(heart_half, x, y, gamePanel.tileSize, gamePanel.tileSize);
+				gc.drawImage(heart_half, x, y, iconSize, iconSize);
 			}
-			x += gamePanel.tileSize;
+			x += iconSize;
 		}
 	}
 	
 	private void drawManaCrystal() {
-		int x = (int) (gamePanel.screenWidth - (gamePanel.tileSize * 1.5));
+		int iconSize = 32;
+		int x = (int) (gamePanel.screenWidth - (iconSize * 1.5));
 		int y = gamePanel.tileSize / 2;
 		
 		// Draw max mana
 		for (int i = 0; i < gamePanel.getPlayer().maxMana; i++) {
-			gc.drawImage(crystal_blank, x, y, gamePanel.tileSize, gamePanel.tileSize);
-			x -= (gamePanel.tileSize / 1.5);
+			gc.drawImage(crystal_blank, x, y, iconSize, iconSize);
+			x -= (iconSize / 1.5);
 		}
 		
 		// Reset
-		x = (int) (gamePanel.screenWidth - (gamePanel.tileSize * 1.5));
+		x = (int) (gamePanel.screenWidth - (iconSize * 1.5));
 		y = gamePanel.tileSize / 2;
 		
 		// Draw current mana
 		for (int i = 0; i < gamePanel.getPlayer().mana; i ++) {
 			if (i < gamePanel.getPlayer().mana) {
-				gc.drawImage(crystal_full, x, y, gamePanel.tileSize, gamePanel.tileSize);
+				gc.drawImage(crystal_full, x, y, iconSize, iconSize);
 			}
-			x -= (gamePanel.tileSize / 1.5);
+			x -= (iconSize / 1.5);
+		}
+	}
+	
+	public void drawMonsterLife() {
+		// Monster health bar displays when attacked
+		
+		for (int i = 0; i < gamePanel.getMonster()[1].length; i++) {
+			Entity monster = gamePanel.getMonster()[gamePanel.currentMap][i];
+			if (monster != null && monster.inCamera()) {
+				// Normal monsters
+				if (monster.hpBarOn && !monster.boss) {
+					double oneScale = (double)gamePanel.tileSize / monster.maxLife;
+					double hpBarValue = oneScale * monster.life;
+					
+					gc.setFill(Color.DIMGRAY);
+					gc.fillRect(monster.getScreenX() - 1, monster.getScreenY() - 16, gamePanel.tileSize + 2, 12);
+					
+					gc.setFill(Color.RED);
+					gc.fillRect(monster.getScreenX(), monster.getScreenY() - 15, hpBarValue, 10);
+					
+					monster.hpBarCounter++;
+					if (monster.hpBarCounter > 600) {
+						monster.hpBarCounter = 0;
+						monster.hpBarOn = false;
+					}
+				}
+				// Boss monster
+				else if (monster.boss) {
+					double oneScale = (double)(gamePanel.tileSize * 8) / monster.maxLife;
+					double hpBarValue = oneScale * monster.life;
+					
+					int x = (gamePanel.screenWidth / 2) - (gamePanel.tileSize * 4);
+					int y = gamePanel.screenHeight - gamePanel.tileSize;
+					
+					gc.setFill(Color.DIMGRAY);
+					gc.fillRect(x - 1, y - 1, (gamePanel.tileSize * 8) + 2, 22);
+					
+					gc.setFill(Color.RED);
+					gc.fillRect(x, y, hpBarValue, 20);
+					
+					gc.setFont(font_very_small);
+					gc.setTextAlign(TextAlignment.LEFT);
+					drawTextWithShadow(monster.name, x + 4, y - 10);
+				}
+			}
 		}
 	}
 	

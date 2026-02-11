@@ -80,6 +80,7 @@ public class Entity {
 	public Entity currentShield;
 	public Entity currentLightSource;
 	public Projectile projectile;
+	public boolean boss;
 	
 	// ITEM ATTRIBUTES
 	public ArrayList<Entity> inventory = new ArrayList<>();
@@ -374,6 +375,14 @@ public class Entity {
 		}
 	}
 	
+	public int getScreenX() {
+		return worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
+	}
+	
+	public int getScreenY() {
+		return worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
+	}
+	
 	public int getLeftX() {
 		return (int) (worldX + solidArea.getX());
 	}
@@ -483,23 +492,17 @@ public class Entity {
 	
 	public void draw(GraphicsContext gc) {
 		Image image = null;
-		int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
-		int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
 		
 		// Draw object only visible on screen around the player
-		if (worldX + gamePanel.tileSize*5 > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
-			worldX - gamePanel.tileSize < gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX &&
-			worldY + gamePanel.tileSize*5 > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
-			worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY)
-		{
-			int offsetScreenX = screenX;
-			int offsetScreenY = screenY;		
+		if (inCamera()) {
+			int offsetScreenX = getScreenX();
+			int offsetScreenY = getScreenY();		
 			
 			if (attacking) {
 				switch(direction) {
-					case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = (int) (screenY - up1.getHeight()); break;
+					case "up": 		image = (spriteNum == 1 ? attackUp1 : attackUp2); offsetScreenY = (int) (getScreenY() - up1.getHeight()); break;
 					case "down": 	image = (spriteNum == 1 ? attackDown1 : attackDown2); break;
-					case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = (int) (screenX - left1.getWidth()); break;
+					case "left": 	image = (spriteNum == 1 ? attackLeft1 : attackLeft2); offsetScreenX = (int) (getScreenX() - left1.getWidth()); break;
 					case "right": 	image = (spriteNum == 1 ? attackRight1 : attackRight2); break;
 					default: 		break;
 				}
@@ -513,25 +516,7 @@ public class Entity {
 					default: 		break;
 				}
 			}
-			
-			// Monster health bar displays when attacked
-			if (type == 2 && hpBarOn) {
-				double oneScale = (double)gamePanel.tileSize / maxLife;
-				double hpBarValue = oneScale * life;
-				
-				gc.setFill(Color.DIMGRAY);
-				gc.fillRect(screenX - 1, screenY - 16, gamePanel.tileSize + 2, 12);
-				
-				gc.setFill(Color.RED);
-				gc.fillRect(screenX, screenY - 15, hpBarValue, 10);
-				
-				hpBarCounter++;
-				if (hpBarCounter > 600) {
-					hpBarCounter = 0;
-					hpBarOn = false;
-				}
-			}
-			
+						
 			// Invincibility effect
 			if (invincible) {
 				hpBarOn = true;
@@ -755,6 +740,13 @@ public class Entity {
 		}
 	}
 	
+	public boolean inCamera() {
+		// Check if visible on screen around the player
+		return (worldX + gamePanel.tileSize*5 > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
+				worldX - gamePanel.tileSize < gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX &&
+				worldY + gamePanel.tileSize*5 > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
+				worldY - gamePanel.tileSize < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY);
+	}
 	
 	public int getCenterX() {
 		return (int) (worldX + left1.getWidth() / 2);
