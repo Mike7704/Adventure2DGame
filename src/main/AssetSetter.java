@@ -1,5 +1,6 @@
 package main;
 
+import data.Progress;
 import entity.NPC_BigRock;
 import entity.NPC_Merchant;
 import entity.NPC_OldMan;
@@ -113,9 +114,15 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 15;
 		i++;
 		gamePanel.getObject()[mapNum][i] = new OBJ_Door_Iron(gamePanel);
-		gamePanel.getObject()[mapNum][i].setLoot(new OBJ_Potion_Red(gamePanel));
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 18;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 23;
+		
+		mapNum = 3; // Dungeon 2 boss
+		i = 0;
+		
+		gamePanel.getObject()[mapNum][i] = new OBJ_Door_Iron(gamePanel);
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 25;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 15;
 	}
 	
 	public void setNPC() {
@@ -195,9 +202,12 @@ public class AssetSetter {
 		
 		mapNum = 3; // Dungeon boss
 		i = 0;
-		gamePanel.getMonster()[mapNum][i] = new MON_SkeletonLord(gamePanel);
-		gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 23;
-		gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 16;
+		
+		if (!Progress.skeletonLordDefeated) {
+			gamePanel.getMonster()[mapNum][i] = new MON_SkeletonLord(gamePanel);
+			gamePanel.getMonster()[mapNum][i].worldX = gamePanel.tileSize * 23;
+			gamePanel.getMonster()[mapNum][i].worldY = gamePanel.tileSize * 16;	
+		}
 	}
 	
 	public void setInteractiveTile() {

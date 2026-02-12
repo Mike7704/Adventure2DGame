@@ -1,5 +1,6 @@
 package main;
 
+import data.Progress;
 import entity.Entity;
 import entity.Player;
 
@@ -106,6 +107,11 @@ public class EventHandler {
 			else if (hit(3, 26, 41, "any")) {
 				teleport(2, 8, 7, gamePanel.dungeonArea);
 			}
+			
+			// Skeleton Lord boss cutscene
+			else if (hit(3, 25, 27, "any")) {
+				skeletonLord();
+			}
 		}
 	}
 	
@@ -188,6 +194,14 @@ public class EventHandler {
 			gamePanel.gameState = gamePanel.dialogueState;
 			gamePanel.getPlayer().attackCanceled = true;
 			entity.speak();
+		}
+	}
+	
+	// Event: Trigger the cutscene
+	public void skeletonLord() {
+		if (!gamePanel.bossBattleOn && !Progress.skeletonLordDefeated) {
+			gamePanel.gameState = gamePanel.cutsceneState;
+			gamePanel.getCutsceneManager().sceneNum = gamePanel.getCutsceneManager().skeletonLord;
 		}
 	}
 }

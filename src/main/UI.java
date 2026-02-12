@@ -179,7 +179,7 @@ public class UI {
 		drawTextWithShadow("PAUSED", gamePanel.screenWidth / 2, gamePanel.screenHeight / 4);
 	}	
 	
-	private void drawDialogueScreen() {
+	public void drawDialogueScreen() {
 		// Window
 		int x = gamePanel.tileSize;
 		int y = gamePanel.tileSize / 2;
@@ -204,7 +204,7 @@ public class UI {
 				charIndex++;
 			}
 			
-			if (gamePanel.getKeyHandler().enterPressed && gamePanel.gameState == gamePanel.dialogueState) {
+			if (gamePanel.getKeyHandler().enterPressed && (gamePanel.gameState == gamePanel.dialogueState || gamePanel.gameState == gamePanel.cutsceneState)) {
 				charIndex = 0;
 				combinedText = "";
 				
@@ -217,6 +217,9 @@ public class UI {
 			if (gamePanel.gameState == gamePanel.dialogueState) {
 				gamePanel.gameState = gamePanel.playState;
 			}
+			if (gamePanel.gameState == gamePanel.cutsceneState) {
+				gamePanel.getCutsceneManager().scenePhase++;
+			}		
 		}
 		
 		drawTextWithShadow(currentDialogue, x, y);

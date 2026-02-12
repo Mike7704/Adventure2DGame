@@ -646,7 +646,9 @@ public class Player extends Entity {
 			gc.setGlobalAlpha(0.4);
 		}
 		
-		gc.drawImage(image, offsetScreenX, offsetScreenY);
+		if (visible) {
+			gc.drawImage(image, offsetScreenX, offsetScreenY);
+		}
 		
 		gc.setGlobalAlpha(1.0);	// Reset alpha
 	}

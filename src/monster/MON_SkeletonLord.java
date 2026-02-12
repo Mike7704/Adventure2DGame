@@ -2,11 +2,13 @@ package monster;
 
 import java.util.Random;
 
+import data.Progress;
 import entity.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
+import object.OBJ_Door_Iron;
 import object.OBJ_Heart;
 import object.OBJ_ManaCrystal;
 
@@ -31,7 +33,8 @@ public class MON_SkeletonLord extends Entity {
 		exp = 50;
 		attackMotion1Duration = 25;
 		attackMotion2Duration = 50;
-
+		sleep = true;
+		
 		solidArea = new Rectangle(48, 48, size - 48 * 2, size - 48);
 		solidAreaDefaultX = (int) solidArea.getX();
 		solidAreaDefaultY = (int) solidArea.getY();
@@ -40,6 +43,7 @@ public class MON_SkeletonLord extends Entity {
 		
 		getMonsterImage();
 		getAttackImage();
+		setDiagloue();
 	}
 		
 	// NPC sprite images
@@ -89,6 +93,11 @@ public class MON_SkeletonLord extends Entity {
 		}
 	}
 	
+	public void setDiagloue() {
+		dialogues[0][0] = "No one can steal my treasure!";
+		dialogues[0][1] = "You will die here!";
+	}
+	
 	public void setAction() {
 		
 		if (!inRage && life < maxLife / 2) {
@@ -119,17 +128,20 @@ public class MON_SkeletonLord extends Entity {
 	}
 	
 	public void checkDrop() {
-		// Called when monster dies
-		int i = new Random().nextInt(100)+1;
+		// Boss has been defeated
+		gamePanel.bossBattleOn = false;
+		Progress.skeletonLordDefeated = true;
 		
-		if (i <= 50) {
-			dropItem(new OBJ_Coin_Bronze(gamePanel));
-		}
-		else if (i <= 75) {
-			dropItem(new OBJ_Heart(gamePanel));
-		}
-		else {
-			dropItem(new OBJ_ManaCrystal(gamePanel));
+		// Restore previous music
+		gamePanel.stopMusic();
+		gamePanel.playMusic(19);
+		
+		// Remove iron doors
+		for (int i = 0; i < gamePanel.getObject()[1].length; i++) {
+			if (gamePanel.getObject()[gamePanel.currentMap][i] != null && gamePanel.getObject()[gamePanel.currentMap][i].name.equals(OBJ_Door_Iron.objName)) {
+				gamePanel.getObject()[gamePanel.currentMap][i] = null;
+				gamePanel.playSoundEffect(21);
+			}
 		}
 	}
 }

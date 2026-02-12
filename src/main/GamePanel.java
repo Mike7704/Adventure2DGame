@@ -63,6 +63,7 @@ public class GamePanel extends AnchorPane {
     private Map map = new Map(this);
     private SaveLoad saveLoad = new SaveLoad(this);
     private EntityGenerator entityGenerator = new EntityGenerator(this);
+    private CutsceneManager cutsceneManager = new CutsceneManager(this);
     
     // Entity and Object
     private Player player = new Player(this, keyHandler);
@@ -87,6 +88,9 @@ public class GamePanel extends AnchorPane {
     public final int tradeState = 8;
     public final int sleepState = 9;
     public final int mapState = 10;
+    public final int cutsceneState = 11;
+        
+    public boolean bossBattleOn = false;
     
     // AREA STATE
     public int currentArea;
@@ -303,6 +307,9 @@ public class GamePanel extends AnchorPane {
 		// MINI MAP
 		map.drawMiniMap(gc);
 		
+		// CUTSCENE
+		cutsceneManager.draw(gc);
+		
 		// UI
         ui.draw(gc);
         
@@ -366,7 +373,10 @@ public class GamePanel extends AnchorPane {
     }
 			
 	public void resetGame(boolean restart) {
+		stopMusic();
 		currentArea = outsideArea;
+		removeTempEntity();
+		bossBattleOn = false;
 		player.setDefaultPositions();
 		player.restoreStatus();
 		player.resetCounters();
@@ -383,6 +393,16 @@ public class GamePanel extends AnchorPane {
 			playMusic(0);
 		}
 		
+	}
+	
+	public void removeTempEntity() {
+		for (int mapNum = 0; mapNum < maxMap; mapNum++) {
+			for (int i = 0; i < obj[1].length; i++) {
+				if (obj[currentMap][i] != null && obj[currentMap][i].temp) {
+					obj[currentMap][i] = null;
+				}
+			}
+		}
 	}
 	
 	public void playMusic(int i) {
@@ -486,6 +506,10 @@ public class GamePanel extends AnchorPane {
 	
 	public Map getMap() {
 		return map;
+	}
+	
+	public CutsceneManager getCutsceneManager() {
+		return cutsceneManager;
 	}
 	
 	public SaveLoad getSaveLoad() {

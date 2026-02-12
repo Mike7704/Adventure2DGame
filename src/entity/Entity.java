@@ -25,6 +25,7 @@ public class Entity {
 	public String dialogues[][] = new String[20][20];
 	public Entity attacker;
 	public Entity linkedEntity;
+	public boolean temp = false;
 	private Random random = new Random();
 	
 	// STATE
@@ -56,6 +57,8 @@ public class Entity {
 	public Entity loot;
 	public boolean isOpen = false;
 	public boolean inRage = false;	
+	public boolean sleep = false;
+	public boolean visible = true;
 	
 	// CHARACTER STATUS
 	public String name;
@@ -409,6 +412,11 @@ public class Entity {
 	
 	
 	public void update() {
+		
+		if (sleep) {
+			// Entity is sleeping - don't do anything.
+			return;
+		}
 		
 		if (knockBack) {
 			checkCollision();
