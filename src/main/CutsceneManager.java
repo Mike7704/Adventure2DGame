@@ -3,30 +3,41 @@ package main;
 import entity.Entity;
 import entity.FakePlayer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import monster.MON_SkeletonLord;
+import object.OBJ_Blue_Heart;
 import object.OBJ_Door_Iron;
 
 public class CutsceneManager {
 
 	private GamePanel gamePanel;
+	private GraphicsContext gc;
 	public int sceneNum;
 	public int scenePhase;
+	private int counter = 0;
+	private float alpha = 0f;
+	private int y;
+	
 	
 	// Scene number
 	public final int NA = 0;
 	public final int skeletonLord = 1;
+	public final int ending = 2;
 	
 	public CutsceneManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
 	
-	public void draw(GraphicsContext gc) {		
+	public void draw(GraphicsContext gc) {
+		this.gc = gc;
 		switch(sceneNum) {
-			case skeletonLord: skeletonLordScene(); break;
+			case skeletonLord	: skeletonLordScene(); break;
+			case ending			: endingScene(); break;
 		}
 	}
 	
-	public void skeletonLordScene() {
+	private void skeletonLordScene() {
 		if (scenePhase == 0) {
 			gamePanel.bossBattleOn = true;
 			
@@ -104,5 +115,80 @@ public class CutsceneManager {
 			gamePanel.stopMusic();
 			gamePanel.playMusic(22);
 		}
+	}
+	
+	private void endingScene() {
+		if (scenePhase == 0) {
+			gamePanel.stopMusic();
+			gamePanel.getUI().npc = new OBJ_Blue_Heart(gamePanel);
+			scenePhase++;
+		}
+		
+		if (scenePhase == 1) {
+			gamePanel.getUI().drawDialogueScreen();
+		}
+		
+		if (scenePhase == 2) {
+			gamePanel.playSoundEffect(4); // Celebrate
+			scenePhase++;
+		}
+		
+		if (scenePhase == 3) {
+			// Wait for sound effect to end
+			if (counterReached(300)) {
+				scenePhase++;
+			}
+		}
+		
+		if (scenePhase == 4) {
+			// Darken the screen
+			alpha += 0.005f;
+			if (alpha > 1f) {
+				alpha = 0f;
+				gamePanel.playMusic(0); // Main theme
+				scenePhase++;
+			}
+			else {
+				drawBlackBackground(alpha);
+			}
+		}
+		
+		if (scenePhase == 5) {
+			drawBlackBackground(1f);
+			
+			// Title Text
+		    gc.setFont(gamePanel.getUI().font_large);
+		    gc.setTextAlign(TextAlignment.CENTER);
+		    gamePanel.getUI().drawTextWithShadow("2D ADVENTURE", gamePanel.screenWidth / 2, gamePanel.screenHeight / 5);
+		    
+		    if (counterReached(300)) {
+				scenePhase++;
+			}
+		}
+		
+		if (scenePhase == 6) {
+			drawBlackBackground(1f);
+			// Reset scene
+			sceneNum = NA;
+			scenePhase = 0;
+			gamePanel.gameState = gamePanel.titleState;
+		}
+	}
+	
+	private boolean counterReached(int target) {
+		boolean counterReached = false;
+		
+		counter++;
+		if (counter > target) {
+			counterReached = true;
+			counter = 0;
+		}
+		
+		return counterReached;
+	}
+	
+	private void drawBlackBackground(float alpha) {
+		 gc.setFill(new Color(0, 0, 0, alpha));
+		 gc.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
 	}
 }

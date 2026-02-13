@@ -10,6 +10,7 @@ import monster.MON_Orc;
 import monster.MON_RedSlime;
 import monster.MON_SkeletonLord;
 import object.OBJ_Axe;
+import object.OBJ_Blue_Heart;
 import object.OBJ_Chest;
 import object.OBJ_Coin_Bronze;
 import object.OBJ_Door;
@@ -123,6 +124,10 @@ public class AssetSetter {
 		gamePanel.getObject()[mapNum][i] = new OBJ_Door_Iron(gamePanel);
 		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 25;
 		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 15;
+		i++;
+		gamePanel.getObject()[mapNum][i] = new OBJ_Blue_Heart(gamePanel);
+		gamePanel.getObject()[mapNum][i].worldX = gamePanel.tileSize * 25;
+		gamePanel.getObject()[mapNum][i].worldY = gamePanel.tileSize * 8;
 	}
 	
 	public void setNPC() {
